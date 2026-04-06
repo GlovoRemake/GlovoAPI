@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Core/Core.csproj" />
+  <Project Path="Domain/Domain.csproj" />
+  <Project Path="GlovoAPI/GlovoAPI.csproj" />
+</Solution>
