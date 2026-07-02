@@ -36,12 +36,6 @@ public static class DbSeedData
                 try
                 {
                     var regions = JsonSerializer.Deserialize<List<Region>>(jsonData);
-                    //var entities = categories.Select(x =>
-                    //    new City
-                    //    {
-                    //        Image = x.Image,
-                    //        Name = x.Name,
-                    //    });
 
                     await context.AddRangeAsync(regions);
                     await context.SaveChangesAsync();
@@ -74,12 +68,6 @@ public static class DbSeedData
                 try
                 {
                     var cities = JsonSerializer.Deserialize<List<City>>(jsonData);
-                    //var entities = categories.Select(x =>
-                    //    new City
-                    //    {
-                    //        Image = x.Image,
-                    //        Name = x.Name,
-                    //    });
 
                     await context.AddRangeAsync(cities);
                     await context.SaveChangesAsync();
