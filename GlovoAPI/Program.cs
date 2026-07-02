@@ -1,7 +1,5 @@
-
-
-
 using Domain;
+using GlovoAPI;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,5 +32,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+await app.SeedData(); // seeder
 
 app.Run();
