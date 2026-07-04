@@ -1,5 +1,7 @@
 ﻿using Core.Entities.Identity;
+using Domain.Entities.User;
 using Domain.Entities.Support;
+using Domain.Entities.User;
 using Domain.Enums;
 
 namespace Domain.Entities.Order;
@@ -31,4 +33,6 @@ public class UserOrder
     public UserEntity User { get; set; }
     public SupportChat? SupportChat { get; set; }
     public Promocode Promocode { get; set; }
+    public ICollection<UserRate> Rates { get; set; }
+    public ICollection<OrderProduct> Products { get; set; }
 }

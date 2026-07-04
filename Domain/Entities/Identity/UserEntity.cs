@@ -1,6 +1,8 @@
 ﻿using Domain.Entities;
+using Domain.Entities.User;
 using Domain.Entities.Order;
 using Domain.Entities.Support;
+using Domain.Entities.User;
 using Microsoft.AspNetCore.Identity;
 
 namespace Core.Entities.Identity;
@@ -17,4 +19,6 @@ public class UserEntity : IdentityUser<Guid>
     public ICollection<SupportChat>? UserSupportChats { get; set; }
     public ICollection<SupportChat>? AssignedSupportChats { get; set; } // support
     public ICollection<Message>? Messages { get; set; }
+    public ICollection<UserRate>? Rates { get; set; }
+    public ICollection<UserCart>? Carts { get; set; }
 }

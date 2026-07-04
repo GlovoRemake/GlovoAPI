@@ -1,7 +1,7 @@
 ﻿using Core.Entities.Identity;
 using Domain.Entities.Order;
 
-namespace Domain.Entities;
+namespace Domain.Entities.User;
 
 public class UserLocation
 {
