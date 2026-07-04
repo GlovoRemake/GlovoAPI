@@ -3,6 +3,7 @@ using System;
 using Domain.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Domain.Migrations
 {
     [DbContext(typeof(GlovoDbContext))]
-    partial class GlovoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260704220333_Add PartnerRoles")]
+    partial class AddPartnerRoles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -133,47 +136,7 @@ namespace Domain.Migrations
                     b.ToTable("Cities");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Company.Affiliate.CompanyAffiliate", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<TimeSpan>("AverageTimeCookingMax")
-                        .HasColumnType("interval");
-
-                    b.Property<TimeSpan>("AverageTimeCookingMin")
-                        .HasColumnType("interval");
-
-                    b.Property<Guid>("CompanyId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("LocationId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("WorkingHoursId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
-
-                    b.HasIndex("LocationId");
-
-                    b.HasIndex("WorkingHoursId");
-
-                    b.ToTable("CompanyAffiliates");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Company.Affiliate.CompanyAffiliateLocation", b =>
+            modelBuilder.Entity("Domain.Entities.Company.Affiliate.CompanyAffiliateLoaction", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -380,186 +343,6 @@ namespace Domain.Migrations
                     b.ToTable("PartnerUsers");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Company.Product.Additional.Additional", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AdditionalGroupId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("integer");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("double precision");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AdditionalGroupId");
-
-                    b.ToTable("Additionals");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Company.Product.Additional.AdditionalGroup", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("MaxChoice")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("MinChoice")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("AdditionalGroups");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Company.Product.CompanyAffiliateProduct", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<Guid>("CompanyAffiliateId")
-                        .HasColumnType("uuid");
-
-                    b.Property<bool>("IsAvailable")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("ProdcutId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CompanyAffiliateId");
-
-                    b.HasIndex("ProdcutId");
-
-                    b.ToTable("CompanyAffiliatesProducts");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Company.Product.CompanyProduct", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("CompanyId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ImagePath")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<double>("Kcal")
-                        .HasColumnType("double precision");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("integer");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("Weight")
-                        .HasColumnType("double precision");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("CompanyId");
-
-                    b.ToTable("CompanyProducts");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Company.ProductCategory.CompanyAffiliatesProductsCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("CompanyAffiliateId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("CompanyAffiliateId");
-
-                    b.ToTable("CompanyAffiliatesProductsCategories");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Company.ProductCategory.CompanyProductCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<Guid>("CompanyId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
-
-                    b.ToTable("CompanyProductCategories");
-                });
-
             modelBuilder.Entity("Domain.Entities.CourierTimeSlot", b =>
                 {
                     b.Property<int>("Id")
@@ -587,64 +370,6 @@ namespace Domain.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("CourierTimeSlots");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Order.OrderProduct", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Count")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Orderliness")
-                        .HasColumnType("integer");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("double precision");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("OrderProduct");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Order.OrderProductAdditional", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AdditionalId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("OrderProductId")
-                        .HasColumnType("integer");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("double precision");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AdditionalId");
-
-                    b.HasIndex("OrderProductId");
-
-                    b.ToTable("OrderProductAdditional");
                 });
 
             modelBuilder.Entity("Domain.Entities.Order.UserOrder", b =>
@@ -819,65 +544,6 @@ namespace Domain.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("SupportChats");
-                });
-
-            modelBuilder.Entity("Domain.Entities.User.UserCart", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<Guid>("AffiliateId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("Count")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AffiliateId");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserCarts");
-                });
-
-            modelBuilder.Entity("Domain.Entities.User.UserCartAdditional", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AdditionalId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("CartId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AdditionalId");
-
-                    b.HasIndex("CartId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("UserCartsAdditionals");
                 });
 
             modelBuilder.Entity("Domain.Entities.User.UserLocation", b =>
@@ -1078,34 +744,7 @@ namespace Domain.Migrations
                     b.Navigation("Region");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Company.Affiliate.CompanyAffiliate", b =>
-                {
-                    b.HasOne("Domain.Entities.Company.Company", "Company")
-                        .WithMany("Affiliates")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Company.Affiliate.CompanyAffiliateLocation", "Location")
-                        .WithMany("Affiliates")
-                        .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Company.Affiliate.CompanyAffiliatesWorkingHour", "WorkingHours")
-                        .WithMany("Affiliates")
-                        .HasForeignKey("WorkingHoursId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Company");
-
-                    b.Navigation("Location");
-
-                    b.Navigation("WorkingHours");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Company.Affiliate.CompanyAffiliateLocation", b =>
+            modelBuilder.Entity("Domain.Entities.Company.Affiliate.CompanyAffiliateLoaction", b =>
                 {
                     b.HasOne("Domain.Entities.Region", "Region")
                         .WithMany("CompanyAffiliateLocations")
@@ -1154,96 +793,6 @@ namespace Domain.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Company.Product.Additional.Additional", b =>
-                {
-                    b.HasOne("Domain.Entities.Company.Product.Additional.AdditionalGroup", "Group")
-                        .WithMany("Additionals")
-                        .HasForeignKey("AdditionalGroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Group");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Company.Product.Additional.AdditionalGroup", b =>
-                {
-                    b.HasOne("Domain.Entities.Company.Product.CompanyProduct", "Product")
-                        .WithMany("AdditionalGroups")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Company.Product.CompanyAffiliateProduct", b =>
-                {
-                    b.HasOne("Domain.Entities.Company.Affiliate.CompanyAffiliate", "Affiliate")
-                        .WithMany("Products")
-                        .HasForeignKey("CompanyAffiliateId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Company.Product.CompanyProduct", "Product")
-                        .WithMany("Affiliates")
-                        .HasForeignKey("ProdcutId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Affiliate");
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Company.Product.CompanyProduct", b =>
-                {
-                    b.HasOne("Domain.Entities.Company.ProductCategory.CompanyProductCategory", "Category")
-                        .WithMany("Products")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Company.Company", "Company")
-                        .WithMany("Products")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-
-                    b.Navigation("Company");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Company.ProductCategory.CompanyAffiliatesProductsCategory", b =>
-                {
-                    b.HasOne("Domain.Entities.Company.ProductCategory.CompanyProductCategory", "Category")
-                        .WithMany("Affiliates")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Company.Affiliate.CompanyAffiliate", "Affiliate")
-                        .WithMany("Categories")
-                        .HasForeignKey("CompanyAffiliateId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Affiliate");
-
-                    b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Company.ProductCategory.CompanyProductCategory", b =>
-                {
-                    b.HasOne("Domain.Entities.Company.Company", "Company")
-                        .WithMany("ProductCategories")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Company");
-                });
-
             modelBuilder.Entity("Domain.Entities.CourierTimeSlot", b =>
                 {
                     b.HasOne("Domain.Entities.City", "City")
@@ -1261,44 +810,6 @@ namespace Domain.Migrations
                     b.Navigation("City");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Order.OrderProduct", b =>
-                {
-                    b.HasOne("Domain.Entities.Order.UserOrder", "Order")
-                        .WithMany("Products")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Company.Product.CompanyProduct", "Product")
-                        .WithMany("OrderedProducts")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Order.OrderProductAdditional", b =>
-                {
-                    b.HasOne("Domain.Entities.Company.Product.Additional.Additional", "Additional")
-                        .WithMany("OrderedAdditionals")
-                        .HasForeignKey("AdditionalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Order.OrderProduct", "Product")
-                        .WithMany("AdditionalProducts")
-                        .HasForeignKey("OrderProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Additional");
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Domain.Entities.Order.UserOrder", b =>
@@ -1372,60 +883,6 @@ namespace Domain.Migrations
                     b.Navigation("Support");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Domain.Entities.User.UserCart", b =>
-                {
-                    b.HasOne("Domain.Entities.Company.Affiliate.CompanyAffiliate", "Affiliate")
-                        .WithMany("Carts")
-                        .HasForeignKey("AffiliateId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Company.Product.CompanyProduct", "Product")
-                        .WithMany("Carts")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Core.Entities.Identity.UserEntity", "User")
-                        .WithMany("Carts")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Affiliate");
-
-                    b.Navigation("Product");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Domain.Entities.User.UserCartAdditional", b =>
-                {
-                    b.HasOne("Domain.Entities.Company.Product.Additional.Additional", "Additional")
-                        .WithMany("Additionals")
-                        .HasForeignKey("AdditionalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.User.UserCart", "Cart")
-                        .WithMany("Additionals")
-                        .HasForeignKey("CartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Company.Product.CompanyProduct", "Product")
-                        .WithMany("Additionals")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Additional");
-
-                    b.Navigation("Cart");
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Domain.Entities.User.UserLocation", b =>
@@ -1521,8 +978,6 @@ namespace Domain.Migrations
                 {
                     b.Navigation("AssignedSupportChats");
 
-                    b.Navigation("Carts");
-
                     b.Navigation("CourierTimeSlots");
 
                     b.Navigation("Messages");
@@ -1541,33 +996,8 @@ namespace Domain.Migrations
                     b.Navigation("CourierTimeSlots");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Company.Affiliate.CompanyAffiliate", b =>
-                {
-                    b.Navigation("Carts");
-
-                    b.Navigation("Categories");
-
-                    b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Company.Affiliate.CompanyAffiliateLocation", b =>
-                {
-                    b.Navigation("Affiliates");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Company.Affiliate.CompanyAffiliatesWorkingHour", b =>
-                {
-                    b.Navigation("Affiliates");
-                });
-
             modelBuilder.Entity("Domain.Entities.Company.Company", b =>
                 {
-                    b.Navigation("Affiliates");
-
-                    b.Navigation("ProductCategories");
-
-                    b.Navigation("Products");
-
                     b.Navigation("Rates");
                 });
 
@@ -1588,47 +1018,8 @@ namespace Domain.Migrations
                     b.Navigation("Employees");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Company.Product.Additional.Additional", b =>
-                {
-                    b.Navigation("Additionals");
-
-                    b.Navigation("OrderedAdditionals");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Company.Product.Additional.AdditionalGroup", b =>
-                {
-                    b.Navigation("Additionals");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Company.Product.CompanyProduct", b =>
-                {
-                    b.Navigation("AdditionalGroups");
-
-                    b.Navigation("Additionals");
-
-                    b.Navigation("Affiliates");
-
-                    b.Navigation("Carts");
-
-                    b.Navigation("OrderedProducts");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Company.ProductCategory.CompanyProductCategory", b =>
-                {
-                    b.Navigation("Affiliates");
-
-                    b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Order.OrderProduct", b =>
-                {
-                    b.Navigation("AdditionalProducts");
-                });
-
             modelBuilder.Entity("Domain.Entities.Order.UserOrder", b =>
                 {
-                    b.Navigation("Products");
-
                     b.Navigation("Rates");
 
                     b.Navigation("SupportChat");
@@ -1649,11 +1040,6 @@ namespace Domain.Migrations
             modelBuilder.Entity("Domain.Entities.Support.SupportChat", b =>
                 {
                     b.Navigation("Messages");
-                });
-
-            modelBuilder.Entity("Domain.Entities.User.UserCart", b =>
-                {
-                    b.Navigation("Additionals");
                 });
 
             modelBuilder.Entity("Domain.Entities.User.UserLocation", b =>

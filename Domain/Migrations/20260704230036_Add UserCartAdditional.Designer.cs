@@ -3,6 +3,7 @@ using System;
 using Domain.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Domain.Migrations
 {
     [DbContext(typeof(GlovoDbContext))]
-    partial class GlovoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260704230036_Add UserCartAdditional")]
+    partial class AddUserCartAdditional
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -587,64 +590,6 @@ namespace Domain.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("CourierTimeSlots");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Order.OrderProduct", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Count")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Orderliness")
-                        .HasColumnType("integer");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("double precision");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("OrderProduct");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Order.OrderProductAdditional", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AdditionalId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("OrderProductId")
-                        .HasColumnType("integer");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("double precision");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AdditionalId");
-
-                    b.HasIndex("OrderProductId");
-
-                    b.ToTable("OrderProductAdditional");
                 });
 
             modelBuilder.Entity("Domain.Entities.Order.UserOrder", b =>
@@ -1263,44 +1208,6 @@ namespace Domain.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Order.OrderProduct", b =>
-                {
-                    b.HasOne("Domain.Entities.Order.UserOrder", "Order")
-                        .WithMany("Products")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Company.Product.CompanyProduct", "Product")
-                        .WithMany("OrderedProducts")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Order.OrderProductAdditional", b =>
-                {
-                    b.HasOne("Domain.Entities.Company.Product.Additional.Additional", "Additional")
-                        .WithMany("OrderedAdditionals")
-                        .HasForeignKey("AdditionalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Order.OrderProduct", "Product")
-                        .WithMany("AdditionalProducts")
-                        .HasForeignKey("OrderProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Additional");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("Domain.Entities.Order.UserOrder", b =>
                 {
                     b.HasOne("Domain.Entities.User.UserLocation", "UserLocation")
@@ -1591,8 +1498,6 @@ namespace Domain.Migrations
             modelBuilder.Entity("Domain.Entities.Company.Product.Additional.Additional", b =>
                 {
                     b.Navigation("Additionals");
-
-                    b.Navigation("OrderedAdditionals");
                 });
 
             modelBuilder.Entity("Domain.Entities.Company.Product.Additional.AdditionalGroup", b =>
@@ -1609,8 +1514,6 @@ namespace Domain.Migrations
                     b.Navigation("Affiliates");
 
                     b.Navigation("Carts");
-
-                    b.Navigation("OrderedProducts");
                 });
 
             modelBuilder.Entity("Domain.Entities.Company.ProductCategory.CompanyProductCategory", b =>
@@ -1620,15 +1523,8 @@ namespace Domain.Migrations
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Order.OrderProduct", b =>
-                {
-                    b.Navigation("AdditionalProducts");
-                });
-
             modelBuilder.Entity("Domain.Entities.Order.UserOrder", b =>
                 {
-                    b.Navigation("Products");
-
                     b.Navigation("Rates");
 
                     b.Navigation("SupportChat");

@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities;
+﻿using Domain.Entities.Company.Affiliate;
+
+namespace Domain.Entities;
 
 public class Region
 {
@@ -8,4 +10,5 @@ public class Region
 
     // conn
     public ICollection<City>? Cities { get; set; }
+    public ICollection<CompanyAffiliateLocation>? CompanyAffiliateLocations { get; set; }
 }
