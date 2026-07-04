@@ -30,4 +30,5 @@ public class UserOrder
     public UserLocation UserLocation { get; set; }
     public UserEntity User { get; set; }
     public SupportChat? SupportChat { get; set; }
+    public Promocode Promocode { get; set; }
 }

@@ -42,6 +42,10 @@ public class GlovoDbContext : IdentityDbContext<UserEntity, IdentityRole<Guid>, 
             .HasOne(c => c.UserLocation)
             .WithMany(c => c.UserOrders)
             .HasForeignKey(c => c.LocationId);
+        modelBuilder.Entity<UserOrder>()
+            .HasOne(c => c.Promocode)
+            .WithMany(c => c.UserOrders)
+            .HasForeignKey(c => c.PromocodeId);
 
         modelBuilder.Entity<SupportChat>()
             .HasOne(c => c.User)
