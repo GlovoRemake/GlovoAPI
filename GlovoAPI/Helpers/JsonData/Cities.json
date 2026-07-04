@@ -1,0 +1,482 @@
+[
+  {
+    "Id": 1,
+    "RegionId": 1,
+    "Name": "Boyarka",
+    "CenterPosition": "50.3167,30.3000",
+    "Radius": 4,
+    "MaxCourierCount": 40,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 2,
+    "RegionId": 5,
+    "Name": "Bukovel'",
+    "CenterPosition": "48.3652,24.4028",
+    "Radius": 5,
+    "MaxCourierCount": 30,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 3,
+    "RegionId": 2,
+    "Name": "Kovel",
+    "CenterPosition": "51.2167,24.7000",
+    "Radius": 5,
+    "MaxCourierCount": 40,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 4,
+    "RegionId": 3,
+    "Name": "Oleksandria",
+    "CenterPosition": "48.6667,33.1167",
+    "Radius": 5,
+    "MaxCourierCount": 40,
+    "WorktimeStart": "04:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 5,
+    "RegionId": 4,
+    "Name": "Pavlohrad",
+    "CenterPosition": "48.5333,35.8667",
+    "Radius": 6,
+    "MaxCourierCount": 50,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 6,
+    "RegionId": 1,
+    "Name": "Біла Церква",
+    "CenterPosition": "49.7950,30.1310",
+    "Radius": 6,
+    "MaxCourierCount": 60,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 7,
+    "RegionId": 1,
+    "Name": "Бориспіль",
+    "CenterPosition": "50.3527,30.9538",
+    "Radius": 5,
+    "MaxCourierCount": 50,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 8,
+    "RegionId": 1,
+    "Name": "Бровари",
+    "CenterPosition": "50.5111,30.7900",
+    "Radius": 6,
+    "MaxCourierCount": 60,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 9,
+    "RegionId": 6,
+    "Name": "Винники",
+    "CenterPosition": "49.8167,24.1167",
+    "Radius": 4,
+    "MaxCourierCount": 30,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 10,
+    "RegionId": 1,
+    "Name": "Вишгород",
+    "CenterPosition": "50.5822,30.4894",
+    "Radius": 5,
+    "MaxCourierCount": 40,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 11,
+    "RegionId": 7,
+    "Name": "Вінниця",
+    "CenterPosition": "49.2331,28.4682",
+    "Radius": 10,
+    "MaxCourierCount": 200,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 12,
+    "RegionId": 4,
+    "Name": "Дніпро",
+    "CenterPosition": "48.4647,35.0462",
+    "Radius": 18,
+    "MaxCourierCount": 500,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 13,
+    "RegionId": 6,
+    "Name": "Дрогобич",
+    "CenterPosition": "49.3502,23.5363",
+    "Radius": 5,
+    "MaxCourierCount": 40,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 14,
+    "RegionId": 6,
+    "Name": "Дубляни",
+    "CenterPosition": "49.9333,24.1167",
+    "Radius": 3,
+    "MaxCourierCount": 20,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 15,
+    "RegionId": 8,
+    "Name": "Житомир",
+    "CenterPosition": "50.2547,28.6587",
+    "Radius": 9,
+    "MaxCourierCount": 150,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 16,
+    "RegionId": 9,
+    "Name": "Запоріжжя",
+    "CenterPosition": "47.8388,35.1396",
+    "Radius": 14,
+    "MaxCourierCount": 350,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:00:00"
+  },
+  {
+    "Id": 17,
+    "RegionId": 6,
+    "Name": "Зимна Вода",
+    "CenterPosition": "49.7667,23.9333",
+    "Radius": 3,
+    "MaxCourierCount": 20,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 18,
+    "RegionId": 5,
+    "Name": "Івано-Франківськ",
+    "CenterPosition": "48.9226,24.7111",
+    "Radius": 9,
+    "MaxCourierCount": 180,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 19,
+    "RegionId": 1,
+    "Name": "Ірпінь - Буча",
+    "CenterPosition": "50.5210,30.2547",
+    "Radius": 6,
+    "MaxCourierCount": 60,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 20,
+    "RegionId": 10,
+    "Name": "Камʼянець-Подільський",
+    "CenterPosition": "48.6803,26.5810",
+    "Radius": 5,
+    "MaxCourierCount": 40,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 21,
+    "RegionId": 4,
+    "Name": "Камʼянське",
+    "CenterPosition": "48.5079,34.6118",
+    "Radius": 6,
+    "MaxCourierCount": 60,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 22,
+    "RegionId": 11,
+    "Name": "Київ, лівий берег",
+    "CenterPosition": "50.4400,30.6000",
+    "Radius": 15,
+    "MaxCourierCount": 800,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 23,
+    "RegionId": 11,
+    "Name": "Київ, правий берег",
+    "CenterPosition": "50.4501,30.4500",
+    "Radius": 15,
+    "MaxCourierCount": 800,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 24,
+    "RegionId": 5,
+    "Name": "Коломия",
+    "CenterPosition": "48.5314,25.0378",
+    "Radius": 4,
+    "MaxCourierCount": 30,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 25,
+    "RegionId": 12,
+    "Name": "Кременчук",
+    "CenterPosition": "49.0670,33.4204",
+    "Radius": 8,
+    "MaxCourierCount": 100,
+    "WorktimeStart": "04:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 26,
+    "RegionId": 4,
+    "Name": "Кривий Ріг",
+    "CenterPosition": "47.9105,33.3918",
+    "Radius": 15,
+    "MaxCourierCount": 300,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 27,
+    "RegionId": 3,
+    "Name": "Кропивницький",
+    "CenterPosition": "48.5079,32.2623",
+    "Radius": 8,
+    "MaxCourierCount": 100,
+    "WorktimeStart": "04:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 28,
+    "RegionId": 2,
+    "Name": "Луцьк",
+    "CenterPosition": "50.7472,25.3254",
+    "Radius": 8,
+    "MaxCourierCount": 100,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 29,
+    "RegionId": 6,
+    "Name": "Львів",
+    "CenterPosition": "49.8397,24.0297",
+    "Radius": 14,
+    "MaxCourierCount": 400,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 30,
+    "RegionId": 5,
+    "Name": "Микитинці",
+    "CenterPosition": "48.8833,24.7333",
+    "Radius": 3,
+    "MaxCourierCount": 15,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 31,
+    "RegionId": 13,
+    "Name": "Миколаїв",
+    "CenterPosition": "46.9750,31.9946",
+    "Radius": 10,
+    "MaxCourierCount": 180,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 32,
+    "RegionId": 14,
+    "Name": "Мукачево",
+    "CenterPosition": "48.4383,22.7196",
+    "Radius": 5,
+    "MaxCourierCount": 40,
+    "WorktimeStart": "00:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 33,
+    "RegionId": 15,
+    "Name": "Одеса",
+    "CenterPosition": "46.4825,30.7233",
+    "Radius": 16,
+    "MaxCourierCount": 450,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 34,
+    "RegionId": 15,
+    "Name": "Одеса, Суворовський район",
+    "CenterPosition": "46.5000,30.7500",
+    "Radius": 6,
+    "MaxCourierCount": 80,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 35,
+    "RegionId": 12,
+    "Name": "Полтава",
+    "CenterPosition": "49.5883,34.5514",
+    "Radius": 9,
+    "MaxCourierCount": 150,
+    "WorktimeStart": "04:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 36,
+    "RegionId": 16,
+    "Name": "Рівне",
+    "CenterPosition": "50.6199,26.2516",
+    "Radius": 8,
+    "MaxCourierCount": 100,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 37,
+    "RegionId": 6,
+    "Name": "Самбір",
+    "CenterPosition": "49.5167,23.2000",
+    "Radius": 3,
+    "MaxCourierCount": 20,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 38,
+    "RegionId": 6,
+    "Name": "Стрий",
+    "CenterPosition": "49.2622,23.8531",
+    "Radius": 4,
+    "MaxCourierCount": 30,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 39,
+    "RegionId": 17,
+    "Name": "Суми",
+    "CenterPosition": "50.9077,34.7981",
+    "Radius": 9,
+    "MaxCourierCount": 150,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 40,
+    "RegionId": 18,
+    "Name": "Тернопіль",
+    "CenterPosition": "49.5535,25.5948",
+    "Radius": 8,
+    "MaxCourierCount": 100,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 41,
+    "RegionId": 6,
+    "Name": "Трускавець",
+    "CenterPosition": "49.2775,23.5039",
+    "Radius": 3,
+    "MaxCourierCount": 20,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 42,
+    "RegionId": 14,
+    "Name": "Ужгород",
+    "CenterPosition": "48.6208,22.2879",
+    "Radius": 7,
+    "MaxCourierCount": 90,
+    "WorktimeStart": "00:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 43,
+    "RegionId": 19,
+    "Name": "Харків",
+    "CenterPosition": "49.9935,36.2304",
+    "Radius": 18,
+    "MaxCourierCount": 500,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:00:00"
+  },
+  {
+    "Id": 44,
+    "RegionId": 10,
+    "Name": "Хмельницький",
+    "CenterPosition": "49.4229,26.9871",
+    "Radius": 9,
+    "MaxCourierCount": 150,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 45,
+    "RegionId": 20,
+    "Name": "Черкаси",
+    "CenterPosition": "49.4444,32.0598",
+    "Radius": 9,
+    "MaxCourierCount": 150,
+    "WorktimeStart": "04:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 46,
+    "RegionId": 21,
+    "Name": "Чернівці",
+    "CenterPosition": "48.2921,25.9358",
+    "Radius": 8,
+    "MaxCourierCount": 120,
+    "WorktimeStart": "04:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 47,
+    "RegionId": 22,
+    "Name": "Чернігів",
+    "CenterPosition": "51.4982,31.2893",
+    "Radius": 8,
+    "MaxCourierCount": 100,
+    "WorktimeStart": "04:00:00",
+    "WorktimeEnd": "23:59:59"
+  },
+  {
+    "Id": 48,
+    "RegionId": 15,
+    "Name": "Чорноморськ",
+    "CenterPosition": "46.3050,30.6497",
+    "Radius": 4,
+    "MaxCourierCount": 30,
+    "WorktimeStart": "05:00:00",
+    "WorktimeEnd": "23:59:59"
+  }
+]
