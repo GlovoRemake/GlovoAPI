@@ -14,60 +14,7 @@ public class GlovoDbContext : IdentityDbContext<UserEntity, IdentityRole<Guid>, 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        // Fluent api conf
-        modelBuilder.Entity<City>()
-            .HasOne(c => c.Region)
-            .WithMany(c => c.Cities)
-            .HasForeignKey(c => c.RegionId);
-
-        modelBuilder.Entity<CourierTimeSlot>()
-            .HasOne(c => c.City)
-            .WithMany(c => c.CourierTimeSlots)
-            .HasForeignKey(c => c.CityId);
-        modelBuilder.Entity<CourierTimeSlot>()
-            .HasOne(c => c.User)
-            .WithMany(c => c.CourierTimeSlots)
-            .HasForeignKey(c => c.UserId);
-
-        modelBuilder.Entity<UserLocation>()
-            .HasOne(c => c.User)
-            .WithMany(c => c.UserLocations)
-            .HasForeignKey(c => c.UserId);
-
-        modelBuilder.Entity<UserOrder>()
-            .HasOne(c => c.User)
-            .WithMany(c => c.UserOrders)
-            .HasForeignKey(c => c.UserId);
-        modelBuilder.Entity<UserOrder>()
-            .HasOne(c => c.UserLocation)
-            .WithMany(c => c.UserOrders)
-            .HasForeignKey(c => c.LocationId);
-        modelBuilder.Entity<UserOrder>()
-            .HasOne(c => c.Promocode)
-            .WithMany(c => c.UserOrders)
-            .HasForeignKey(c => c.PromocodeId);
-
-        modelBuilder.Entity<SupportChat>()
-            .HasOne(c => c.User)
-            .WithMany(u => u.UserSupportChats)
-            .HasForeignKey(c => c.UserId);
-        modelBuilder.Entity<SupportChat>()
-            .HasOne(c => c.Support)
-            .WithMany(u => u.AssignedSupportChats)
-            .HasForeignKey(c => c.SupportId);
-        modelBuilder.Entity<SupportChat>()
-            .HasOne(c => c.Order)
-            .WithOne(c => c.SupportChat)
-            .HasForeignKey<SupportChat>(c => c.OrderId);
-
-        modelBuilder.Entity<Message>()
-            .HasOne(c => c.Chat)
-            .WithMany(c => c.Messages)
-            .HasForeignKey(c => c.ChatId);
-        modelBuilder.Entity<Message>()
-            .HasOne(c => c.User)
-            .WithMany(c => c.Messages)
-            .HasForeignKey(c => c.UserId);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(GlovoDbContext).Assembly);
     }
 
     public DbSet<Region> Regions { get; set; }
