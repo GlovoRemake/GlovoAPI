@@ -3,6 +3,7 @@ using System;
 using Domain.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Domain.Migrations
 {
     [DbContext(typeof(GlovoDbContext))]
-    partial class GlovoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260704195054_AddUserOrders")]
+    partial class AddUserOrders
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -280,60 +283,6 @@ namespace Domain.Migrations
                     b.ToTable("Regions");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Support.Message", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<Guid>("ChatId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ChatId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Messages");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Support.SupportChat", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("SupportId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId")
-                        .IsUnique();
-
-                    b.HasIndex("SupportId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("SupportChats");
-                });
-
             modelBuilder.Entity("Domain.Entities.UserLocation", b =>
                 {
                     b.Property<int>("Id")
@@ -539,52 +488,6 @@ namespace Domain.Migrations
                     b.Navigation("UserLocation");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Support.Message", b =>
-                {
-                    b.HasOne("Domain.Entities.Support.SupportChat", "Chat")
-                        .WithMany("Messages")
-                        .HasForeignKey("ChatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Core.Entities.Identity.UserEntity", "User")
-                        .WithMany("Messages")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Chat");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Support.SupportChat", b =>
-                {
-                    b.HasOne("Domain.Entities.Order.UserOrder", "Order")
-                        .WithOne("SupportChat")
-                        .HasForeignKey("Domain.Entities.Support.SupportChat", "OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Core.Entities.Identity.UserEntity", "Support")
-                        .WithMany("AssignedSupportChats")
-                        .HasForeignKey("SupportId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Core.Entities.Identity.UserEntity", "User")
-                        .WithMany("UserSupportChats")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Support");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Domain.Entities.UserLocation", b =>
                 {
                     b.HasOne("Core.Entities.Identity.UserEntity", "User")
@@ -649,17 +552,11 @@ namespace Domain.Migrations
 
             modelBuilder.Entity("Core.Entities.Identity.UserEntity", b =>
                 {
-                    b.Navigation("AssignedSupportChats");
-
                     b.Navigation("CourierTimeSlots");
-
-                    b.Navigation("Messages");
 
                     b.Navigation("UserLocations");
 
                     b.Navigation("UserOrders");
-
-                    b.Navigation("UserSupportChats");
                 });
 
             modelBuilder.Entity("Domain.Entities.City", b =>
@@ -667,19 +564,9 @@ namespace Domain.Migrations
                     b.Navigation("CourierTimeSlots");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Order.UserOrder", b =>
-                {
-                    b.Navigation("SupportChat");
-                });
-
             modelBuilder.Entity("Domain.Entities.Region", b =>
                 {
                     b.Navigation("Cities");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Support.SupportChat", b =>
-                {
-                    b.Navigation("Messages");
                 });
 
             modelBuilder.Entity("Domain.Entities.UserLocation", b =>

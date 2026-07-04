@@ -13,4 +13,5 @@ public class City
 
     // conn
     public Region Region { get; set; }
+    public ICollection<CourierTimeSlot> CourierTimeSlots { get; set; }
 }
