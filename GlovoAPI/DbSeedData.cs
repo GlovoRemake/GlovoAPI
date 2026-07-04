@@ -43,12 +43,12 @@ public static class DbSeedData
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Error Json Parse Cities Data {0}", ex.Message);
+                    Console.WriteLine("Error Json Parse Regions Data {0}", ex.Message);
                 }
             }
             else
             {
-                Console.WriteLine("Not Found File Cities.json");
+                Console.WriteLine("Not Found File Regions.json");
             }
         }
     }
