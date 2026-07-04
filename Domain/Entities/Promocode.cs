@@ -1,4 +1,5 @@
-﻿using Domain.Types;
+﻿using Domain.Entities.Order;
+using Domain.Types;
 
 namespace Domain.Entities;
 
@@ -12,6 +13,5 @@ public class Promocode
     public decimal Amount { get; set; }
 
     // conn
-
-    // ADD USERORDER
+    public ICollection<UserOrder> UserOrders { get; set; }
 }
