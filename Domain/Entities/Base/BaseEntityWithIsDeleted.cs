@@ -6,6 +6,6 @@ public class BaseEntityWithIsDeleted<T> : IEntityWithIsDeleted<T>
     public T Id { get; set; }
 
     public bool IsDeleted { get; set; } = false;
-    public DateTime DateCreated { get; set; } = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc);
-    public DateTime DateUpdated { get; set; } = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc);
+    public DateTime DateCreated { get; set; } = DateTime.UtcNow;
+    public DateTime DateUpdated { get; set; } = DateTime.UtcNow;
 }

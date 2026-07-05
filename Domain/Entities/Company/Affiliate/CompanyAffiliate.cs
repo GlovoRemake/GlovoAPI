@@ -8,7 +8,7 @@ using Domain.Entities.Base;
 
 namespace Domain.Entities.Company.Affiliate;
 
-public class CompanyAffiliate : BaseEntity<int>
+public class CompanyAffiliate : BaseEntity<Guid>
 {
     public Guid CompanyId { get; set; }
     public int LocationId { get; set; }
