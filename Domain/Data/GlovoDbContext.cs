@@ -5,7 +5,6 @@ using Domain.Entities.Company.Affiliate;
 using Domain.Entities.User;
 using Domain.Entities.Order;
 using Domain.Entities.Support;
-using Domain.Entities.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
