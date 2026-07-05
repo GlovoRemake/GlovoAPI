@@ -1,10 +1,10 @@
-﻿using Domain.Entities.Company.Affiliate;
+﻿using Domain.Entities.Base;
+using Domain.Entities.Company.Affiliate;
 
 namespace Domain.Entities;
 
-public class Region
+public class Region : BaseEntityWithIsDeleted<int>
 {
-    public int Id { get; set; }
     public string Name { get; set; }
     public string CenterPosition { get; set; }
 

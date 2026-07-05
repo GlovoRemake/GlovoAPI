@@ -2,12 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Domain.Entities.Base;
 
 namespace Domain.Entities.Company.ProductCategory;
 
-public class CompanyAffiliatesProductsCategory
+public class CompanyAffiliatesProductsCategory : BaseEntityWithIsDeleted<int>
 {
-    public int Id { get; set; }
     public Guid CompanyAffiliateId { get; set; }
     public int CategoryId { get; set; }
 

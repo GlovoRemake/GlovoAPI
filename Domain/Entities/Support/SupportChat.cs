@@ -1,11 +1,11 @@
 ﻿using Core.Entities.Identity;
+using Domain.Entities.Base;
 using Domain.Entities.Order;
 
 namespace Domain.Entities.Support;
 
-public class SupportChat
+public class SupportChat : BaseEntityWithIsDeleted<Guid>
 {
-    public Guid Id { get; set; }
     public int OrderId { get; set; }
     public Guid UserId { get; set; }
     public Guid SupportId { get; set; }

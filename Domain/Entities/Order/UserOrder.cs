@@ -1,4 +1,5 @@
 ﻿using Core.Entities.Identity;
+using Domain.Entities.Base;
 using Domain.Entities.User;
 using Domain.Entities.Support;
 using Domain.Entities.User;
@@ -6,9 +7,8 @@ using Domain.Enums;
 
 namespace Domain.Entities.Order;
 
-public class UserOrder
+public class UserOrder : BaseEntityWithIsDeleted<int>
 {
-    public int Id { get; set; }
     public Guid UserId { get; set; }
     public int LocationId { get; set; }
     public double TotalPrice { get; set; }

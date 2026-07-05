@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Domain.Entities.Base;
 
 namespace Domain.Entities.Company.Affiliate;
 
-public class CompanyAffiliateLocation
+public class CompanyAffiliateLocation : BaseEntity<int>
 {
-    public int Id { get; set; }
     public string Location { get; set; }
     public int RegionId { get; set; }
     public string Address { get; set; }

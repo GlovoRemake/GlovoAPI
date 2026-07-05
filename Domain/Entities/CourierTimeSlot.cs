@@ -1,8 +1,9 @@
 ﻿using Core.Entities.Identity;
+using Domain.Entities.Base;
 
 namespace Domain.Entities;
 
-public class CourierTimeSlot
+public class CourierTimeSlot : BaseEntity<int>
 {
     public int Id { get; set; }
     public Guid UserId { get; set; } // null?

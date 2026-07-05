@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Domain.Entities.Base;
 
 namespace Domain.Entities.Company.Affiliate;
 
-public class CompanyAffiliatesWorkingHour
+public class CompanyAffiliatesWorkingHour : BaseEntity<int>
 {
-    public int Id { get; set; }
     public string Monday { get; set; }
     public string Tuesday { get; set; }
     public string Wednesday { get; set; }
