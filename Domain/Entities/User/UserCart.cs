@@ -4,12 +4,12 @@ using Domain.Entities.Company.Product;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Domain.Entities.Base;
 
 namespace Domain.Entities.User;
 
-public class UserCart
+public class UserCart : BaseEntity<int>
 {
-    public int Id { get; set; }
     public Guid UserId { get; set; }
     public int ProductId { get; set; }
     public int Count { get; set; }
