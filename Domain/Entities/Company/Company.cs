@@ -1,4 +1,5 @@
-﻿using Domain.Entities.Company.Affiliate;
+﻿using Domain.Entities.Base;
+using Domain.Entities.Company.Affiliate;
 using Domain.Entities.Company.Partner;
 using Domain.Entities.Company.Product;
 using Domain.Entities.Company.ProductCategory;
@@ -6,9 +7,8 @@ using Domain.Entities.User;
 
 namespace Domain.Entities.Company;
 
-public class Company
+public class Company : BaseEntityWithIsDeleted<Guid>
 {
-    public Guid Id { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
     public string IconPath { get; set; }

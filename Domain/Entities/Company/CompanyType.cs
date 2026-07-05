@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Domain.Entities.Base;
 
 namespace Domain.Entities.Company;
 
-public class CompanyType
+public class CompanyType : BaseEntityWithIsDeleted<int>
 {
-    public int Id { get; set; }
     public string Name { get; set; }
     public string IconPath { get; set; }
 

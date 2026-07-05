@@ -1,8 +1,9 @@
-﻿namespace Domain.Entities;
+﻿using Domain.Entities.Base;
 
-public class City
+namespace Domain.Entities;
+
+public class City : BaseEntityWithIsDeleted<int>
 {
-    public int Id { get; set; }
     public int RegionId { get; set; }
     public string Name { get; set; }
     public string CenterPosition { get; set; }

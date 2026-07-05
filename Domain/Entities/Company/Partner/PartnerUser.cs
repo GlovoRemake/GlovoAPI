@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Domain.Entities.Base;
 
 namespace Domain.Entities.Company.Partner;
 
-public class PartnerUser
+public class PartnerUser : BaseEntityWithIsDeleted<Guid>
 {
-    public Guid Id { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Email { get; set; }
