@@ -1,3 +1,4 @@
+using Core;
 using Domain;
 using GlovoAPI;
 
@@ -5,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 string connection = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string not found.");
 builder.Services.AddDatabase(connection);
+builder.Services.AddRepositories();
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
