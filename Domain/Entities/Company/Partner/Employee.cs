@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Domain.Entities.Base;
 
 namespace Domain.Entities.Company.Partner;
 
-public class Employee
+public class Employee : BaseEntityWithIsDeleted<int>
 {
-    public int Id { get; set; }
     public Guid CompanyAffiliateId { get; set; }
     public Guid PartnerUserId { get; set; }
     public int RoleId { get; set; }

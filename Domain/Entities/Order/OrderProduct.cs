@@ -3,12 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Reflection.PortableExecutable;
 using System.Text;
+using Domain.Entities.Base;
 
 namespace Domain.Entities.Order;
 
-public class OrderProduct
+public class OrderProduct : BaseEntityWithIsDeleted<int>
 {
-    public int Id { get; set; }
     public int OrderId { get; set; }
     public int ProductId { get; set; }
     public int Count { get; set; }

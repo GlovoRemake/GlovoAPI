@@ -3,12 +3,12 @@ using Domain.Entities.Company.Product.Additional;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Domain.Entities.Base;
 
 namespace Domain.Entities.User;
 
-public class UserCartAdditional
+public class UserCartAdditional : BaseEntity<int>
 {
-    public int Id { get; set; }
     public int CartId { get; set; }
     public int ProductId { get; set; }
     public int AdditionalId { get; set; }

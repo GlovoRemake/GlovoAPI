@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 using Core.Entities.Identity;
+using Domain.Entities.Base;
 using Domain.Entities.Order;
 using Domain.Entities.Company;
 
 namespace Domain.Entities.User;
 
-public class UserRate
+public class UserRate : BaseEntity<int>
 {
-    public int Id { get; set; }
     public int OrderId { get; set; }
     public Guid UserId { get; set; }
     public Guid CompanyId { get; set; }

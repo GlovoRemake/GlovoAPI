@@ -4,12 +4,12 @@ using Domain.Entities.User;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Domain.Entities.Base;
 
 namespace Domain.Entities.Company.Affiliate;
 
-public class CompanyAffiliate
+public class CompanyAffiliate : BaseEntity<int>
 {
-    public Guid Id { get; set; }
     public Guid CompanyId { get; set; }
     public int LocationId { get; set; }
     public int WorkingHoursId { get; set; }
