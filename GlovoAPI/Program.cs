@@ -7,12 +7,21 @@ var builder = WebApplication.CreateBuilder(args);
 string connection = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string not found.");
 builder.Services.AddDatabase(connection);
 builder.Services.AddRepositories();
-builder.Services.AddImageService();
+builder.Services.AddDomainService();
+
+builder.Services.AddServices();
 
 builder.Services.AddCache();
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
+
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddOpenApiWithCustomSchema();
+}
+
+builder.Services.AddAuthenticationWithOptions(builder.Configuration);
 
 var app = builder.Build();
 
