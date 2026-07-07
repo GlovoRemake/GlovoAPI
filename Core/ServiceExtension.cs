@@ -12,7 +12,7 @@ public static class ServiceExtension
         service.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
         service.AddScoped(typeof(ISoftDeleteRepository<,>), typeof(SoftDeleteRepository<,>));
     }
-    public static void AddImageService(this IServiceCollection service)
+    public static void AddServices(this IServiceCollection service)
     {
         service.AddScoped<IImageService, ImageService>();
         service.AddScoped<ITokenService, TokenService>();
