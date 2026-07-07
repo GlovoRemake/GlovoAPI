@@ -9,6 +9,8 @@ builder.Services.AddDatabase(connection);
 builder.Services.AddRepositories();
 builder.Services.AddImageService();
 
+builder.Services.AddCache();
+
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
@@ -56,5 +58,27 @@ if (!Directory.Exists(path))
     Console.ResetColor();
     Directory.CreateDirectory(path);
 }
+
+
+var emailTemplatesDirName = builder.Configuration["Email:TemplatePath"];
+if (emailTemplatesDirName == null)
+{
+    Console.ForegroundColor = ConsoleColor.Red;
+    Console.WriteLine($"Variable \"Email:TemplatePath\" not found in appsettings! PLEASE, ADD IT...");
+    Console.ResetColor();
+    return;
+}
+
+// check directory for email templates
+string pathE = Path.Combine(Directory.GetCurrentDirectory(), emailTemplatesDirName);
+if (!Directory.Exists(pathE))
+{
+    Console.ForegroundColor = ConsoleColor.Red;
+    Console.WriteLine($"DIRECTORY {emailTemplatesDirName} not found! CREATING...");
+    Console.ResetColor();
+    Directory.CreateDirectory(pathE);
+}
+
+
 
 app.Run();

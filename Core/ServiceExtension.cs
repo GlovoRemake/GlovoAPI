@@ -16,5 +16,11 @@ public static class ServiceExtension
     {
         service.AddScoped<IImageService, ImageService>();
         service.AddScoped<IEmailService, EmailService>();
+        service.AddScoped<IEmailTemplateService, EmailTemplateService>();
+    }
+
+    public static void AddCache(this IServiceCollection service)
+    {
+        service.AddMemoryCache();
     }
 }
