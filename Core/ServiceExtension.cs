@@ -15,5 +15,6 @@ public static class ServiceExtension
     public static void AddImageService(this IServiceCollection service)
     {
         service.AddScoped<IImageService, ImageService>();
+        service.AddScoped<ITokenService, TokenService>();
     }
 }
