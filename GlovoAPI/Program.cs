@@ -19,7 +19,7 @@ if (builder.Environment.IsDevelopment())
     builder.Services.AddOpenApiWithCustomSchema();
 }
 
-
+builder.Services.AddAuthenticationWithOptions(builder.Configuration);
 
 var app = builder.Build();
 

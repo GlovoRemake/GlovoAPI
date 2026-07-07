@@ -48,4 +48,47 @@ public static class ServiceExtension
             });
         });
     }
+
+    public static void AddAuthenticationWithOptions(this IServiceCollection service, IConfiguration configuration)
+    {
+        service.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = "AccessScheme";
+            options.DefaultChallengeScheme = "AccessScheme";
+        })
+            .AddJwtBearer("AccessScheme", o =>
+            {
+                o.TokenValidationParameters = GetTokenValidationParameters(
+                    configuration["Tokens:Jwt:Issuer"]!,
+                    configuration["Tokens:Jwt:Audience"]!,
+                    configuration["Tokens:Jwt:Key"]!);
+            })
+            .AddJwtBearer("RegistrationScheme", o =>
+            {
+                o.TokenValidationParameters = GetTokenValidationParameters(
+                    configuration["Tokens:Registration:Issuer"]!,
+                    configuration["Tokens:Registration:Audience"]!,
+                    configuration["Tokens:Registration:Key"]!);
+            });
+
+        service.AddAuthorization();
+    }
+
+    private static TokenValidationParameters GetTokenValidationParameters(string issuer, string audience, string key)
+    {
+        return new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+
+            ValidIssuer = issuer,
+            ValidAudience = audience,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(key)),
+
+            RoleClaimType = ClaimTypes.Role
+        };
+    }
 }
