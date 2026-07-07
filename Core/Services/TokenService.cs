@@ -2,10 +2,14 @@
 using Core.Interfaces;
 using Domain.Entities.User;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Core.Services;
@@ -57,5 +61,74 @@ public class TokenService(
         string token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
 
         return token;
+    }
+
+    public async Task<string> CreateRegistrationTokenAsync(string email)
+    {
+        var key = _config["Tokens:Registration:Key"]!;
+        var issuer = _config["Tokens:Registration:Issuer"];
+        var audience = _config["Tokens:Registration:Audience"];
+
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Email, email),
+            new Claim("purpose", "registration")
+        };
+
+        var securityKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(key));
+
+        var creds = new SigningCredentials(
+            securityKey,
+            SecurityAlgorithms.HmacSha256);
+
+        var token = new JwtSecurityToken(
+            issuer: issuer,
+            audience: audience,
+            claims: claims,
+            expires: DateTime.UtcNow.AddMinutes(5),
+            signingCredentials: creds
+        );
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+    public async Task<RefreshToken> GenerateRefreshTokenAsync(UserEntity user)
+    {
+        var lifeTime = _config["Tokens:Refresh:LifeTime"];
+
+        var refreshToken = new RefreshToken
+        {
+            Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(128)),
+            UserId = user.Id,
+            Expires = DateTime.UtcNow.AddDays(int.TryParse(lifeTime, out var result) ? result : 7),
+            IsRevoked = false
+        };
+
+        await _refreshTokenRepo.AddAsync(refreshToken);
+        await _refreshTokenRepo.SaveChangesAsync();
+        return refreshToken;
+    }
+
+    public async Task<RefreshToken?> ValidateRefreshTokenAsync(string token)
+    {
+        var refreshToken = (await _refreshTokenRepo.Query().FirstOrDefaultAsync(x => x.Token == token));
+
+        if (refreshToken == null) return null;
+        if (refreshToken.IsRevoked) return null;
+        if (refreshToken.Expires < DateTime.UtcNow) return null;
+
+        return refreshToken;
+    }
+
+    public async Task RevokeRefreshTokenAsync(string token)
+    {
+        var refreshToken = (await _refreshTokenRepo.Query().FirstOrDefaultAsync(x => x.Token == token));
+        if (refreshToken != null)
+        {
+            refreshToken.IsRevoked = true;
+            await _refreshTokenRepo.UpdateAsync(refreshToken);
+        }
+        await _refreshTokenRepo.SaveChangesAsync();
     }
 }
