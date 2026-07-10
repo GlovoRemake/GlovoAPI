@@ -1,7 +1,9 @@
 ﻿using Core.Interfaces;
 using Core.Repositories;
 using Core.Services;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Org.BouncyCastle.Tls;
 
 namespace Core;
 
@@ -23,5 +25,13 @@ public static class ServiceExtension
     public static void AddCache(this IServiceCollection service)
     {
         service.AddMemoryCache();
+    }
+
+    public static void AddMediatoR(this IServiceCollection service, IConfiguration configuration)
+    {
+        service.AddMediatR(cfg => {
+            cfg.RegisterServicesFromAssembly(typeof(ServiceExtension).Assembly);
+            cfg.LicenseKey = configuration["LicenseKeys:LuckyPennyKey"];
+        });
     }
 }
