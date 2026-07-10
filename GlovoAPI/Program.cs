@@ -13,7 +13,7 @@ builder.Services.AddServices();
 
 builder.Services.AddCache();
 
-builder.Services.AddMediatoR(builder.Configuration);
+builder.Services.AddMediatR(builder.Configuration);
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
