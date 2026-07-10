@@ -26,7 +26,7 @@ public static class ServiceExtension
         service.AddMemoryCache();
     }
 
-    public static void AddMediatoR(this IServiceCollection service, IConfiguration configuration)
+    public static void AddMediatR(this IServiceCollection service, IConfiguration configuration)
     {
         service.AddMediatR(cfg => {
             cfg.RegisterServicesFromAssembly(typeof(ServiceExtension).Assembly);
