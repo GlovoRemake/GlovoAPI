@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Domain.Entities.Base;
+using Domain.Entities.Company.Product.Sale;
 
 namespace Domain.Entities.Company.Product;
 
@@ -29,4 +30,5 @@ public class CompanyProduct : BaseEntityWithIsDeleted<int>
     public ICollection<UserCart>? Carts { get; set; }
     public ICollection<UserCartAdditional>? Additionals { get; set; }
     public ICollection<OrderProduct> OrderedProducts { get; set; }
+    public ICollection<ProductSale> Sales { get; set; }
 }
