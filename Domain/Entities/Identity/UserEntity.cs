@@ -12,6 +12,7 @@ public class UserEntity : IdentityUser<Guid>
 {
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
+    public string AvatarPath { get; set; } = string.Empty;
 
     public RegisterType RegisterType { get; set; }
 
