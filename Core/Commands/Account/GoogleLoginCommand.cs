@@ -1,4 +1,5 @@
-﻿using Core.Dtos.Account;
+﻿using Core.Dtos;
+using Core.Dtos.Account;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -7,4 +8,4 @@ using System.Text;
 namespace Core.Commands.Account;
 
 public record GoogleLoginCommand(GoogleLoginRequest request)
-    : IRequest<TokenResponseDto>;
+    : IRequest<Result<TokenResponseDto>>;
