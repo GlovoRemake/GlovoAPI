@@ -17,7 +17,8 @@ public class AccountService(
         UserManager<UserEntity> _userManager,
         IHashService _hashService,
         IEmailService _emailService,
-        ITokenService _tokenService
+        ITokenService _tokenService,
+        IImageService _imageService
     ) : IAccountService
 {
     public async Task<TokenResponseDto> RegisterAsync(string email, UserRegisterDto dto)
@@ -123,6 +124,8 @@ public class AccountService(
 
             FirstName = googleUser.GivenName ?? googleUser.Name?.Split(' ').FirstOrDefault() ?? "Google",
             LastName = googleUser.FamilyName ?? googleUser.Name?.Split(' ').LastOrDefault() ?? "",
+
+            AvatarPath = await _imageService.SaveImageFromUrlAsync(googleUser.Picture),
 
             EmailConfirmed = true,
             RegisterType = RegisterType.Google,
