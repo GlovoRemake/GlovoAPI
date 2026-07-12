@@ -12,6 +12,7 @@ using Domain.Entities.Company.Partner;
 using Domain.Entities.Company.ProductCategory;
 using Domain.Entities.Company.Product;
 using Domain.Entities.Company.Product.Additional;
+using Domain.Entities.Company.Type;
 
 namespace Domain.Data;
 
