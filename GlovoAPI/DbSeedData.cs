@@ -2,6 +2,8 @@
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
+using Core.Interfaces;
+using Type = Domain.Entities.Company.Type.Type;
 
 namespace GlovoAPI;
 
@@ -18,6 +20,7 @@ public static class DbSeedData
 
         await SeedRegions(webApplication);
         await SeedCities(webApplication);
+        await SeedTypes(webApplication);
 
     }
 
@@ -81,6 +84,49 @@ public static class DbSeedData
             else
             {
                 Console.WriteLine("Not Found File Cities.json");
+            }
+        }
+    }
+
+    public static async Task SeedTypes(this WebApplication webApplication)
+    {
+        var scoped = webApplication.Services.CreateScope();
+        var imageService = scoped.ServiceProvider.GetService<IImageService>();
+        var context = scoped.ServiceProvider.GetRequiredService<GlovoDbContext>();
+
+        if (!context.Types.Any())
+        {
+            var jsonFile = Path.Combine(Directory.GetCurrentDirectory(), "Helpers", "JsonData", "Types.json");
+            if (File.Exists(jsonFile))
+            {
+                var jsonData = await File.ReadAllTextAsync(jsonFile);
+                try
+                {
+                    var types = JsonSerializer.Deserialize<List<Type>>(jsonData);
+                    if (types == null)
+                    {
+                        throw new Exception("No types found");
+                    }
+
+                    foreach (var type in types)
+                    {
+                        var image = await imageService.SaveImageFromUrlAsync(type.IconPath);
+                        if (image != null) type.IconPath = image;
+                    }
+                    
+                    
+                    await context.AddRangeAsync(types);
+                    await context.SaveChangesAsync();
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error Json Parse Types Data {0}", ex.Message);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Not Found File Types.json");
             }
         }
     }

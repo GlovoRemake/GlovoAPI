@@ -1,0 +1,254 @@
+[
+  {
+    "Id": 1,
+    "Name": "Їжа",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/category_group_icons/a29adef19df5d1e456af1336af38367c8dbcf55623c470b8c86026cc496522ad",
+    "ParentTypeId": null
+  },
+  {
+    "Id": 2,
+    "Name": "Супермаркети",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/category_group_icons/c0fd33b415a34052003807189c2a8e5c513b1fcef4be33a79052344abecfcc02",
+    "ParentTypeId": null
+  },
+  {
+    "Id": 3,
+    "Name": "Магазини",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/category_group_icons/cc38634d7f470f25c61bb209899f12a44032cb0251409b4cd75368da5c881978",
+    "ParentTypeId": null
+  },
+  {
+    "Id": 4,
+    "Name": "Аптеки й косметика",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/category_group_icons/abe0e6d60c9e6e62d73ede9d1eec870dac15283d32b5aeee41045402e466eed3",
+    "ParentTypeId": null
+  },
+  {
+    "Id": 5,
+    "Name": "Фаст-фуд",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/search_filters/e8415311208eae497a4e80f96b63e4801d0e04a02171cc8bf454235ca92efacd",
+    "ParentTypeId": 1
+  },
+  {
+    "Id": 6,
+    "Name": "Американська",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/search_filters/ff4731854840c7cb2537467fbcd4370b75244f35a93b81c2c22f9392f65f79b6",
+    "ParentTypeId": 1
+  },
+  {
+    "Id": 7,
+    "Name": "Бургери",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/search_filters/4c270a369d2166ef15dfad7596c12c8be44a1b51cec4b54e0bbe9e745027e5f0",
+    "ParentTypeId": 1
+  },
+  {
+    "Id": 8,
+    "Name": "Міжнародна",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/search_filters/7f93820cd7eb35a5546a00a83024cac2eadfedc1b7f93c7cc307b3777399de70",
+    "ParentTypeId": 1
+  },
+  {
+    "Id": 9,
+    "Name": "Шаурма",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/search_filters/10627408d0c042c42196645fc05446b2af18b728e213077dc82abd9d154b0d94",
+    "ParentTypeId": 1
+  },
+  {
+    "Id": 10,
+    "Name": "Піца",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/search_filters/30b2eaa7f7bec404121e270d2a550048057d23c45763c7015916ea9c2300f359",
+    "ParentTypeId": 1
+  },
+  {
+    "Id": 11,
+    "Name": "Італійська",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/search_filters/76a012bf5fdea8d29a1391fa85b68bea0bd80b0ec7a142abb18a45dd1b3c39e2",
+    "ParentTypeId": 1
+  },
+  {
+    "Id": 12,
+    "Name": "Суші",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/search_filters/eb72d0648d6671c25d4e367c84eb0142f8ef7c9e4894a1fafcb8b5b4b3d3671e",
+    "ParentTypeId": 1
+  },
+  {
+    "Id": 13,
+    "Name": "Азіатська",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/search_filters/c0bba9b32e90be8fadfc20259057c6783644f6d0b8f164964d379653a89bb036",
+    "ParentTypeId": 1
+  },
+  {
+    "Id": 14,
+    "Name": "Українська",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/search_filters/b30c519e0d6292afbfafaa48092b5b41a5eb0bc928c8fa6c10d01de297d5c013",
+    "ParentTypeId": 1
+  },
+  {
+    "Id": 15,
+    "Name": "Європейська",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/search_filters/5c960b3ca94b75371faebd3e693251a6c6a03993bfc61fe1ce6c6ad0010b7ae3",
+    "ParentTypeId": 1
+  },
+  {
+    "Id": 16,
+    "Name": "Сніданок",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/search_filters/8aa7f7dfe174cee530d27d96c1f6d7670e92616ef1324e9028097c7f472fd609",
+    "ParentTypeId": 1
+  },
+  {
+    "Id": 17,
+    "Name": "Корисна їжа",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/search_filters/a43d2947870d834fbe2e5dbbde751da3a786e5976450f276ac4df153ad618f8e",
+    "ParentTypeId": 1
+  },
+  {
+    "Id": 18,
+    "Name": "Грузинська",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/search_filters/717d61af06f22a43a2eabb36b184bcf67e97c905a497188490ba32e6701797bf",
+    "ParentTypeId": 1
+  },
+  {
+    "Id": 19,
+    "Name": "Солодощі",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/filters/sweetShortcut.png",
+    "ParentTypeId": 1
+  },
+  {
+    "Id": 20,
+    "Name": "Алкоголь",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/filters/alcoholShortcut.png",
+    "ParentTypeId": 1
+  },
+  {
+    "Id": 21,
+    "Name": "Пекарня",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/search_filters/0bf27b658a3d22da7887f9f137495759e9887754b9bf23008bbfcdea244d1a5f",
+    "ParentTypeId": 1
+  },
+  {
+    "Id": 22,
+    "Name": "Гриль",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/search_filters/e22290fd77ccbeb9fba91d1c0e9b0827873e487749a728cce3f87d3d4932132c",
+    "ParentTypeId": 1
+  },
+  {
+    "Id": 23,
+    "Name": "Десерти",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/search_filters/7f3d06acf0a10096e0ac3450614ff8434b738849f7e7c93a85b92eae24e92386",
+    "ParentTypeId": 1
+  },
+  {
+    "Id": 24,
+    "Name": "Чай і кава",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/search_filters/e58f992abb07f1009a475f1f7db06b006b30ccc032645c990fcb87dddaac38d8",
+    "ParentTypeId": 1
+  },
+  {
+    "Id": 25,
+    "Name": "Супермаркет",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/filters/supermarketShortcut.png",
+    "ParentTypeId": 2
+  },
+  {
+    "Id": 26,
+    "Name": "Алкоголь",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/filters/alcoholShortcut.png",
+    "ParentTypeId": 2
+  },
+  {
+    "Id": 27,
+    "Name": "Солодощі",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/filters/sweetShortcut.png",
+    "ParentTypeId": 2
+  },
+  {
+    "Id": 28,
+    "Name": "Для тварин",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/search_filters/665ca12be8e64b2d4a643fd41f0d3f5587b44b80e6feb2ef245321f901ee9957",
+    "ParentTypeId": 2
+  },
+  {
+    "Id": 29,
+    "Name": "Пекарня",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/search_filters/0bf27b658a3d22da7887f9f137495759e9887754b9bf23008bbfcdea244d1a5f",
+    "ParentTypeId": 2
+  },
+  {
+    "Id": 30,
+    "Name": "Для паління",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/search_filters/20aa3199eb844f7a237cac1f20b591a7619a1402a5980193db97d3f9000cadca",
+    "ParentTypeId": 2
+  },
+  {
+    "Id": 31,
+    "Name": "Чай і кава",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/search_filters/e58f992abb07f1009a475f1f7db06b006b30ccc032645c990fcb87dddaac38d8",
+    "ParentTypeId": 2
+  },
+  {
+    "Id": 32,
+    "Name": "Для гурманів",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/filters/gourmetShortcut.png",
+    "ParentTypeId": 2
+  },
+  {
+    "Id": 33,
+    "Name": "Молочне",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/filters/dairyShortcut.png",
+    "ParentTypeId": 2
+  },
+  {
+    "Id": 34,
+    "Name": "Для паління",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/search_filters/20aa3199eb844f7a237cac1f20b591a7619a1402a5980193db97d3f9000cadca",
+    "ParentTypeId": 3
+  },
+  {
+    "Id": 35,
+    "Name": "Для тварин",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/search_filters/665ca12be8e64b2d4a643fd41f0d3f5587b44b80e6feb2ef245321f901ee9957",
+    "ParentTypeId": 3
+  },
+  {
+    "Id": 36,
+    "Name": "Квіти",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/search_filters/6cda5148feb5db33daa0d4e1b57733722cb7ffd24a122644e6cecffc4d404952",
+    "ParentTypeId": 3
+  },
+  {
+    "Id": 37,
+    "Name": "Іграшки",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/search_filters/96db77b0bccbd2c9fb8a1395535e096a4ff5736e944f9e7d423ff48b56f46e21",
+    "ParentTypeId": 3
+  },
+  {
+    "Id": 38,
+    "Name": "Косметика",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/search_filters/e13087fe95cdc5fe14219d0997f47d7ffc9361d3713d9668512ef3c311f94bed",
+    "ParentTypeId": 3
+  },
+  {
+    "Id": 39,
+    "Name": "Дім",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/search_filters/ae08e720286be5c6b56075c5a7a84b53fa1bb0db34ea31c4f828855e80232075",
+    "ParentTypeId": 3
+  },
+  {
+    "Id": 40,
+    "Name": "Аптека",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/search_filters/3cc9acaebdc1d2f70b517b8f12013a49e4d1ad58b6e1dba10c1d40ea796cc6d0",
+    "ParentTypeId": 4
+  },
+  {
+    "Id": 41,
+    "Name": "Медицина",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/search_filters/31a636b65c0c25ee876bf2eaf14c14f573cc274e082a5ad8ba06f008ecdc4aef",
+    "ParentTypeId": 4
+  },
+  {
+    "Id": 42,
+    "Name": "Косметика",
+    "IconPath": "https://glovo.dhmedia.io/image/customer-assets-glovo/search_filters/e13087fe95cdc5fe14219d0997f47d7ffc9361d3713d9668512ef3c311f94bed",
+    "ParentTypeId": 4
+  }
+]
