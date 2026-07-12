@@ -12,6 +12,7 @@ using Domain.Entities.Company.Partner;
 using Domain.Entities.Company.ProductCategory;
 using Domain.Entities.Company.Product;
 using Domain.Entities.Company.Product.Additional;
+using Domain.Entities.Company.Product.Sale;
 using Domain.Entities.Company.Type;
 using Type = Domain.Entities.Company.Type.Type;
 
@@ -45,6 +46,8 @@ public class GlovoDbContext : IdentityDbContext<UserEntity, IdentityRole<Guid>, 
     public DbSet<Type> Types { get; set; }
     public DbSet<CompanyProductCategory> CompanyProductCategories { get; set; }
     public DbSet<CompanyProduct> CompanyProducts { get; set; }
+    public DbSet<ProductSale> ProductSales { get; set; }
+    public DbSet<AdditionalSale> AdditionalSales { get; set; }
     public DbSet<AdditionalGroup> AdditionalGroups { get; set; }
     public DbSet<Additional> Additionals { get; set; }
     public DbSet<PartnerUser> PartnerUsers { get; set; }

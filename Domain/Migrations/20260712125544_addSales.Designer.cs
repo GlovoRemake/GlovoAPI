@@ -3,6 +3,7 @@ using System;
 using Domain.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Domain.Migrations
 {
     [DbContext(typeof(GlovoDbContext))]
-    partial class GlovoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260712125544_addSales")]
+    partial class addSales
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -612,7 +615,7 @@ namespace Domain.Migrations
 
                     b.HasIndex("AdditionalId");
 
-                    b.ToTable("AdditionalSales");
+                    b.ToTable("AdditionalSale");
                 });
 
             modelBuilder.Entity("Domain.Entities.Company.Product.Sale.ProductSale", b =>
@@ -642,7 +645,7 @@ namespace Domain.Migrations
 
                     b.HasIndex("CompanyProductId");
 
-                    b.ToTable("ProductSales");
+                    b.ToTable("ProductSale");
                 });
 
             modelBuilder.Entity("Domain.Entities.Company.ProductCategory.CompanyAffiliatesProductsCategory", b =>
