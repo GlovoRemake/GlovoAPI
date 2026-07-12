@@ -3,6 +3,7 @@ using Domain.Entities.Company.Affiliate;
 using Domain.Entities.Company.Partner;
 using Domain.Entities.Company.Product;
 using Domain.Entities.Company.ProductCategory;
+using Domain.Entities.Company.Type;
 using Domain.Entities.User;
 
 namespace Domain.Entities.Company;
@@ -14,10 +15,9 @@ public class Company : BaseEntityWithIsDeleted<Guid>
     public string IconPath { get; set; }
     public string BannerPath { get; set; }
     public Guid OwnerId { get; set; }
-    public int TypeId { get; set; }
 
     // conn
-    public CompanyType Type { get; set; }
+    public ICollection<CompanyType> Types { get; set; }
     public PartnerUser Owner { get; set; }
     public ICollection<CompanyAffiliate>? Affiliates { get; set; }
     public ICollection<UserRate>? Rates { get; set; }
