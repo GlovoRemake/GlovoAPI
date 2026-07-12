@@ -8,6 +8,7 @@ using Domain.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Caching.Memory;
 using System.Net.Http.Json;
+using System.Reflection;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Core.Services;
@@ -21,6 +22,31 @@ public class AccountService(
         IImageService _imageService
     ) : IAccountService
 {
+    public async Task<TokenResponseDto> LoginAsync(string email, string password)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+
+        if (user is null || !user.EmailConfirmed)
+        {
+            throw new NullReferenceException();
+        }
+
+        if (!await _userManager.CheckPasswordAsync(user, password))
+        {
+            throw new InvalidCredetionalsException();
+        }
+
+        var token = await _tokenService.CreateTokenAsync(user);
+        var refreshToken = await _tokenService.GenerateRefreshTokenAsync(user);
+
+        return new TokenResponseDto
+        {
+            RequiresRegistration = false,
+            AccessToken = token,
+            RefreshToken = refreshToken.Token
+        };
+    }
+
     public async Task<TokenResponseDto> RegisterAsync(string email, UserRegisterDto dto)
     {
         var existingUser = await _userManager.FindByEmailAsync(email);
@@ -246,5 +272,29 @@ public class AccountService(
 
         _memoryCache.Set(key, data, TimeSpan.FromMinutes(10));
         throw new BadCodeException();
+    }
+
+    public async Task<TokenResponseDto> RefreshToken(string refreshToken)
+    {
+        var validatedToken = await _tokenService.ValidateRefreshTokenAsync(refreshToken);
+        if (validatedToken == null)
+            throw new InvalidRefreshTokenException();
+
+        var user = await _userManager.FindByIdAsync(validatedToken.UserId.ToString());
+        if (user == null)
+            throw new InvalidRefreshTokenException();
+
+        await _tokenService.RevokeRefreshTokenAsync(refreshToken);
+
+        var newAccessToken = await _tokenService.CreateTokenAsync(user);
+        var newRefreshToken = await _tokenService.GenerateRefreshTokenAsync(user);
+
+        return
+            new TokenResponseDto
+            {
+                RequiresRegistration = false,
+                AccessToken = newAccessToken,
+                RefreshToken = newRefreshToken.Token
+            };
     }
 }
