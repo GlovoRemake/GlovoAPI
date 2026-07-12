@@ -1,4 +1,4 @@
-﻿using Core.Dtos;
+using Core.Dtos;
 using Core.Dtos.Account;
 using Core.Dtos.Exceptions;
 using Core.Dtos.Exceptions.Account;
@@ -81,7 +81,7 @@ public class AccountService(
             EmailConfirmed = true
         };
 
-        var createResult = await _userManager.CreateAsync(user);
+        var createResult = await _userManager.CreateAsync(user, dto.Password);
 
         if (!createResult.Succeeded)
         {
