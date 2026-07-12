@@ -1,6 +1,9 @@
-﻿namespace Core.Interfaces;
+﻿using Core.Dtos.Account;
 
-public class IAccountService
+namespace Core.Interfaces;
+
+public interface IAccountService
 {
-    
+    Task SendVerificationCodeAsync(SendLoginCodeDto dto);
+    Task<TokenResponseDto> VerifyCode(VerifyCodeDto dto);
 }
