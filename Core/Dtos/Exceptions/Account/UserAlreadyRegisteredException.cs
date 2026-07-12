@@ -4,10 +4,10 @@ using System.Text;
 
 namespace Core.Dtos.Exceptions.Account;
 
-public class GoogleHasNotEmailExcention : Exception
+public class UserAlreadyRegisteredException : Exception
 {
-    public GoogleHasNotEmailExcention()
+    public UserAlreadyRegisteredException()
         : base("") { }
-    public GoogleHasNotEmailExcention(string message)
+    public UserAlreadyRegisteredException(string message)
         : base(message) { }
 }

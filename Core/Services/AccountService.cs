@@ -20,6 +20,134 @@ public class AccountService(
         ITokenService _tokenService
     ) : IAccountService
 {
+    public async Task<TokenResponseDto> RegisterAsync(string email, UserRegisterDto dto)
+    {
+        var existingUser = await _userManager.FindByEmailAsync(email);
+
+        if (existingUser is not null)
+        {
+            if (existingUser.EmailConfirmed)
+            {
+                throw new UserAlreadyRegisteredException();
+            }
+
+            var deleteResult = await _userManager.DeleteAsync(existingUser);
+
+            if (!deleteResult.Succeeded)
+            {
+                throw new Exception();
+            }
+        }
+
+        var user = new UserEntity
+        {
+            FirstName = dto.FirstName,
+            LastName = dto.LastName,
+            RegisterType = RegisterType.Email,
+            UserName = email,
+            Email = email,
+            EmailConfirmed = true
+        };
+
+        var createResult = await _userManager.CreateAsync(user);
+
+        if (!createResult.Succeeded)
+        {
+            throw new Exception();
+        }
+        var roleResult = await _userManager.AddToRoleAsync(user, "User");
+
+        var token = await _tokenService.CreateTokenAsync(user);
+        var refreshToken = await _tokenService.GenerateRefreshTokenAsync(user);
+        return 
+            new TokenResponseDto
+            {
+                RequiresRegistration = false,
+                AccessToken = token,
+                RefreshToken = refreshToken.Token
+            };
+    }
+
+    public async Task<TokenResponseDto> GoogleLoginAsync(GoogleLoginRequest request)
+    {
+        GoogleUserInfo? googleUser;
+
+        try
+        {
+            using var httpClient = new HttpClient();
+
+            httpClient.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue(
+                    "Bearer",
+                    request.IdToken);
+
+            googleUser = await httpClient.GetFromJsonAsync<GoogleUserInfo>(
+                "https://www.googleapis.com/oauth2/v3/userinfo");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Google token validation failed: {e.Message}");
+
+            throw new InvalidGoogleTokenException();
+        }
+
+        if (googleUser is null || string.IsNullOrWhiteSpace(googleUser.Email))
+        {
+            throw new GoogleHasNotEmailExcention();
+        }
+
+        var existingUser = await _userManager.FindByEmailAsync(googleUser.Email);
+
+        if (existingUser is not null)
+        {
+            if (existingUser.RegisterType != RegisterType.Google)
+            {
+                throw new AnotherTypeRegException(existingUser.RegisterType.ToString());
+            }
+
+            var accessToken = await _tokenService.CreateTokenAsync(existingUser);
+            var refreshToken = await _tokenService.GenerateRefreshTokenAsync(existingUser);
+
+            return new TokenResponseDto
+                {
+                    RequiresRegistration = false,
+                    AccessToken = accessToken,
+                    RefreshToken = refreshToken.Token
+                };
+        }
+
+        var newUser = new UserEntity
+        {
+            Email = googleUser.Email,
+            UserName = googleUser.Email,
+
+            FirstName = googleUser.GivenName ?? googleUser.Name?.Split(' ').FirstOrDefault() ?? "Google",
+            LastName = googleUser.FamilyName ?? googleUser.Name?.Split(' ').LastOrDefault() ?? "",
+
+            EmailConfirmed = true,
+            RegisterType = RegisterType.Google,
+        };
+
+        var createResult = await _userManager.CreateAsync(newUser);
+
+        if (!createResult.Succeeded)
+        {
+            throw new Exception();
+        }
+
+        await _userManager.AddToRoleAsync(newUser, "User");
+
+        var token = await _tokenService.CreateTokenAsync(newUser);
+        var refresh = await _tokenService.GenerateRefreshTokenAsync(newUser);
+
+        return new TokenResponseDto
+        {
+                RequiresRegistration = false,
+                AccessToken = token,
+                RefreshToken = refresh.Token
+            };
+    }
+
     public async Task SendVerificationCodeAsync(SendLoginCodeDto dto)
     {
         var existingUser = await _userManager.FindByEmailAsync(dto.Email);
