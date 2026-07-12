@@ -36,6 +36,11 @@ public class AccountService(
             throw new InvalidCredetionalsException();
         }
 
+        if (user.RegisterType != RegisterType.Email)
+        {
+            throw new AnotherTypeRegException(user.RegisterType.ToString());
+        }
+
         var token = await _tokenService.CreateTokenAsync(user);
         var refreshToken = await _tokenService.GenerateRefreshTokenAsync(user);
 
