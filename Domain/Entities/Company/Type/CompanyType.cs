@@ -5,7 +5,7 @@ namespace Domain.Entities.Company.Type;
 
 public class CompanyType : BaseEntity<int>
 {
-    public int CompanyId { get; set; }
+    public Guid CompanyId { get; set; }
     public int TypeId { get; set; }
     
     // conn
