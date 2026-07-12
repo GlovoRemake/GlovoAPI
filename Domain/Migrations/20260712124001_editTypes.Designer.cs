@@ -3,6 +3,7 @@ using System;
 using Domain.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Domain.Migrations
 {
     [DbContext(typeof(GlovoDbContext))]
-    partial class GlovoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260712124001_editTypes")]
+    partial class editTypes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -585,66 +588,6 @@ namespace Domain.Migrations
                     b.ToTable("CompanyProducts");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Company.Product.Sale.AdditionalSale", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AdditionalId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("DateUpdated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<double>("NewPrice")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("PercentSale")
-                        .HasColumnType("double precision");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AdditionalId");
-
-                    b.ToTable("AdditionalSales");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Company.Product.Sale.ProductSale", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CompanyProductId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("DateUpdated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<double>("NewPrice")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("PercentSale")
-                        .HasColumnType("double precision");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CompanyProductId");
-
-                    b.ToTable("ProductSales");
-                });
-
             modelBuilder.Entity("Domain.Entities.Company.ProductCategory.CompanyAffiliatesProductsCategory", b =>
                 {
                     b.Property<int>("Id")
@@ -772,7 +715,7 @@ namespace Domain.Migrations
 
                     b.HasIndex("ParentTypeId");
 
-                    b.ToTable("Types");
+                    b.ToTable("Type");
                 });
 
             modelBuilder.Entity("Domain.Entities.CourierTimeSlot", b =>
@@ -1551,28 +1494,6 @@ namespace Domain.Migrations
                     b.Navigation("Company");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Company.Product.Sale.AdditionalSale", b =>
-                {
-                    b.HasOne("Domain.Entities.Company.Product.Additional.Additional", "Additional")
-                        .WithMany("Sales")
-                        .HasForeignKey("AdditionalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Additional");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Company.Product.Sale.ProductSale", b =>
-                {
-                    b.HasOne("Domain.Entities.Company.Product.CompanyProduct", "Product")
-                        .WithMany("Sales")
-                        .HasForeignKey("CompanyProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("Domain.Entities.Company.ProductCategory.CompanyAffiliatesProductsCategory", b =>
                 {
                     b.HasOne("Domain.Entities.Company.ProductCategory.CompanyProductCategory", "Category")
@@ -1990,8 +1911,6 @@ namespace Domain.Migrations
                     b.Navigation("Additionals");
 
                     b.Navigation("OrderedAdditionals");
-
-                    b.Navigation("Sales");
                 });
 
             modelBuilder.Entity("Domain.Entities.Company.Product.Additional.AdditionalGroup", b =>
@@ -2010,8 +1929,6 @@ namespace Domain.Migrations
                     b.Navigation("Carts");
 
                     b.Navigation("OrderedProducts");
-
-                    b.Navigation("Sales");
                 });
 
             modelBuilder.Entity("Domain.Entities.Company.ProductCategory.CompanyProductCategory", b =>
