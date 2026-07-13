@@ -39,7 +39,7 @@ public sealed class GoogleLoginCommandHandler
                 $"Невірний токен Google"
             ));
         }
-        catch (GoogleHasNotEmailExcention)
+        catch (GoogleHasNotEmailException)
         {
             return Result<TokenResponseDto>.Failure(ErrorMessage.Create(
                 "GoogleEmail",

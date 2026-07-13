@@ -125,7 +125,7 @@ public class AccountService(
 
         if (googleUser is null || string.IsNullOrWhiteSpace(googleUser.Email))
         {
-            throw new GoogleHasNotEmailExcention();
+            throw new GoogleHasNotEmailException();
         }
 
         var existingUser = await _userManager.FindByEmailAsync(googleUser.Email);

@@ -4,10 +4,10 @@ using System.Text;
 
 namespace Core.Dtos.Exceptions.Account;
 
-public class GoogleHasNotEmailExcention : Exception
+public class GoogleHasNotEmailException : Exception
 {
-    public GoogleHasNotEmailExcention()
+    public GoogleHasNotEmailException()
         : base("") { }
-    public GoogleHasNotEmailExcention(string message)
+    public GoogleHasNotEmailException(string message)
         : base(message) { }
 }
