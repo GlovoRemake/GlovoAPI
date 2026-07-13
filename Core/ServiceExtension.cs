@@ -19,6 +19,9 @@ public static class ServiceExtension
         service.AddScoped<ITokenService, TokenService>();
         service.AddScoped<IEmailService, EmailService>();
         service.AddScoped<IEmailTemplateService, EmailTemplateService>();
+
+        service.AddScoped<IAccountService, AccountService>();
+        service.AddScoped<IHashService, HashService>();
     }
 
     public static void AddCache(this IServiceCollection service)
