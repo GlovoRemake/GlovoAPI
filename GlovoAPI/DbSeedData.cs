@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using Core.Interfaces;
 using Type = Domain.Entities.Company.Type.Type;
+using Microsoft.AspNetCore.Identity;
 
 namespace GlovoAPI;
 
@@ -21,6 +22,7 @@ public static class DbSeedData
         await SeedRegions(webApplication);
         await SeedCities(webApplication);
         await SeedTypes(webApplication);
+        await SeedRoles(webApplication);
 
     }
 
@@ -127,6 +129,38 @@ public static class DbSeedData
             else
             {
                 Console.WriteLine("Not Found File Types.json");
+            }
+        }
+    }
+
+
+    public static async Task SeedRoles(this WebApplication webApplication)
+    {
+        var scoped = webApplication.Services.CreateScope();
+        var context = scoped.ServiceProvider.GetRequiredService<GlovoDbContext>();
+
+        if (!context.Roles.Any())
+        {
+            var jsonFile = Path.Combine(Directory.GetCurrentDirectory(), "Helpers", "JsonData", "Roles.json");
+            if (File.Exists(jsonFile))
+            {
+                var jsonData = await File.ReadAllTextAsync(jsonFile);
+                try
+                {
+                    var roles = JsonSerializer.Deserialize<List<IdentityRole<Guid>>>(jsonData);
+
+                    await context.AddRangeAsync(roles);
+                    await context.SaveChangesAsync();
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error Json Parse Roles Data {0}", ex.Message);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Not Found File Roles.json");
             }
         }
     }

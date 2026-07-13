@@ -3,6 +3,7 @@ using Domain.Entities.User;
 using Domain.Entities.Order;
 using Domain.Entities.Support;
 using Domain.Entities.User;
+using Domain.Enums;
 using Microsoft.AspNetCore.Identity;
 
 namespace Core.Entities.Identity;
@@ -11,6 +12,9 @@ public class UserEntity : IdentityUser<Guid>
 {
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
+    public string? AvatarPath { get; set; } = string.Empty;
+
+    public RegisterType RegisterType { get; set; }
 
     // conn
     public ICollection<CourierTimeSlot>? CourierTimeSlots { get; set; }
