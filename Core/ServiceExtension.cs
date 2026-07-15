@@ -36,4 +36,11 @@ public static class ServiceExtension
             cfg.LicenseKey = configuration["LicenseKeys:LuckyPennyKey"];
         });
     }
+
+    public static void AddAutoMapper(this IServiceCollection service, IConfiguration configuration)
+    {
+        service.AddAutoMapper(cfg => {
+            cfg.LicenseKey = configuration["LicenseKeys:LuckyPennyKey"];
+        }, typeof(ServiceExtension).Assembly);
+    }
 }
