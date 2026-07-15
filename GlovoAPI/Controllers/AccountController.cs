@@ -1,8 +1,12 @@
-﻿using Core.Commands.Account;
+﻿using AutoMapper;
+using Core.Commands.Account;
+using Core.Dtos;
 using Core.Dtos.Account;
+using Core.Dtos.Exceptions.Account;
+using Domain.Data;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -11,7 +15,7 @@ namespace GlovoAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController(IMediator _mediator) : ControllerBase
+    public class AccountController(IMediator _mediator, GlovoDbContext dbContext, IMapper mapper) : ControllerBase
     {
         [Authorize(AuthenticationSchemes = "RegistrationScheme")]
         [HttpPost("Register")]
@@ -75,6 +79,52 @@ namespace GlovoAPI.Controllers
             if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
 
             return Ok(new { result.IsSuccess, result.Value });
+        }
+
+        [Authorize]
+        [HttpGet("GetProfile")]
+        public async Task<IActionResult> GetProfile()
+        {
+            try
+            {
+                var idRaw = User.FindFirst("id")?.Value;
+                if (idRaw == null)
+                {
+                    throw new InvalidJwtTokenException("JWT токен є пошкодженним!");
+                }
+                Guid userId = Guid.Parse(idRaw);
+                var user = await dbContext.Users.FindAsync(userId);
+                if (user == null)
+                {
+                    throw new UserNotFoundException("Користувач не знайдений!");
+                }
+                else
+                {
+                    var dto = mapper.Map<GetProfileDto>(user);
+                    return Ok(Result<GetProfileDto>.Success(dto));
+                }
+            }
+            catch (UserNotFoundException ex)
+            {
+                return NotFound(Result.Failure(ErrorMessage.Create(
+                    "UserNotFound",
+                    ex.Message
+                )));
+            }
+            catch (InvalidJwtTokenException ex)
+            {
+                return BadRequest(Result.Failure(ErrorMessage.Create(
+                    "InvalidJwtToken",
+                    ex.Message
+                )));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, Result.Failure(ErrorMessage.Create(
+                    "Exception",
+                    ex.Message
+                )));
+            }
         }
     }
 }
