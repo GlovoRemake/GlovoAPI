@@ -14,6 +14,7 @@ builder.Services.AddServices();
 builder.Services.AddCache();
 
 builder.Services.AddMediatR(builder.Configuration);
+builder.Services.AddAutoMapper(builder.Configuration);
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
