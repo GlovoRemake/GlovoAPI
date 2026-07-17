@@ -10,4 +10,5 @@ public interface IAccountService
     Task SendVerificationCodeAsync(SendLoginCodeDto dto);
     Task<TokenResponseDto> VerifyCode(VerifyCodeDto dto);
     Task<TokenResponseDto> RefreshToken(string refreshToken);
+    Task<GetProfileDto> GetProfile(string userId);
 }

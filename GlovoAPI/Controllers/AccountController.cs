@@ -85,46 +85,12 @@ namespace GlovoAPI.Controllers
         [HttpGet("GetProfile")]
         public async Task<IActionResult> GetProfile()
         {
-            try
-            {
-                var idRaw = User.FindFirst("id")?.Value;
-                if (idRaw == null)
-                {
-                    throw new InvalidJwtTokenException("JWT токен є пошкодженним!");
-                }
-                Guid userId = Guid.Parse(idRaw);
-                var user = await dbContext.Users.FindAsync(userId);
-                if (user == null)
-                {
-                    throw new UserNotFoundException("Користувач не знайдений!");
-                }
-                else
-                {
-                    var dto = mapper.Map<GetProfileDto>(user);
-                    return Ok(Result<GetProfileDto>.Success(dto));
-                }
-            }
-            catch (UserNotFoundException ex)
-            {
-                return NotFound(Result.Failure(ErrorMessage.Create(
-                    "UserNotFound",
-                    ex.Message
-                )));
-            }
-            catch (InvalidJwtTokenException ex)
-            {
-                return BadRequest(Result.Failure(ErrorMessage.Create(
-                    "InvalidJwtToken",
-                    ex.Message
-                )));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, Result.Failure(ErrorMessage.Create(
-                    "Exception",
-                    ex.Message
-                )));
-            }
+            var idRaw = User.FindFirst("id")?.Value;
+            var result = await _mediator.Send(new GetProfileCommand(idRaw));
+
+            if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
+
+            return Ok(new { result.IsSuccess, result.Value });
         }
     }
 }
