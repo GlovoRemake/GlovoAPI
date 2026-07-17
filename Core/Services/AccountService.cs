@@ -1,11 +1,15 @@
+using AutoMapper;
 using Core.Dtos;
 using Core.Dtos.Account;
 using Core.Dtos.Exceptions;
 using Core.Dtos.Exceptions.Account;
 using Core.Entities.Identity;
 using Core.Interfaces;
+using Domain.Data;
 using Domain.Enums;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using System.Net.Http.Json;
 using System.Reflection;
@@ -19,7 +23,9 @@ public class AccountService(
         IHashService _hashService,
         IEmailService _emailService,
         ITokenService _tokenService,
-        IImageService _imageService
+        IImageService _imageService,
+        GlovoDbContext _dbContext,
+        IMapper _mapper
     ) : IAccountService
 {
     public async Task<TokenResponseDto> LoginAsync(string email, string password)
@@ -301,5 +307,25 @@ public class AccountService(
                 AccessToken = newAccessToken,
                 RefreshToken = newRefreshToken.Token
             };
+    }
+    public async Task<GetProfileDto> GetProfile(string userId)
+    { 
+        if (userId == null)
+        {
+            throw new InvalidJwtTokenException("JWT токен є пошкодженним!");
+        }
+        Guid userIdGuid = Guid.Parse(userId);
+        var user = await _dbContext.Users.FindAsync(userIdGuid);
+        var roles = await _userManager.GetRolesAsync(user);
+        if (user == null)
+        {
+            throw new UserNotFoundException("Користувач не знайдений!");
+        }
+        else
+        {
+            var dto = _mapper.Map<GetProfileDto>(user);
+            dto.Roles = roles.ToArray();
+            return dto;
+        }
     }
 }
