@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Core.Dtos.Account;
 using Core.Dtos.Exceptions.Account;
 using Core.Dtos.Exceptions.Partner;
@@ -82,7 +82,7 @@ public class PartnerService(
         _memoryCache.Set(sendKey, true, TimeSpan.FromSeconds(60));
         _memoryCache.Set(sendKey + ":expires", DateTime.UtcNow.AddSeconds(60));
         
-        await _emailService.SendPartnerVerificationCodeAsync(user.Email!, user.Id.ToString());
+        await _emailService.SendPartnerVerificationCodeAsync(user.Email!, code);
     }
     
     public async Task<TokenResponseDto> PartnerLogin(string email, string password)
