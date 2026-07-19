@@ -1,22 +1,22 @@
-﻿using Core.Commands.Account;
-using Core.Dtos;
+﻿using Core.Dtos;
 using Core.Dtos.Account;
 using Core.Dtos.Exceptions.Account;
 using Core.Interfaces;
 using MediatR;
+using Core.Queries.Account;
 
 namespace Core.Handlers.Account;
 
-public sealed class GetProfileCommandHandler
-    : IRequestHandler<GetProfileCommand, Result<GetProfileDto>>
+public sealed class GetProfileQueryHandler
+    : IRequestHandler<GetProfileQuery, Result<GetProfileDto>>
 {
     private readonly IAccountService _accountService;
 
-    public GetProfileCommandHandler(IAccountService accountService)
+    public GetProfileQueryHandler(IAccountService accountService)
     {
         _accountService = accountService;
     }
-    public async Task<Result<GetProfileDto>> Handle(GetProfileCommand request, CancellationToken cancellationToken)
+    public async Task<Result<GetProfileDto>> Handle(GetProfileQuery request, CancellationToken cancellationToken)
     {
 		try
 		{
