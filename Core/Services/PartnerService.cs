@@ -82,4 +82,6 @@ public class PartnerService(
         
         await _emailService.SendPartnerVerificationCodeAsync(user.Email!, user.Id.ToString());
     }
+    
+    
 }
