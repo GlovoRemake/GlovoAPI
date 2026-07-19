@@ -85,6 +85,33 @@ public class PartnerService(
         await _emailService.SendPartnerVerificationCodeAsync(user.Email!, user.Id.ToString());
     }
     
+    public async Task<TokenResponseDto> PartnerLogin(string email, string password)
+    {
+        var user = await _partnerUserRepo.Query().Where(x => !x.IsDeleted).FirstOrDefaultAsync(x => x.Email == email);
+
+        if (user is null || !user.ConfirmedEmail)
+        {
+            throw new NullReferenceException();
+        }
+
+        var passwordHasher = new PasswordHasher<object>();
+        var result = passwordHasher.VerifyHashedPassword(null, user.PasswordHash, password);
+        if (result == PasswordVerificationResult.Success)
+        {
+            throw new InvalidCredetionalsException();
+        }
+
+        var token = await _tokenService.CreatePartnerTokenAsync(user);
+        var refreshToken = await _tokenService.GeneratePartnerRefreshTokenAsync(user);
+
+        return new TokenResponseDto
+        {
+            RequiresRegistration = false,
+            AccessToken = token,
+            RefreshToken = refreshToken.Token
+        };
+    }
+    
     public async Task<TokenResponseDto> VerifyPartnerCode(VerifyCodeDto dto)
     {
         var key = $"verify-partner:data:{dto.Email}";

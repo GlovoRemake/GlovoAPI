@@ -8,4 +8,5 @@ public interface IPartnerService
     Task PartnerRegister(PartnerRegisterDto dto);
     Task<TokenResponseDto> VerifyPartnerCode(VerifyCodeDto dto);
     Task<TokenResponseDto> RefreshToken(string refreshToken);
+    Task<TokenResponseDto> PartnerLogin(string email, string password);
 }
