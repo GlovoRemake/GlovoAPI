@@ -166,7 +166,7 @@ public class PartnerService(
     
     public async Task<TokenResponseDto> RefreshToken(string refreshToken)
     {
-        var validatedToken = await _tokenService.ValidateRefreshTokenAsync(refreshToken);
+        var validatedToken = await _tokenService.ValidatePartnerRefreshTokenAsync(refreshToken);
         if (validatedToken == null)
             throw new InvalidRefreshTokenException();
 
@@ -174,7 +174,7 @@ public class PartnerService(
         if (user == null)
             throw new InvalidRefreshTokenException();
 
-        await _tokenService.RevokeRefreshTokenAsync(refreshToken);
+        await _tokenService.RevokePartnerRefreshTokenAsync(refreshToken);
 
         var newAccessToken = await _tokenService.CreatePartnerTokenAsync(user);
         var newRefreshToken = await _tokenService.GeneratePartnerRefreshTokenAsync(user);
