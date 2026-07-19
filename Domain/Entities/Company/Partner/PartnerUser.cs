@@ -14,6 +14,8 @@ public class PartnerUser : BaseEntityWithIsDeleted<Guid>
     public string? Avatar { get; set; }
     public string PasswordHash { get; set; }
 
+    public bool ConfirmedEmail { get; set; } = false;
+
     public ICollection<Company> Companies { get; set; }
     public ICollection<Employee> Employees { get; set; }
 }
