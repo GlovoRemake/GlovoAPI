@@ -3,6 +3,7 @@ using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using Core.Interfaces;
+using Domain.Entities.Company.Partner;
 using Type = Domain.Entities.Company.Type.Type;
 using Microsoft.AspNetCore.Identity;
 
@@ -23,6 +24,7 @@ public static class DbSeedData
         await SeedCities(webApplication);
         await SeedTypes(webApplication);
         await SeedRoles(webApplication);
+        await SeedPartnerRoles(webApplication);
 
     }
 
@@ -156,6 +158,37 @@ public static class DbSeedData
                 catch (Exception ex)
                 {
                     Console.WriteLine("Error Json Parse Roles Data {0}", ex.Message);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Not Found File Roles.json");
+            }
+        }
+    }
+    
+    public static async Task SeedPartnerRoles(this WebApplication webApplication)
+    {
+        var scoped = webApplication.Services.CreateScope();
+        var context = scoped.ServiceProvider.GetRequiredService<GlovoDbContext>();
+
+        if (!context.PartnerRoles.Any())
+        {
+            var jsonFile = Path.Combine(Directory.GetCurrentDirectory(), "Helpers", "JsonData", "PartnerRoles.json");
+            if (File.Exists(jsonFile))
+            {
+                var jsonData = await File.ReadAllTextAsync(jsonFile);
+                try
+                {
+                    var roles = JsonSerializer.Deserialize<List<PartnerRole>>(jsonData);
+
+                    await context.AddRangeAsync(roles);
+                    await context.SaveChangesAsync();
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error Json Parse Partner Roles Data {0}", ex.Message);
                 }
             }
             else
