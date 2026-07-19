@@ -69,6 +69,13 @@ public static class ServiceExtension
                     configuration["Tokens:Registration:Issuer"]!,
                     configuration["Tokens:Registration:Audience"]!,
                     configuration["Tokens:Registration:Key"]!);
+            })
+            .AddJwtBearer("PartnerAccessScheme", o =>
+            {
+                o.TokenValidationParameters = GetTokenValidationParameters(
+                    configuration["Tokens:Registration:Issuer"]!,
+                    configuration["Tokens:Registration:Audience"]!,
+                    configuration["Tokens:Registration:Key"]!);
             });
 
         service.AddAuthorization();
