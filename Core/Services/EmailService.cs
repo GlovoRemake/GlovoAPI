@@ -75,4 +75,27 @@ public class EmailService(
 
         await SendEmailAsync(email);
     }
+    
+    public async Task SendPartnerVerificationCodeAsync(string toEmail, string code)
+    {
+        var subject = "Код підтвердження";
+
+        string fromEmail = _config["Email:User"] ?? "noreply@yourdomain.com";
+
+        string template = await _emailTempService.GetTemplateAsync("partner-code-verification.html");
+
+        string body = template
+            .Replace("{{Code}}", code)
+            .Replace("{{Year}}", DateTime.UtcNow.Year.ToString());
+
+        var email = new MimeMessage();
+        email.From.Add(MailboxAddress.Parse(fromEmail));
+        email.To.Add(MailboxAddress.Parse(toEmail));
+        email.Subject = subject;
+
+        var bodyBuilder = new BodyBuilder { HtmlBody = body };
+        email.Body = bodyBuilder.ToMessageBody();
+
+        await SendEmailAsync(email);
+    }
 }

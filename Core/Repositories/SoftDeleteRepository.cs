@@ -51,6 +51,15 @@ public class SoftDeleteRepository<TEntity, TKey>(GlovoDbContext context) :
         await context.SaveChangesAsync();
     }
 
+    public async Task ForceDeleteAsync(TKey id)
+    {
+        var entity = await context.Set<TEntity>().FindAsync(id);
+        if (entity == null) return;
+
+        context.Set<TEntity>().Remove(entity);
+        await context.SaveChangesAsync();
+    }
+
     public IQueryable<TEntity> Query()
         => context.Set<TEntity>().AsQueryable();
     

@@ -1,0 +1,14 @@
+﻿[
+  {
+    "Name": "CompanyOwner"
+  },
+  {
+    "Name": "Manager"
+  },
+  {
+    "Name": "Employee"
+  },
+  {
+    "Name": "User"
+  }
+]

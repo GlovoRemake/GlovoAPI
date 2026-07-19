@@ -236,6 +236,7 @@ public class AccountService(
     public async Task<TokenResponseDto> VerifyCode(VerifyCodeDto dto)
     {
         var key = $"verify:data:{dto.Email}";
+        var sendKey = $"verify:send:{dto.Email}";
 
         if (!_memoryCache.TryGetValue(key, out VerificationData data))
             throw new BadCodeException();
@@ -244,12 +245,14 @@ public class AccountService(
         if (data.AttemptsLeft <= 0)
         {
             _memoryCache.Remove(key);
+            _memoryCache.Remove(sendKey);
             throw new ExpiredCodeException();
         }
 
         if (data.CodeHash == _hashService.Hash(dto.Code))
         {
             _memoryCache.Remove(key);
+            _memoryCache.Remove(sendKey);
 
             var user = await _userManager.FindByEmailAsync(dto.Email);
 

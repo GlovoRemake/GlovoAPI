@@ -11,6 +11,7 @@ public interface ISoftDeleteRepository<TEntity, TKey>
     Task AddAsync(TEntity entity);
     Task UpdateAsync(TEntity entity);
     Task DeleteAsync(TKey id);
+    Task ForceDeleteAsync(TKey id);
     IQueryable<TEntity> Query();
     Task<int> SaveChangesAsync();
 }
