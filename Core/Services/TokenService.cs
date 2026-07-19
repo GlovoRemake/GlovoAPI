@@ -17,6 +17,7 @@ namespace Core.Services;
 
 public class TokenService(
         IRepository<RefreshToken, int> _refreshTokenRepo,
+        IRepository<PartnerRefreshToken, int> _partnerRefreshTokenRepo,
         IConfiguration _config,
         UserManager<UserEntity> _userManager
     ) : ITokenService
@@ -146,11 +147,11 @@ public class TokenService(
         return refreshToken;
     }
 
-    public async Task<RefreshToken> GeneratePartnerRefreshTokenAsync(PartnerUser user)
+    public async Task<PartnerRefreshToken> GeneratePartnerRefreshTokenAsync(PartnerUser user)
     {
         var lifeTime = _config["Tokens:Refresh:LifeTime"];
 
-        var refreshToken = new RefreshToken
+        var refreshToken = new PartnerRefreshToken
         {
             Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(128)),
             UserId = user.Id,
@@ -158,14 +159,25 @@ public class TokenService(
             IsRevoked = false
         };
 
-        await _refreshTokenRepo.AddAsync(refreshToken);
-        await _refreshTokenRepo.SaveChangesAsync();
+        await _partnerRefreshTokenRepo.AddAsync(refreshToken);
+        await _partnerRefreshTokenRepo.SaveChangesAsync();
         return refreshToken;
     }
     
     public async Task<RefreshToken?> ValidateRefreshTokenAsync(string token)
     {
         var refreshToken = (await _refreshTokenRepo.Query().FirstOrDefaultAsync(x => x.Token == token));
+
+        if (refreshToken == null) return null;
+        if (refreshToken.IsRevoked) return null;
+        if (refreshToken.Expires < DateTime.UtcNow) return null;
+
+        return refreshToken;
+    }
+
+    public async Task<PartnerRefreshToken?> ValidatePartnerRefreshTokenAsync(string token)
+    {
+        var refreshToken = (await _partnerRefreshTokenRepo.Query().FirstOrDefaultAsync(x => x.Token == token));
 
         if (refreshToken == null) return null;
         if (refreshToken.IsRevoked) return null;
@@ -183,5 +195,16 @@ public class TokenService(
             await _refreshTokenRepo.UpdateAsync(refreshToken);
         }
         await _refreshTokenRepo.SaveChangesAsync();
+    }
+
+    public async Task RevokePartnerRefreshTokenAsync(string token)
+    {
+        var refreshToken = (await _partnerRefreshTokenRepo.Query().FirstOrDefaultAsync(x => x.Token == token));
+        if (refreshToken != null)
+        {
+            refreshToken.IsRevoked = true;
+            await _partnerRefreshTokenRepo.UpdateAsync(refreshToken);
+        }
+        await _partnerRefreshTokenRepo.SaveChangesAsync();
     }
 }

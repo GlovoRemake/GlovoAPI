@@ -13,7 +13,9 @@ public interface ITokenService
     Task<string> CreateRegistrationTokenAsync(string email);
     Task<string> CreatePartnerTokenAsync(PartnerUser user);
     Task<RefreshToken> GenerateRefreshTokenAsync(UserEntity user);
-    Task<RefreshToken> GeneratePartnerRefreshTokenAsync(PartnerUser user);
+    Task<PartnerRefreshToken> GeneratePartnerRefreshTokenAsync(PartnerUser user);
     Task<RefreshToken?> ValidateRefreshTokenAsync(string token);
+    Task<PartnerRefreshToken?> ValidatePartnerRefreshTokenAsync(string token);
     Task RevokeRefreshTokenAsync(string token);
+    Task RevokePartnerRefreshTokenAsync(string token);
 }
