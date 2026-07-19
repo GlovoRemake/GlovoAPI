@@ -89,9 +89,14 @@ public class PartnerService(
     {
         var user = await _partnerUserRepo.Query().Where(x => !x.IsDeleted).FirstOrDefaultAsync(x => x.Email == email);
 
-        if (user is null || !user.ConfirmedEmail)
+        if (user is null)
         {
             throw new NullReferenceException();
+        }
+        
+        if (!user.ConfirmedEmail)
+        {
+            throw new EmailNotConfirmed();
         }
 
         var passwordHasher = new PasswordHasher<object>();

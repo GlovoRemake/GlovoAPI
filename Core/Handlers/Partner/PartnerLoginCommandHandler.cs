@@ -2,6 +2,7 @@
 using Core.Dtos;
 using Core.Dtos.Account;
 using Core.Dtos.Exceptions.Account;
+using Core.Dtos.Exceptions.Partner;
 using Core.Interfaces;
 using MediatR;
 
@@ -40,6 +41,13 @@ public sealed class PartnerLoginCommandHandler
             return Result<TokenResponseDto>.Failure(ErrorMessage.Create(
                 "LoginError",
                 $"Пошта або пароль неправильні"
+            ));
+        }
+        catch (EmailNotConfirmed)
+        {
+            return Result<TokenResponseDto>.Failure(ErrorMessage.Create(
+                "EmailNotConfirmed",
+                $"Пошта не підтверджена"
             ));
         }
         catch (Exception ex)
