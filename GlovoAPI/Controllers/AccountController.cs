@@ -1,21 +1,17 @@
-﻿using AutoMapper;
-using Core.Commands.Account;
-using Core.Dtos;
+﻿using Core.Commands.Account;
 using Core.Dtos.Account;
-using Core.Dtos.Exceptions.Account;
-using Domain.Data;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Core.Queries.Account;
 
 namespace GlovoAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController(IMediator _mediator, GlovoDbContext dbContext, IMapper mapper) : ControllerBase
+    public class AccountController(IMediator _mediator) : ControllerBase
     {
         [Authorize(AuthenticationSchemes = "RegistrationScheme")]
         [HttpPost("Register")]
@@ -86,7 +82,7 @@ namespace GlovoAPI.Controllers
         public async Task<IActionResult> GetProfile()
         {
             var idRaw = User.FindFirst("id")?.Value;
-            var result = await _mediator.Send(new GetProfileCommand(idRaw));
+            var result = await _mediator.Send(new GetProfileQuery(idRaw));
 
             if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
 

@@ -2,7 +2,7 @@
 using Core.Dtos.Account;
 using MediatR;
 
-namespace Core.Commands.Account;
+namespace Core.Queries.Account;
 
-public record GetProfileCommand(string userId)
+public record GetProfileQuery(string userId)
     : IRequest<Result<GetProfileDto>>;
