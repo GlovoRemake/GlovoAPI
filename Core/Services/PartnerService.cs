@@ -32,7 +32,7 @@ public class PartnerService(
                 throw new PartnerEmailAlreadyRegistered();
             }
         
-            await _partnerUserRepo.DeleteAsync(existingEmailUser.Id);
+            await _partnerUserRepo.ForceDeleteAsync(existingEmailUser.Id);
         }
         
         if (existingPhoneUser is not null)
@@ -42,7 +42,7 @@ public class PartnerService(
                 throw new PartnerPhoneAlreadyRegistered();
             }
         
-            await _partnerUserRepo.DeleteAsync(existingPhoneUser.Id);
+            await _partnerUserRepo.ForceDeleteAsync(existingPhoneUser.Id);
         }
         
         var user = _mapper.Map<PartnerUser>(dto);
