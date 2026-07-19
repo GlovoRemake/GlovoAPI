@@ -101,7 +101,7 @@ public class PartnerService(
 
         var passwordHasher = new PasswordHasher<object>();
         var result = passwordHasher.VerifyHashedPassword(null, user.PasswordHash, password);
-        if (result == PasswordVerificationResult.Success)
+        if (result != PasswordVerificationResult.Success)
         {
             throw new InvalidCredetionalsException();
         }
