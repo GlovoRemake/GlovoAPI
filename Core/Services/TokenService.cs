@@ -11,6 +11,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using Domain.Entities.Company.Partner;
 
 namespace Core.Services;
 
@@ -93,6 +94,41 @@ public class TokenService(
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
+    public async Task<string> CreatePartnerTokenAsync(PartnerUser user)
+    {
+        var key = _config["Tokens:Partner:Key"] ?? "";
+        var issuer = _config["Tokens:Partner:Issuer"];
+        var audience = _config["Tokens:Partner:Audience"];
+        var lifeTime = _config["Tokens:Partner:LifeTime"];
+
+        var claims = new List<Claim>
+        {
+            new Claim("id", user.Id.ToString()),
+            new Claim("email", user.Email!),
+        };
+
+        var keyBytes = Encoding.UTF8.GetBytes(key);
+
+        var symmetricSecurityKey = new SymmetricSecurityKey(keyBytes);
+
+
+        var signingCredentials = new SigningCredentials(
+            symmetricSecurityKey,
+            SecurityAlgorithms.HmacSha256);
+
+
+        var jwtSecurityToken = new JwtSecurityToken(
+            issuer: issuer,
+            audience: audience,
+            claims: claims,
+            expires: DateTime.UtcNow.AddMinutes(int.TryParse(lifeTime, out var result) ? result : 15),
+            signingCredentials: signingCredentials);
+
+        string token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+
+        return token;
+    }
+    
     public async Task<RefreshToken> GenerateRefreshTokenAsync(UserEntity user)
     {
         var lifeTime = _config["Tokens:Refresh:LifeTime"];
@@ -110,6 +146,23 @@ public class TokenService(
         return refreshToken;
     }
 
+    public async Task<RefreshToken> GeneratePartnerRefreshTokenAsync(PartnerUser user)
+    {
+        var lifeTime = _config["Tokens:Refresh:LifeTime"];
+
+        var refreshToken = new RefreshToken
+        {
+            Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(128)),
+            UserId = user.Id,
+            Expires = DateTime.UtcNow.AddDays(int.TryParse(lifeTime, out var result) ? result : 7),
+            IsRevoked = false
+        };
+
+        await _refreshTokenRepo.AddAsync(refreshToken);
+        await _refreshTokenRepo.SaveChangesAsync();
+        return refreshToken;
+    }
+    
     public async Task<RefreshToken?> ValidateRefreshTokenAsync(string token)
     {
         var refreshToken = (await _refreshTokenRepo.Query().FirstOrDefaultAsync(x => x.Token == token));

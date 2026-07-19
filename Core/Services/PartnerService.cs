@@ -6,6 +6,7 @@ using Core.Dtos.Partner;
 using Core.Interfaces;
 using Domain.Entities.Company.Partner;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace Core.Services;
@@ -15,13 +16,14 @@ public class PartnerService(
         IMapper _mapper,
         IEmailService _emailService,
         IMemoryCache _memoryCache,
-        IHashService _hashService
+        IHashService _hashService,
+        ITokenService _tokenService
     ) : IPartnerService
 {
     public async Task PartnerRegister(PartnerRegisterDto dto)
     {
-        var existingEmailUser = _partnerUserRepo.Query().Where(x => !x.IsDeleted).FirstOrDefault(x => x.Email == dto.Email);
-        var existingPhoneUser = _partnerUserRepo.Query().Where(x => !x.IsDeleted).FirstOrDefault(x => x.Phone == dto.Phone);
+        var existingEmailUser = await _partnerUserRepo.Query().Where(x => !x.IsDeleted).FirstOrDefaultAsync(x => x.Email == dto.Email);
+        var existingPhoneUser = await _partnerUserRepo.Query().Where(x => !x.IsDeleted).FirstOrDefaultAsync(x => x.Phone == dto.Phone);
         
         if (existingEmailUser is not null)
         {
@@ -83,5 +85,74 @@ public class PartnerService(
         await _emailService.SendPartnerVerificationCodeAsync(user.Email!, user.Id.ToString());
     }
     
+    public async Task<TokenResponseDto> VerifyPartnerCode(VerifyCodeDto dto)
+    {
+        var key = $"verify-partner:data:{dto.Email}";
+        var sendKey = $"verify-partner:send:{dto.Email}";
+
+        if (!_memoryCache.TryGetValue(key, out VerificationData data))
+            throw new BadCodeException();
+
+
+        if (data.AttemptsLeft <= 0)
+        {
+            _memoryCache.Remove(key);
+            _memoryCache.Remove(sendKey);
+            throw new ExpiredCodeException();
+        }
+
+        if (data.CodeHash == _hashService.Hash(dto.Code))
+        {
+            _memoryCache.Remove(key);
+            _memoryCache.Remove(sendKey);
+
+            var user = await _partnerUserRepo.Query().Where(x => !x.IsDeleted).FirstOrDefaultAsync(x => x.Email == dto.Email);
+
+            if (user != null)
+            {
+                var token = await _tokenService.CreatePartnerTokenAsync(user);
+                var refreshToken = await _tokenService.GeneratePartnerRefreshTokenAsync(user);
+
+                user.ConfirmedEmail = true;
+                await _partnerUserRepo.UpdateAsync(user);
+                
+                return
+                    new TokenResponseDto
+                    {
+                        RequiresRegistration = false,
+                        AccessToken = token,
+                        RefreshToken = refreshToken.Token
+                    };
+            }
+        }
+
+        data.AttemptsLeft--;
+
+        _memoryCache.Set(key, data, TimeSpan.FromMinutes(10));
+        throw new BadCodeException();
+    }
     
+    public async Task<TokenResponseDto> RefreshToken(string refreshToken)
+    {
+        var validatedToken = await _tokenService.ValidateRefreshTokenAsync(refreshToken);
+        if (validatedToken == null)
+            throw new InvalidRefreshTokenException();
+
+        var user = await _partnerUserRepo.Query().FirstOrDefaultAsync(x => x.Id == validatedToken.UserId);
+        if (user == null)
+            throw new InvalidRefreshTokenException();
+
+        await _tokenService.RevokeRefreshTokenAsync(refreshToken);
+
+        var newAccessToken = await _tokenService.CreatePartnerTokenAsync(user);
+        var newRefreshToken = await _tokenService.GeneratePartnerRefreshTokenAsync(user);
+
+        return
+            new TokenResponseDto
+            {
+                RequiresRegistration = false,
+                AccessToken = newAccessToken,
+                RefreshToken = newRefreshToken.Token
+            };
+    }
 }
