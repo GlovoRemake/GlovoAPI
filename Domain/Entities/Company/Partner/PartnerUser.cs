@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Domain.Entities.Base;
+using Domain.Entities.User;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using Domain.Entities.Base;
 
 namespace Domain.Entities.Company.Partner;
 
@@ -18,4 +19,5 @@ public class PartnerUser : BaseEntityWithIsDeleted<Guid>
 
     public ICollection<Company> Companies { get; set; }
     public ICollection<Employee> Employees { get; set; }
+    public ICollection<PartnerRefreshToken>? RefreshTokens { get; set; }
 }
