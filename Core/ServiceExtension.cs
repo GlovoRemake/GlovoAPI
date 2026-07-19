@@ -21,6 +21,7 @@ public static class ServiceExtension
         service.AddScoped<IEmailTemplateService, EmailTemplateService>();
 
         service.AddScoped<IAccountService, AccountService>();
+        service.AddScoped<IPartnerService, PartnerService>();
         service.AddScoped<IHashService, HashService>();
     }
 
