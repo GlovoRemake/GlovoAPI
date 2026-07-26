@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Core.Interfaces;
 using Domain.Data;
-using Core.Interfaces;
 using Domain.Entities.Base;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Core.Repositories;
 
@@ -26,6 +27,44 @@ public class SoftDeleteRepository<TEntity, TKey>(GlovoDbContext context) :
             .ToListAsync();
     }
 
+    public async Task<(IEnumerable<TEntity> Items, int TotalCount)> ListPagedAsync(
+        int pageNumber,
+        int pageSize,
+        Expression<Func<TEntity, bool>>? predicate = null,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+        bool descending = false)
+    {
+        if (pageNumber < 1)
+            throw new ArgumentOutOfRangeException(nameof(pageNumber));
+
+        if (pageSize < 1)
+            throw new ArgumentOutOfRangeException(nameof(pageSize));
+
+        IQueryable<TEntity> query = context.Set<TEntity>();
+
+        if (predicate != null)
+            query = query.Where(predicate);
+
+        if (orderBy != null)
+        {
+            query = orderBy(query);
+        }
+        else
+        {
+            query = query.OrderBy(x => x.Id);
+        }
+
+        var totalCount = await query.Where(x => !x.IsDeleted).CountAsync();
+
+        var items = await query
+            .Where(x => !x.IsDeleted)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return (items, totalCount);
+    }
+
     public async Task AddAsync(TEntity entity)
     {
         if (entity == null) throw new ArgumentNullException(nameof(entity));
@@ -38,6 +77,8 @@ public class SoftDeleteRepository<TEntity, TKey>(GlovoDbContext context) :
     {
         if (entity == null) throw new ArgumentNullException(nameof(entity));
 
+        entity.DateUpdated = DateTime.UtcNow;
+
         context.Set<TEntity>().Update(entity);
         await context.SaveChangesAsync();
     }
@@ -46,6 +87,8 @@ public class SoftDeleteRepository<TEntity, TKey>(GlovoDbContext context) :
     {
         var entity = await context.Set<TEntity>().FindAsync(id);
         if (entity == null) return;
+
+        entity.DateUpdated = DateTime.UtcNow;
 
         entity.IsDeleted = true;
         await context.SaveChangesAsync();

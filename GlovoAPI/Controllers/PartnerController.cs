@@ -1,7 +1,9 @@
 ﻿using Core.Commands.Partner;
 using Core.Dtos.Account;
+using Core.Dtos.Company;
 using Core.Dtos.Partner;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,7 +15,7 @@ namespace GlovoAPI.Controllers
     public class PartnerController(IMediator _mediator) : ControllerBase
     {
         [HttpPost("Register")]
-        public async Task<IActionResult> Refister([FromBody] PartnerRegisterDto model)
+        public async Task<IActionResult> Register([FromBody] PartnerRegisterDto model)
         {
             var result = await _mediator.Send(new PartnerRegisterCommand(model));
 
@@ -50,6 +52,18 @@ namespace GlovoAPI.Controllers
             if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
 
             return Ok(new { result.IsSuccess, result.Value });
+        }
+
+        [Authorize(AuthenticationSchemes = "PartnerAccessScheme")]
+        [HttpPost("send-request-company")]
+        public async Task<IActionResult> SendRequestCompany([FromBody] AddRequestCompanyDto dto)
+        {
+            var res = Guid.TryParse(User.FindFirst("id")?.Value, out var id);
+            var result = await _mediator.Send(new SendRequestCompanyCommand(res ? id : Guid.Empty, dto));
+
+            if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
+
+            return Ok(new { result.IsSuccess, result = true });
         }
     }
 }

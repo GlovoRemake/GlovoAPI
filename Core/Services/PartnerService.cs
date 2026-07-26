@@ -1,18 +1,26 @@
 using AutoMapper;
 using Core.Dtos.Account;
+using Core.Dtos.Company;
 using Core.Dtos.Exceptions.Account;
+using Core.Dtos.Exceptions.Company;
 using Core.Dtos.Exceptions.Partner;
 using Core.Dtos.Partner;
 using Core.Interfaces;
+using Domain.Entities.Company;
 using Domain.Entities.Company.Partner;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.IdentityModel.Tokens.Experimental;
+using Org.BouncyCastle.Math.EC.Rfc7748;
+using System.Runtime.CompilerServices;
 
 namespace Core.Services;
 
 public class PartnerService(
         ISoftDeleteRepository<PartnerUser, Guid> _partnerUserRepo,
+        IRepository<RequestCompany, long> _requestCompanyRepo,
         IMapper _mapper,
         IEmailService _emailService,
         IMemoryCache _memoryCache,
@@ -187,4 +195,21 @@ public class PartnerService(
                 RefreshToken = newRefreshToken.Token
             };
     }
+
+    public async Task SendRequestCompany(Guid id, AddRequestCompanyDto dto)
+    {
+        var user = await _partnerUserRepo.Query().Where(x => !x.IsDeleted).FirstOrDefaultAsync(x => x.Id == id);
+        if (user is null) throw new UserNotFoundException();
+
+        var existingRequest = await _requestCompanyRepo.Query().FirstOrDefaultAsync(x => x.PartnerId == user.Id && x.Name == dto.Name);
+        if (existingRequest != null) throw new RequestAlreadySendedException();
+
+        var request = _mapper.Map<RequestCompany>(dto);
+        request.PartnerId = user.Id;
+        request.IsApprove = null;
+
+        await _requestCompanyRepo.AddAsync(request);
+    }
+
+    
 }
