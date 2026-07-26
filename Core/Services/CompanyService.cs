@@ -51,7 +51,7 @@ public class CompanyService(
             request.IsApprove = true;
             await _requestCompanyRepo.UpdateAsync(request);
 
-            return _mapper.Map<CompanyDto>(request);
+            return _mapper.Map<CompanyDto>(company);
         }
         else
         {
