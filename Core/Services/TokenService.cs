@@ -129,7 +129,37 @@ public class TokenService(
 
         return token;
     }
-    
+
+    public async Task<string> CreateResetPasswordTokenAsync(string email)
+    {
+        var key = _config["Tokens:ResetPassword:Key"]!;
+        var issuer = _config["Tokens:ResetPassword:Issuer"];
+        var audience = _config["Tokens:ResetPassword:Audience"];
+
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Email, email),
+            new Claim("purpose", "resetPassword")
+        };
+
+        var securityKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(key));
+
+        var creds = new SigningCredentials(
+            securityKey,
+            SecurityAlgorithms.HmacSha256);
+
+        var token = new JwtSecurityToken(
+            issuer: issuer,
+            audience: audience,
+            claims: claims,
+            expires: DateTime.UtcNow.AddMinutes(5),
+            signingCredentials: creds
+        );
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
     public async Task<RefreshToken> GenerateRefreshTokenAsync(UserEntity user)
     {
         var lifeTime = _config["Tokens:Refresh:LifeTime"];
