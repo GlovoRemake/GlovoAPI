@@ -1,5 +1,17 @@
 [
   {
+    "Name": "Owner",
+    "NormalizedName": "OWNER"
+  },
+  {
+    "Name": "Support",
+    "NormalizedName": "SUPPORT"
+  },
+  {
+    "Name": "Courier",
+    "NormalizedName": "COURIER"
+  },
+  {
     "Name": "Admin",
     "NormalizedName": "ADMIN"
   },
