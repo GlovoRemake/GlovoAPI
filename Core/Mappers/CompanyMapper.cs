@@ -11,6 +11,11 @@ public class CompanyMapper : Profile
         CreateMap<AddRequestCompanyDto, RequestCompany>();
 
         CreateMap<RequestCompany, RequestCompanyDto>();
+
+        CreateMap<RequestCompany, Company>()
+            .ForMember(x => x.OwnerId, opt => opt.MapFrom(x => x.PartnerId));
+
+        CreateMap<Company, CompanyDto>();
     }   
 }
 

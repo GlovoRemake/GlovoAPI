@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Core.Dtos.Exceptions.Company
+namespace Core.Dtos.Exceptions.Company;
+public class RequestNotFoundException : Exception
 {
-    internal class RequestNotFoundException
-    {
-    }
+    public RequestNotFoundException()
+        : base("") { }
+
+    public RequestNotFoundException(string message)
+        : base(message) { }
 }
