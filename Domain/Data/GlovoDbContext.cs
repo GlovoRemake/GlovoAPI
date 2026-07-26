@@ -42,6 +42,7 @@ public class GlovoDbContext : IdentityDbContext<UserEntity, IdentityRole<Guid>, 
 
 
     public DbSet<Company> Companies { get; set; }
+    public DbSet<RequestCompany> RequestCompanies { get; set; }
     public DbSet<CompanyType> CompanyTypes { get; set; }
     public DbSet<Type> Types { get; set; }
     public DbSet<CompanyProductCategory> CompanyProductCategories { get; set; }

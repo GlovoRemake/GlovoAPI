@@ -12,8 +12,8 @@ public class Company : BaseEntityWithIsDeleted<Guid>
 {
     public string Name { get; set; }
     public string Description { get; set; }
-    public string IconPath { get; set; }
-    public string BannerPath { get; set; }
+    public string? IconPath { get; set; }
+    public string? BannerPath { get; set; }
     public Guid OwnerId { get; set; }
 
     // conn
@@ -23,4 +23,5 @@ public class Company : BaseEntityWithIsDeleted<Guid>
     public ICollection<UserRate>? Rates { get; set; }
     public ICollection<CompanyProduct>? Products { get; set; }
     public ICollection<CompanyProductCategory>? ProductCategories { get; set; }
+    public ICollection<RequestCompany>? RequestCompanies { get; set; }
 }
