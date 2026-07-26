@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.Internal.Mappers;
 using Core.Dtos.Company;
 using Core.Dtos.Exceptions.Company;
 using Core.Interfaces;
@@ -45,6 +46,8 @@ public class CompanyService(
         if (dto.IsApprove)
         {
             var company = _mapper.Map<Company>(request);
+            company.DateCreated = DateTime.UtcNow;
+            company.DateUpdated = DateTime.UtcNow;
             await _companyRepo.AddAsync(company);
             request.CompanyId = company.Id;
 
