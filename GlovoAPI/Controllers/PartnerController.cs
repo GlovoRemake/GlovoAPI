@@ -15,7 +15,7 @@ namespace GlovoAPI.Controllers
     public class PartnerController(IMediator _mediator) : ControllerBase
     {
         [HttpPost("Register")]
-        public async Task<IActionResult> Refister([FromBody] PartnerRegisterDto model)
+        public async Task<IActionResult> Register([FromBody] PartnerRegisterDto model)
         {
             var result = await _mediator.Send(new PartnerRegisterCommand(model));
 
@@ -58,8 +58,8 @@ namespace GlovoAPI.Controllers
         [HttpPost("send-request-company")]
         public async Task<IActionResult> SendRequestCompany([FromBody] AddRequestCompanyDto dto)
         {
-            var email = User.FindFirst("email")?.Value;
-            var result = await _mediator.Send(new SendRequestCompanyCommand(email, dto));
+            var res = Guid.TryParse(User.FindFirst("id")?.Value, out var id);
+            var result = await _mediator.Send(new SendRequestCompanyCommand(res ? id : Guid.Empty, dto));
 
             if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
 

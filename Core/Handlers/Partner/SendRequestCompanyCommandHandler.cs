@@ -28,7 +28,7 @@ public sealed class SendRequestCompanyCommandHandler
     {
         try
         {
-            await _partnerService.SendRequestCompany(request.email, request.dto);
+            await _partnerService.SendRequestCompany(request.id, request.dto);
         }
         catch (UserNotFoundException)
         {

@@ -7,5 +7,5 @@ using System.Text;
 
 namespace Core.Commands.Partner;
 
-public record SendRequestCompanyCommand(string email, AddRequestCompanyDto dto)
+public record SendRequestCompanyCommand(Guid id, AddRequestCompanyDto dto)
     : IRequest<Result>;
