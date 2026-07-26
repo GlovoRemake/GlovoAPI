@@ -77,6 +77,8 @@ public class SoftDeleteRepository<TEntity, TKey>(GlovoDbContext context) :
     {
         if (entity == null) throw new ArgumentNullException(nameof(entity));
 
+        entity.DateUpdated = DateTime.UtcNow;
+
         context.Set<TEntity>().Update(entity);
         await context.SaveChangesAsync();
     }
@@ -85,6 +87,8 @@ public class SoftDeleteRepository<TEntity, TKey>(GlovoDbContext context) :
     {
         var entity = await context.Set<TEntity>().FindAsync(id);
         if (entity == null) return;
+
+        entity.DateUpdated = DateTime.UtcNow;
 
         entity.IsDeleted = true;
         await context.SaveChangesAsync();

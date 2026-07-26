@@ -76,6 +76,8 @@ public class Repository<TEntity, TKey>(GlovoDbContext context) :
     {
         if (entity == null) throw new ArgumentNullException(nameof(entity));
 
+        entity.DateUpdated = DateTime.UtcNow;
+
         context.Set<TEntity>().Update(entity);
         await context.SaveChangesAsync();
     }
