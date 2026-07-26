@@ -331,4 +331,133 @@ public class AccountService(
             return dto;
         }
     }
+
+    public async Task ForgotPasswordAsync(string email)
+    {
+        if (email == null)
+        {
+            throw new InvalidCredetionalsException("Пустий email!");
+        }
+
+        var existingUser = await _userManager.FindByEmailAsync(email);
+
+        if (existingUser is not null)
+        {
+            if (existingUser.EmailConfirmed && existingUser.RegisterType != RegisterType.Email)
+            {
+                throw new AnotherTypeRegException(existingUser.RegisterType.ToString());
+            }
+        }
+        else
+        {
+            throw new UserNotFoundException("Користувача не знайдено!");
+        }
+
+        await SendVerificationCodeAsync(new ForgotPasswordDto() { Email = email });
+    }
+
+    public async Task SendVerificationCodeAsync(ForgotPasswordDto dto)
+    {
+        var sendKey = $"reset:send:{dto.Email}";
+        var dataKey = $"reset:data:{dto.Email}";
+
+        if (_memoryCache.TryGetValue(sendKey, out _))
+        {
+            if (_memoryCache.TryGetValue(sendKey + ":expires", out DateTime expiresAt))
+            {
+                var remainingSeconds = (int)Math.Ceiling((expiresAt - DateTime.UtcNow).TotalSeconds);
+
+                throw new CodeAlreadySendedException(remainingSeconds.ToString());
+            }
+
+            throw new CodeAlreadySendedException("0");
+        }
+
+        var code = Random.Shared.Next(100000, 999999).ToString();
+
+        var codeHash = _hashService.Hash(code);
+
+        var data = new VerificationData
+        {
+            CodeHash = codeHash,
+            AttemptsLeft = 5
+        };
+
+        _memoryCache.Set(dataKey, data, TimeSpan.FromMinutes(10));
+
+        _memoryCache.Set(sendKey, true, TimeSpan.FromSeconds(60));
+        _memoryCache.Set(sendKey + ":expires", DateTime.UtcNow.AddSeconds(60));
+
+        await _emailService.SendForgotPasswordVerificationCodeAsync(dto.Email, code);
+    }
+
+    public async Task<TokenResponseDto> VerifyResetCode(VerifyCodeDto dto)
+    {
+        var key = $"reset:data:{dto.Email}";
+        var sendKey = $"reset:send:{dto.Email}";
+
+        if (!_memoryCache.TryGetValue(key, out VerificationData data))
+            throw new BadCodeException();
+
+
+        if (data.AttemptsLeft <= 0)
+        {
+            _memoryCache.Remove(key);
+            _memoryCache.Remove(sendKey);
+            throw new ExpiredCodeException();
+        }
+
+        if (data.CodeHash == _hashService.Hash(dto.Code))
+        {
+            _memoryCache.Remove(key);
+            _memoryCache.Remove(sendKey);
+
+            var token = await _tokenService.CreateResetPasswordTokenAsync(dto.Email);
+
+            return
+                new TokenResponseDto
+                {
+                    RequiresRegistration = false,
+                    AccessToken = token,
+                    RefreshToken = null
+                };
+        }
+
+        data.AttemptsLeft--;
+
+        _memoryCache.Set(key, data, TimeSpan.FromMinutes(10));
+        throw new BadCodeException();
+    }
+
+    public async Task SetNewPasswordAsync(string email, SetNewPasswordDto dto)
+    {
+        if (email == null)
+        {
+            throw new InvalidCredetionalsException("Пустий email!");
+        }
+
+        var existingUser = await _userManager.FindByEmailAsync(email);
+
+        if (existingUser is not null)
+        {
+            if (!existingUser.EmailConfirmed && existingUser.RegisterType != RegisterType.Email)
+            {
+                throw new AnotherTypeRegException(existingUser.RegisterType.ToString());
+            }
+        }
+        else
+        {
+            throw new UserNotFoundException("Користувача не знайдено!");
+        }
+
+        await _userManager.RemovePasswordAsync(existingUser);
+        var result = await _userManager.AddPasswordAsync(existingUser, dto.NewPassword);
+
+        if (!result.Succeeded)
+        {
+            throw new ChangePasswordException(string.Join("\n", result.Errors));
+        }
+    }
+
+    
 }
