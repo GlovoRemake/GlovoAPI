@@ -1,4 +1,5 @@
 ﻿using Core.Dtos.Account;
+using Core.Dtos.Company;
 using Core.Dtos.Partner;
 
 namespace Core.Interfaces;
@@ -9,4 +10,5 @@ public interface IPartnerService
     Task<TokenResponseDto> VerifyPartnerCode(VerifyCodeDto dto);
     Task<TokenResponseDto> RefreshToken(string refreshToken);
     Task<TokenResponseDto> PartnerLogin(string email, string password);
+    Task SendRequestCompany(string email, AddRequestCompanyDto dto);
 }
