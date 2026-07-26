@@ -1,7 +1,9 @@
 ﻿using Core.Commands.Partner;
 using Core.Dtos.Account;
+using Core.Dtos.Company;
 using Core.Dtos.Partner;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 
@@ -50,6 +52,18 @@ namespace GlovoAPI.Controllers
             if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
 
             return Ok(new { result.IsSuccess, result.Value });
+        }
+
+        [Authorize(AuthenticationSchemes = "PartnerAccessScheme")]
+        [HttpPost("send-request-company")]
+        public async Task<IActionResult> SendRequestCompany([FromBody] AddRequestCompanyDto dto)
+        {
+            var email = User.FindFirst("email")?.Value;
+            var result = await _mediator.Send(new SendRequestCompanyCommand(email, dto));
+
+            if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
+
+            return Ok(new { result.IsSuccess, result = true });
         }
     }
 }
