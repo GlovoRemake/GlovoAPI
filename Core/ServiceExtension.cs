@@ -23,6 +23,7 @@ public static class ServiceExtension
         service.AddScoped<IAccountService, AccountService>();
         service.AddScoped<IPartnerService, PartnerService>();
         service.AddScoped<IHashService, HashService>();
+        service.AddScoped<ICompanyService, CompanyService>();
     }
 
     public static void AddCache(this IServiceCollection service)
