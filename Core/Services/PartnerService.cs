@@ -1,18 +1,25 @@
 using AutoMapper;
 using Core.Dtos.Account;
+using Core.Dtos.Company;
 using Core.Dtos.Exceptions.Account;
+using Core.Dtos.Exceptions.Company;
 using Core.Dtos.Exceptions.Partner;
 using Core.Dtos.Partner;
 using Core.Interfaces;
+using Domain.Entities.Company;
 using Domain.Entities.Company.Partner;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.IdentityModel.Tokens.Experimental;
+using Org.BouncyCastle.Math.EC.Rfc7748;
+using System.Runtime.CompilerServices;
 
 namespace Core.Services;
 
 public class PartnerService(
         ISoftDeleteRepository<PartnerUser, Guid> _partnerUserRepo,
+        IRepository<RequestCompany, long> _requestCompanyRepo,
         IMapper _mapper,
         IEmailService _emailService,
         IMemoryCache _memoryCache,
@@ -187,4 +194,40 @@ public class PartnerService(
                 RefreshToken = newRefreshToken.Token
             };
     }
+
+    public async Task SendRequestCompany(string email, AddRequestCompanyDto dto)
+    {
+        var user = await _partnerUserRepo.Query().Where(x => !x.IsDeleted).FirstOrDefaultAsync(x => x.Email == email);
+        if (user is null) throw new UserNotFoundException();
+
+        var existingRequest = await _requestCompanyRepo.Query().FirstOrDefaultAsync(x => x.PartnerId == user.Id && x.Name == dto.Name);
+        if (existingRequest != null) throw new RequestAlreadySendedException();
+
+        var request = _mapper.Map<RequestCompany>(dto);
+        request.PartnerId = user.Id;
+
+        await _requestCompanyRepo.AddAsync(request);
+    }
+
+    public async Task<PagedRequestCompanyDto> GetAllRequests(RequestsPagedDto dto)
+    {
+        var (requests, totalCount) = await _requestCompanyRepo.ListPagedAsync(
+            dto.PageNumber, 
+            dto.PageSize,
+            predicate: x => true,
+            orderBy: q => q
+               .OrderBy(x => x.IsApprove != null)
+               .ThenBy(x => x.Name)
+        );
+        
+        var requestDtos = _mapper.Map<List<RequestCompanyDto>>(requests);
+
+        return new PagedRequestCompanyDto
+        {
+            Requests = requestDtos,
+            TotalCount = totalCount,
+            TotalPages = (int)Math.Ceiling(totalCount / (double)dto.PageSize)
+        }; 
+    }
+
 }

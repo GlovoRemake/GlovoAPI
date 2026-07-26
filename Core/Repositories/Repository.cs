@@ -27,6 +27,43 @@ public class Repository<TEntity, TKey>(GlovoDbContext context) :
             .ToListAsync();
     }
 
+    public async Task<(IEnumerable<TEntity> Items, int TotalCount)> ListPagedAsync(
+        int pageNumber,
+        int pageSize,
+        Expression<Func<TEntity, bool>>? predicate = null,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+        bool descending = false)
+    {
+        if (pageNumber < 1)
+            throw new ArgumentOutOfRangeException(nameof(pageNumber));
+
+        if (pageSize < 1)
+            throw new ArgumentOutOfRangeException(nameof(pageSize));
+
+        IQueryable<TEntity> query = context.Set<TEntity>();
+
+        if (predicate != null)
+            query = query.Where(predicate);
+
+        if (orderBy != null)
+        {
+            query = orderBy(query);
+        }
+        else
+        {
+            query = query.OrderBy(x => x.Id);
+        }
+
+        var totalCount = await query.CountAsync();
+
+        var items = await query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return (items, totalCount);
+    }
+
     public async Task AddAsync(TEntity entity)
     {
         if (entity == null) throw new ArgumentNullException(nameof(entity));

@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Core.Dtos.Company;
 using Core.Dtos.Partner;
+using Domain.Entities.Company;
 using Domain.Entities.Company.Partner;
 
 namespace Core.Mappers;
