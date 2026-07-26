@@ -196,9 +196,9 @@ public class PartnerService(
             };
     }
 
-    public async Task SendRequestCompany(string email, AddRequestCompanyDto dto)
+    public async Task SendRequestCompany(Guid id, AddRequestCompanyDto dto)
     {
-        var user = await _partnerUserRepo.Query().Where(x => !x.IsDeleted).FirstOrDefaultAsync(x => x.Email == email);
+        var user = await _partnerUserRepo.Query().Where(x => !x.IsDeleted).FirstOrDefaultAsync(x => x.Id == id);
         if (user is null) throw new UserNotFoundException();
 
         var existingRequest = await _requestCompanyRepo.Query().FirstOrDefaultAsync(x => x.PartnerId == user.Id && x.Name == dto.Name);
