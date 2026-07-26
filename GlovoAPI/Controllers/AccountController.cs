@@ -88,5 +88,40 @@ namespace GlovoAPI.Controllers
 
             return Ok(new { result.IsSuccess, result.Value });
         }
+
+        [HttpPost("ForgotPassword")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto request)
+        {
+            var result = await _mediator.Send(new ForgotPasswordCommand(request));
+
+            if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
+
+            return Ok(new { result.IsSuccess });
+        }
+
+        [Authorize(AuthenticationSchemes = "ResetPasswordScheme")]
+        [HttpPost("SetNewPassword")]
+        public async Task<IActionResult> SetNewPassword([FromBody] SetNewPasswordDto request)
+        {
+            var email = User.FindFirst(ClaimTypes.Email)?.Value;
+            Console.WriteLine($"EMAIL: {email}");
+
+            var result = await _mediator.Send(new SetNewPasswordCommand(email, request));
+
+            if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
+
+            return Ok(new { result.IsSuccess });
+        }
+
+        [HttpPost("verify-reset-code")]
+        public async Task<IActionResult> VerifyResetCode([FromBody] VerifyCodeDto model)
+        {
+            var result = await _mediator.Send(new VerifyResetCodeCommand(model));
+
+            if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
+
+            return Ok(new { result.IsSuccess, result.Value });
+        }
+
     }
 }
