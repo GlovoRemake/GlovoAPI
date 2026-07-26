@@ -20,4 +20,5 @@ public class PartnerUser : BaseEntityWithIsDeleted<Guid>
     public ICollection<Company> Companies { get; set; }
     public ICollection<Employee> Employees { get; set; }
     public ICollection<PartnerRefreshToken>? RefreshTokens { get; set; }
+    public ICollection<RequestCompany>? RequestCompanies { get; set; }
 }
