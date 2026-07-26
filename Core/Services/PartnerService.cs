@@ -10,6 +10,7 @@ using Domain.Entities.Company;
 using Domain.Entities.Company.Partner;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens.Experimental;
 using Org.BouncyCastle.Math.EC.Rfc7748;
@@ -20,6 +21,7 @@ namespace Core.Services;
 public class PartnerService(
         ISoftDeleteRepository<PartnerUser, Guid> _partnerUserRepo,
         IRepository<RequestCompany, long> _requestCompanyRepo,
+        ISoftDeleteRepository<Company, Guid> _companyRepo,
         IMapper _mapper,
         IEmailService _emailService,
         IMemoryCache _memoryCache,
@@ -205,6 +207,7 @@ public class PartnerService(
 
         var request = _mapper.Map<RequestCompany>(dto);
         request.PartnerId = user.Id;
+        request.IsApprove = null;
 
         await _requestCompanyRepo.AddAsync(request);
     }
@@ -230,4 +233,29 @@ public class PartnerService(
         }; 
     }
 
+    public async Task<CompanyDto?> ApprovalRequest(ApprovalCompanyDto dto)
+    {
+        var request = await _requestCompanyRepo.Query().FirstOrDefaultAsync(x => x.Id == dto.RequestId);
+        if (request == null) throw new RequestNotFoundException();
+
+        if (dto.IsApprove)
+        {
+            var company = _mapper.Map<Company>(request);
+            await _companyRepo.AddAsync(company);
+            request.CompanyId = company.Id;
+
+            request.IsApprove = true;
+            await _requestCompanyRepo.UpdateAsync(request);
+
+            return _mapper.Map<CompanyDto>(request);
+        } 
+        else
+        {
+            request.Message = dto.Message;
+            request.IsApprove = false;
+            await _requestCompanyRepo.UpdateAsync(request);
+
+            return null;
+        }
+    }
 }

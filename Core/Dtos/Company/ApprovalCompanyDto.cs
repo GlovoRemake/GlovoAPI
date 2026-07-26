@@ -8,4 +8,5 @@ public class ApprovalCompanyDto
 {
     public long RequestId { get; set; }
     public bool IsApprove { get; set; }
+    public string? Message { get; set; }
 }

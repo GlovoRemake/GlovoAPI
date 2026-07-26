@@ -12,6 +12,7 @@ public class RequestCompany : BaseEntity<long>
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public bool? IsApprove { get; set; }
+    public string? Message { get; set; }
     public Guid PartnerId { get; set; }
     public Guid? CompanyId { get; set; }
 
