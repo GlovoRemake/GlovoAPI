@@ -1,6 +1,7 @@
 ﻿using Core.Commands.Company;
 using Core.Commands.Partner;
 using Core.Dtos;
+using Core.Dtos.Company;
 using Core.Dtos.Exceptions.Account;
 using Core.Dtos.Exceptions.Company;
 using Core.Interfaces;
@@ -13,7 +14,7 @@ using System.Text;
 namespace Core.Handlers.Company;
 
 public sealed class ApprovalRequestCommandHandler
-    : IRequestHandler<ApprovalRequestCommand, Result>
+    : IRequestHandler<ApprovalRequestCommand, Result<CompanyDto?>>
 {
     private readonly ICompanyService _companyService;
 
@@ -22,29 +23,27 @@ public sealed class ApprovalRequestCommandHandler
         _companyService = companyService;
     }
 
-    public async Task<Result> Handle(
+    public async Task<Result<CompanyDto?>> Handle(
         ApprovalRequestCommand request,
         CancellationToken cancellationToken)
     {
         try
         {
-            await _companyService.ApprovalRequest(request.dto);
+            return Result<CompanyDto?>.Success(await _companyService.ApprovalRequest(request.dto));
         }
         catch (RequestNotFoundException)
         {
-            return Result.Failure(ErrorMessage.Create(
+            return Result<CompanyDto?>.Failure(ErrorMessage.Create(
                 "RequestNotFound",
                 $"Запит не знайдено"
             ));
         }
         catch (Exception ex)
         {
-            return Result.Failure(ErrorMessage.Create(
+            return Result<CompanyDto?>.Failure(ErrorMessage.Create(
                 "ServerError",
                 $"An error occurred during registration: {ex.Message}"
             ));
         }
-
-        return Result.Success();
     }
 }
