@@ -13,7 +13,8 @@ public class CompanyMapper : Profile
         CreateMap<RequestCompany, RequestCompanyDto>();
 
         CreateMap<RequestCompany, Company>()
-            .ForMember(x => x.OwnerId, opt => opt.MapFrom(x => x.PartnerId));
+            .ForMember(x => x.OwnerId, opt => opt.MapFrom(x => x.PartnerId))
+            .ForMember(x => x.Id, opt => opt.Ignore());
 
         CreateMap<Company, CompanyDto>();
     }   
