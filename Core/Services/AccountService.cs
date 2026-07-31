@@ -459,5 +459,39 @@ public class AccountService(
         }
     }
 
-    
+    public async Task UpdateProfileAsync(string email, UpdateProfileDto dto)
+    {
+        if (email == null)
+        {
+            throw new InvalidCredetionalsException("Пустий email!");
+        }
+
+        var existingUser = await _userManager.FindByEmailAsync(email);
+
+        if (existingUser is not null)
+        {
+            if (!existingUser.EmailConfirmed && existingUser.RegisterType != RegisterType.Email)
+            {
+                throw new AnotherTypeRegException(existingUser.RegisterType.ToString());
+            }
+        }
+        else
+        {
+            throw new UserNotFoundException("Користувача не знайдено!");
+        }
+
+        existingUser.FirstName = dto.FirstName;
+        existingUser.LastName = dto.LastName;
+        existingUser.PhoneNumber = dto.Phone;
+        if (dto.Avatar != null)
+        {
+            var path = await _imageService.SaveImageAsync(dto.Avatar);
+            existingUser.AvatarPath = path;
+        }
+        var res = await _userManager.UpdateAsync(existingUser);
+        if (!res.Succeeded)
+        {
+            throw new Exception($"Помилка під час оновлення користувача: {string.Join("\n", res.Errors)}");
+        }
+    }
 }
