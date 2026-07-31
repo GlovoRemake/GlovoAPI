@@ -123,5 +123,19 @@ namespace GlovoAPI.Controllers
             return Ok(new { result.IsSuccess, result.Value });
         }
 
+        [Authorize]
+        [HttpPost("update-profile")]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> UpdateProfile([FromForm] UpdateProfileDto model)
+        {
+            var email = User.FindFirst(ClaimTypes.Email)?.Value;
+            Console.WriteLine($"EMAIL: {email}");
+
+            var result = await _mediator.Send(new UpdateProfileCommand(email, model));
+
+            if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
+
+            return Ok(new { result.IsSuccess });
+        }
     }
 }
