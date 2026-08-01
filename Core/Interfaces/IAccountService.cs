@@ -15,4 +15,5 @@ public interface IAccountService
     Task<GetProfileDto> GetProfile(string userId);
     Task ForgotPasswordAsync(string email);
     Task SetNewPasswordAsync(string email, SetNewPasswordDto dto);
+    Task UpdateProfileAsync(string email, UpdateProfileDto dto);
 }
