@@ -16,7 +16,15 @@ public sealed class GetAllCategoriesQueryHandler : IRequestHandler<GetAllCategor
     }
     public async Task<Result<List<CategoryDto>>> Handle(GetAllCategoriesQuery request, CancellationToken cancellationToken)
     {
-        var res = await _companyCategoryService.GetAllCompanyCategoriesAsync(request.dto);
-        return Result<List<CategoryDto>>.Success(res);
+        try
+        {
+            var res = await _companyCategoryService.GetAllCompanyCategoriesAsync(request.dto);
+            return Result<List<CategoryDto>>.Success(res);
+        }
+        catch (Exception ex)
+        {
+            return Result<List<CategoryDto>>.Failure(new ErrorMessage("GetAllCategoriesError", ex.Message));
+        }
+        
     }
 }

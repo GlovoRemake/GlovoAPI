@@ -2,4 +2,5 @@
 
 public class DeleteCategoryDto
 {
+    public int IdCategory { get; set; }
 }

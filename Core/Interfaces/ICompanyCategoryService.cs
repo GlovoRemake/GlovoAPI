@@ -9,4 +9,7 @@ namespace Core.Interfaces;
 public interface ICompanyCategoryService
 {
     Task<List<CategoryDto>> GetAllCompanyCategoriesAsync(GetAllCategoriesDto query);
+    Task AddCompanyCategoriesAsync(AddCategoryDto dto);
+    Task UpdateCompanyCategoriesAsync(UpdateCategoryDto dto);
+    Task DeleteCompanyCategoriesAsync(DeleteCategoryDto dto);
 }

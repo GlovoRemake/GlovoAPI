@@ -9,5 +9,7 @@ public class CompanyCategoryMapper : Profile
     public CompanyCategoryMapper()
     {
         CreateMap<CompanyProductCategory, CategoryDto>();
+        CreateMap<AddCategoryDto, CompanyProductCategory>();
+        CreateMap<UpdateCategoryDto, CompanyProductCategory>();
     }
 }
