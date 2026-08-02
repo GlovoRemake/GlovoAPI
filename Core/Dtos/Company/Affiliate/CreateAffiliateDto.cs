@@ -5,7 +5,6 @@ namespace Core.Dtos.Company.Affiliate;
 
 public class CreateAffiliateDto
 {
-    public Guid CompanyId { get; set; }
     public string Phone { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
 
