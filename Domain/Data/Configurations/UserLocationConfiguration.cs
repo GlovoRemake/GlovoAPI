@@ -17,5 +17,10 @@ public class UserLocationConfiguration : IEntityTypeConfiguration<UserLocation>
             .HasOne(c => c.User)
             .WithMany(c => c.UserLocations)
             .HasForeignKey(c => c.UserId);
+
+        builder
+            .HasOne(c => c.City)
+            .WithMany(c => c.UserLocations)
+            .HasForeignKey(c => c.CityId);
     }
 }
