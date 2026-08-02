@@ -14,6 +14,13 @@ public interface ISoftDeleteRepository<TEntity, TKey>
         Expression<Func<TEntity, bool>>? predicate = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
         bool descending = false);
+
+    Task<(IEnumerable<TDto> Items, int TotalCount)> ListPagedAsync<TDto>(
+        int pageNumber,
+        int pageSize,
+        Expression<Func<TEntity, bool>>? predicate = null,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null);
+
     Task AddAsync(TEntity entity);
     Task UpdateAsync(TEntity entity);
     Task DeleteAsync(TKey id);

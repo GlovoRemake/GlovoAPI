@@ -1,13 +1,15 @@
-﻿using Domain;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Core.Interfaces;
+using Domain;
+using Domain.Data;
+using Domain.Entities.Base;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using Domain.Data;
-using Core.Interfaces;
-using Domain.Entities.Base;
 
 namespace Core.Repositories;
 
-public class Repository<TEntity, TKey>(GlovoDbContext context) :
+public class Repository<TEntity, TKey>(GlovoDbContext context, IMapper _mapper) :
     IRepository<TEntity, TKey>
     where TEntity : class, IEntity<TKey>, new()
 {
@@ -63,6 +65,40 @@ public class Repository<TEntity, TKey>(GlovoDbContext context) :
 
         return (items, totalCount);
     }
+
+    public async Task<(IEnumerable<TDto> Items, int TotalCount)> ListPagedAsync<TDto>(
+        int pageNumber,
+        int pageSize,
+        Expression<Func<TEntity, bool>>? predicate = null,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null)
+    {
+        if (pageNumber < 1)
+            throw new ArgumentOutOfRangeException(nameof(pageNumber));
+
+        if (pageSize < 1)
+            throw new ArgumentOutOfRangeException(nameof(pageSize));
+
+        IQueryable<TEntity> query = context.Set<TEntity>();
+
+        if (predicate != null)
+            query = query.Where(predicate);
+
+        if (orderBy != null)
+            query = orderBy(query);
+        else
+            query = query.OrderBy(x => x.Id);
+
+        var totalCount = await query.CountAsync();
+
+        var items = await query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ProjectTo<TDto>(_mapper.ConfigurationProvider)
+            .ToListAsync();
+
+        return (items, totalCount);
+    }
+
 
     public async Task AddAsync(TEntity entity)
     {

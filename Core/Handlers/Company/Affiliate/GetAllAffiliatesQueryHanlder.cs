@@ -12,7 +12,7 @@ using System.Text;
 namespace Core.Handlers.Company.Affiliate;
 
 public sealed class GetAllAffiliatesQueryHandler
-    : IRequestHandler<GetAllAffiliatesQuery, Result<AffiliateDto[]>>
+    : IRequestHandler<GetAllAffiliatesQuery, Result<PagedAffiliatesDto>>
 {
     private readonly IAffiliateService _affiliateService;
 
@@ -21,12 +21,12 @@ public sealed class GetAllAffiliatesQueryHandler
         _affiliateService = affiliateService;
     }
 
-    public async Task<Result<AffiliateDto[]>> Handle(
+    public async Task<Result<PagedAffiliatesDto>> Handle(
         GetAllAffiliatesQuery request,
         CancellationToken cancellationToken)
     {
 
 
-        return Result<AffiliateDto[]>.Success(await _affiliateService.GetAllAffiliatesAsync(request.companyId, request.pageNumber, request.pageSize));
+        return Result< PagedAffiliatesDto>.Success(await _affiliateService.GetAllAffiliatesAsync(request.companyId, request.pageNumber, request.pageSize));
     }
 }

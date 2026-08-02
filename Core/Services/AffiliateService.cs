@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Core.Dtos.Company;
 using Core.Dtos.Company.Affiliate;
 using Core.Dtos.Exceptions.Company;
 using Core.Dtos.Exceptions.Company.Affiliate;
@@ -24,13 +25,27 @@ public class AffiliateService(
     ) : IAffiliateService
 {
     
-    public async Task<AffiliateDto[]> GetAllAffiliatesAsync(Guid companyId, int pageNumber, int pageSize)
+    public async Task<PagedAffiliatesDto> GetAllAffiliatesAsync(Guid companyId, int pageNumber, int pageSize)
     {
-        throw new NotImplementedException();
+        var (requests, totalCount) = await _affiliateRepo.ListPagedAsync<AffiliateDto>(
+            pageNumber,
+            pageSize,
+            predicate: x => true
+        );
+
+        return new PagedAffiliatesDto
+        {
+            Affiliates = requests.ToList(),
+            TotalCount = totalCount,
+            TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize)
+        };
     }
     public async Task<AffiliateDto[]> GetAllAffiliatesByRegionAsync(Guid companyId, int cityId)
     {
-        throw new NotImplementedException();
+        return await _affiliateRepo.Query()
+            .Where(x => x.CompanyId == companyId && x.Location.RegionId == cityId)
+            .ProjectTo<AffiliateDto>(_mapper.ConfigurationProvider)
+            .ToArrayAsync();
     }
 
     public async Task<AffiliateDto> CreateAffiliateAsync(Guid comapanyId, CreateAffiliateDto affiliateDto)
