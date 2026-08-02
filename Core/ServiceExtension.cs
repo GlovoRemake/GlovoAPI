@@ -24,6 +24,7 @@ public static class ServiceExtension
         service.AddScoped<IPartnerService, PartnerService>();
         service.AddScoped<IHashService, HashService>();
         service.AddScoped<ICompanyService, CompanyService>();
+        service.AddScoped<IAffiliateService, AffiliateService>();
         service.AddScoped<ICompanyCategoryService, CompanyCategoryService>();
     }
 
