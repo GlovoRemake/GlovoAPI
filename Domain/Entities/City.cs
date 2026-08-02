@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.Base;
+using Domain.Entities.Courier;
 using Domain.Entities.User;
 
 namespace Domain.Entities;

@@ -5,6 +5,7 @@ using Domain.Entities.Support;
 using Domain.Entities.User;
 using Domain.Enums;
 using Microsoft.AspNetCore.Identity;
+using Domain.Entities.Courier;
 
 namespace Core.Entities.Identity;
 
@@ -27,4 +28,5 @@ public class UserEntity : IdentityUser<Guid>
     public ICollection<UserCart>? Carts { get; set; }
     public ICollection<RefreshToken>? RefreshTokens { get; set; }
     public ICollection<Payment>? Payments { get; set; }
+    public CourierProfile CourierProfile { get; set; } = default!;
 }
