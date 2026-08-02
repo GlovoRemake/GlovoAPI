@@ -25,7 +25,7 @@ namespace GlovoAPI.Controllers
             return Ok(new { result.IsSuccess, result.Value });
         }
 
-        [HttpPost("addCategory")]
+        [HttpPost("add")]
         public async Task<IActionResult> AddCompanyCategory([FromQuery] ApprovalCompanyDto dto)
         {
             var result = await _mediator.Send(new ApprovalRequestCommand(dto));
@@ -35,7 +35,7 @@ namespace GlovoAPI.Controllers
             return Ok(new { result.IsSuccess, result.Value });
         }
 
-        [HttpPut("editCategory")]
+        [HttpPut("edit")]
         public async Task<IActionResult> EditCompanyCategory([FromQuery] ApprovalCompanyDto dto)
         {
             var result = await _mediator.Send(new ApprovalRequestCommand(dto));
@@ -45,7 +45,7 @@ namespace GlovoAPI.Controllers
             return Ok(new { result.IsSuccess, result.Value });
         }
 
-        [HttpDelete("removeCategory")]
+        [HttpDelete("remove")]
         public async Task<IActionResult> RemoveCompanyCategory([FromQuery] ApprovalCompanyDto dto)
         {
             var result = await _mediator.Send(new ApprovalRequestCommand(dto));
