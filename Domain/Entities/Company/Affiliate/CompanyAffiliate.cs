@@ -12,7 +12,7 @@ public class CompanyAffiliate : BaseEntity<Guid>
 {
     public Guid CompanyId { get; set; }
     public int LocationId { get; set; }
-    public int WorkingHoursId { get; set; }
+    public int? WorkingHoursId { get; set; }
     public string Phone { get; set; }
     public string Email { get; set; }
     public TimeSpan AverageTimeCookingMin { get; set; }
@@ -21,8 +21,8 @@ public class CompanyAffiliate : BaseEntity<Guid>
 
     // conn
     public Company Company { get; set; }
-    public CompanyAffiliateLocation Location { get; set; }
-    public CompanyAffiliatesWorkingHour WorkingHours { get; set; }
+    public CompanyAffiliateLocation? Location { get; set; }
+    public CompanyAffiliatesWorkingHour? WorkingHours { get; set; }
     public ICollection<CompanyAffiliateProduct>? Products { get; set; }
     public ICollection<CompanyAffiliatesProductsCategory>? Categories { get; set; }
     public ICollection<UserCart>? Carts { get; set; }
