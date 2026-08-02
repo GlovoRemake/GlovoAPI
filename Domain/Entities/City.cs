@@ -1,4 +1,6 @@
 ﻿using Domain.Entities.Base;
+using Domain.Entities.Courier;
+using Domain.Entities.User;
 
 namespace Domain.Entities;
 
@@ -15,4 +17,5 @@ public class City : BaseEntityWithIsDeleted<int>
     // conn
     public Region Region { get; set; }
     public ICollection<CourierTimeSlot> CourierTimeSlots { get; set; }
+    public ICollection<UserLocation> UserLocations { get; set; }
 }

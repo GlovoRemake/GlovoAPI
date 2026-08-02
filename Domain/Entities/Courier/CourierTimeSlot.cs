@@ -1,7 +1,7 @@
 ﻿using Core.Entities.Identity;
 using Domain.Entities.Base;
 
-namespace Domain.Entities;
+namespace Domain.Entities.Courier;
 
 public class CourierTimeSlot : BaseEntity<int>
 {

@@ -3,6 +3,7 @@ using System;
 using Domain.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Domain.Migrations
 {
     [DbContext(typeof(GlovoDbContext))]
-    partial class GlovoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260802151859_add payment table")]
+    partial class addpaymenttable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -180,7 +183,7 @@ namespace Domain.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("WorkingHoursId")
+                    b.Property<int>("WorkingHoursId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -858,41 +861,7 @@ namespace Domain.Migrations
                     b.ToTable("Types");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Courier.CourierProfile", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<double>("Balance")
-                        .HasColumnType("double precision");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("DateUpdated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("TransportType")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("CourierProfiles");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Courier.CourierTimeSlot", b =>
+            modelBuilder.Entity("Domain.Entities.CourierTimeSlot", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1090,8 +1059,8 @@ namespace Domain.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<double>("Amount")
-                        .HasColumnType("double precision");
+                    b.Property<int>("Amount")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("CourierId")
                         .HasColumnType("uuid");
@@ -1123,7 +1092,7 @@ namespace Domain.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("Payments");
+                    b.ToTable("Payment");
                 });
 
             modelBuilder.Entity("Domain.Entities.Promocode", b =>
@@ -1605,7 +1574,9 @@ namespace Domain.Migrations
 
                     b.HasOne("Domain.Entities.Company.Affiliate.CompanyAffiliatesWorkingHour", "WorkingHours")
                         .WithMany("Affiliates")
-                        .HasForeignKey("WorkingHoursId");
+                        .HasForeignKey("WorkingHoursId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Company");
 
@@ -1823,18 +1794,7 @@ namespace Domain.Migrations
                     b.Navigation("ParentType");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Courier.CourierProfile", b =>
-                {
-                    b.HasOne("Core.Entities.Identity.UserEntity", "User")
-                        .WithOne("CourierProfile")
-                        .HasForeignKey("Domain.Entities.Courier.CourierProfile", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Courier.CourierTimeSlot", b =>
+            modelBuilder.Entity("Domain.Entities.CourierTimeSlot", b =>
                 {
                     b.HasOne("Domain.Entities.City", "City")
                         .WithMany("CourierTimeSlots")
@@ -2148,9 +2108,6 @@ namespace Domain.Migrations
                     b.Navigation("AssignedSupportChats");
 
                     b.Navigation("Carts");
-
-                    b.Navigation("CourierProfile")
-                        .IsRequired();
 
                     b.Navigation("CourierTimeSlots");
 
