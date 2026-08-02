@@ -35,4 +35,5 @@ public class UserOrder : BaseEntityWithIsDeleted<int>
     public Promocode Promocode { get; set; }
     public ICollection<UserRate> Rates { get; set; }
     public ICollection<OrderProduct> Products { get; set; }
+    public ICollection<Payment>? Payments { get; set; }
 }

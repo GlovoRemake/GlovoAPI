@@ -15,6 +15,7 @@ using Domain.Entities.Company.Product.Additional;
 using Domain.Entities.Company.Product.Sale;
 using Domain.Entities.Company.Type;
 using Type = Domain.Entities.Company.Type.Type;
+using Domain.Entities.Courier;
 
 namespace Domain.Data;
 
@@ -39,7 +40,8 @@ public class GlovoDbContext : IdentityDbContext<UserEntity, IdentityRole<Guid>, 
     public DbSet<SupportChat> SupportChats { get; set; }
     public DbSet<Message> Messages { get; set; }
 
-
+    public DbSet<Payment> Payments { get; set; }
+    public DbSet<CourierProfile> CourierProfiles { get; set; }
 
     public DbSet<Company> Companies { get; set; }
     public DbSet<RequestCompany> RequestCompanies { get; set; }
