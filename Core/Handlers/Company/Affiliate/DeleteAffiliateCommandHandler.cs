@@ -4,6 +4,7 @@ using Core.Dtos;
 using Core.Dtos.Company;
 using Core.Dtos.Company.Affiliate;
 using Core.Dtos.Exceptions.Company;
+using Core.Dtos.Exceptions.Company.Affiliate;
 using Core.Interfaces;
 using MediatR;
 using System;
@@ -29,6 +30,13 @@ public sealed class DeleteAffiliateCommandHandler
         try
         {
             return Result<bool>.Success(await _affiliateService.DeleteAffiliateAsync(request.affiliateId));
+        }
+        catch (AffiliateNotFoundException)
+        {
+            return Result<bool>.Failure(ErrorMessage.Create(
+                "AffiliateId",
+                $"Affiliate not found"
+            ));
         }
         catch (Exception ex)
         {

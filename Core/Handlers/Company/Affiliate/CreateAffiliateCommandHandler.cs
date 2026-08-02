@@ -4,6 +4,7 @@ using Core.Dtos;
 using Core.Dtos.Company;
 using Core.Dtos.Company.Affiliate;
 using Core.Dtos.Exceptions.Company;
+using Core.Dtos.Exceptions.Region;
 using Core.Interfaces;
 using MediatR;
 using System;
@@ -29,6 +30,20 @@ public sealed class CreateAffiliateCommandHandler
         try
         {
             return Result<AffiliateDto>.Success(await _affiliateService.CreateAffiliateAsync(request.companyId, request.dto));
+        }
+        catch (CompanyNotFoundException)
+        {
+            return Result<AffiliateDto>.Failure(ErrorMessage.Create(
+                "CompanyId",
+                $"Company not found"
+            ));
+        }
+        catch (RegionNotFoundException)
+        {
+            return Result<AffiliateDto>.Failure(ErrorMessage.Create(
+                "RegionId",
+                $"Region not found"
+            ));
         }
         catch (Exception ex)
         {
