@@ -81,15 +81,24 @@ public sealed class PartnerAccessHandler(
 
 
     private async Task<bool> IsCompanyOwnerAsync(
-        HttpContext httpContext,
-        Guid userId)
+    HttpContext httpContext,
+    Guid userId)
     {
-        if (!TryGetCompanyId(httpContext, out var companyId))
-            return false;
+        if (TryGetCompanyId(httpContext, out var companyId))
+        {
+            return await _companyRepo.Query().AnyAsync(x =>
+                x.Id == companyId &&
+                x.OwnerId == userId);
+        }
 
-        return await _companyRepo.Query().AnyAsync(x =>
-            x.Id == companyId &&
-            x.OwnerId == userId);
+        if (TryGetAffiliateId(httpContext, out var affiliateId))
+        {
+            return await _companyRepo.Query().AnyAsync(x =>
+                x.OwnerId == userId &&
+                x.Affiliates.Any(a => a.Id == affiliateId));
+        }
+
+        return false;
     }
 
     private async Task<bool> IsAffiliateRoleAsync(
