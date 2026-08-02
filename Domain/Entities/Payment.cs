@@ -19,7 +19,7 @@ public class Payment : BaseEntityWithIsDeleted<int>
     public int? OrderId { get; set; }
     public string? Message { get; set; }
 
-    public int Amount { get; set; }
+    public double Amount { get; set; }
 
     // conn
     public UserOrder? Order { get; set; }
