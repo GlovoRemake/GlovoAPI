@@ -1,10 +1,10 @@
 ﻿using Core.Commands.Company;
-using Core.Commands.Partner;
 using Core.Dtos.Company;
 using Core.Queries.Company;
+using GlovoAPI.Policy.Attributes;
+using GlovoAPI.Policy.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GlovoAPI.Controllers
@@ -33,6 +33,13 @@ namespace GlovoAPI.Controllers
             if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
 
             return Ok(new { result.IsSuccess, result.Value });
+        }
+
+        [PartnerAuthorize(PartnerRolesEnum.CompanyOwner, PartnerRolesEnum.AffiliateManager)]
+        [HttpPost("test/{companyId:Guid}")]
+        public async Task<IActionResult> test(Guid companyId, [FromBody] string data)
+        {
+            return Ok(new { CompanyId = companyId, Data = data });
         }
     }
 }

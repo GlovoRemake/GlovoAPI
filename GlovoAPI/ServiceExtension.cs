@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using GlovoAPI.Policy.Providers;
+using GlovoAPI.Policy.Requirements;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
@@ -86,6 +88,9 @@ public static class ServiceExtension
             });
 
         service.AddAuthorization();
+
+        service.AddSingleton<IAuthorizationPolicyProvider, PartnerAuthorizationPolicyProvider>();
+        service.AddScoped<IAuthorizationHandler, PartnerAccessHandler>();
     }
 
     private static TokenValidationParameters GetTokenValidationParameters(string issuer, string audience, string key)
