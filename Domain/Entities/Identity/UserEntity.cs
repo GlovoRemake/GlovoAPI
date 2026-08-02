@@ -26,4 +26,5 @@ public class UserEntity : IdentityUser<Guid>
     public ICollection<UserRate>? Rates { get; set; }
     public ICollection<UserCart>? Carts { get; set; }
     public ICollection<RefreshToken>? RefreshTokens { get; set; }
+    public ICollection<Payment>? Payments { get; set; }
 }
