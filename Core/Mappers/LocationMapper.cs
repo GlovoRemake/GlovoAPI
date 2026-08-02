@@ -13,6 +13,7 @@ public class LocationMapper : Profile
     {
         CreateMap<CreateAffiliateLocationDto, CompanyAffiliateLocation>();
         CreateMap<CompanyAffiliateLocation, LocationDto>()
-            .ForMember(dest => dest.Region, opt => opt.MapFrom(src => src.Region.Name));
+            .ForMember(dest => dest.Region, opt => opt.MapFrom(src => src.Region.Name))
+            .ForMember(dest => dest.RegionId, opt => opt.MapFrom(src => src.Region.Id));
     }
 }
