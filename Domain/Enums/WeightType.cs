@@ -6,6 +6,6 @@ namespace Domain.Enums;
 
 public enum WeightType
 {
-    grams = 1,
-    milliliters = 2,
+    Grams = 0,
+    Milliliters = 1,
 }

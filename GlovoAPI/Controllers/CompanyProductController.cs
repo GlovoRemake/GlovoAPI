@@ -15,7 +15,7 @@ namespace GlovoAPI.Controllers
     [ApiController]
     public class CompanyProductController(IMediator _mediator) : ControllerBase
     {
-        [HttpGet("create/{companyId:Guid}/{categoryId:int}")]
+        [HttpGet("get/{companyId:Guid}/{categoryId:int}")]
         public async Task<IActionResult> GetProducts(Guid companyId, int categoryId)
         {
             var result = await _mediator.Send(new GetProductsQuery(companyId, categoryId));
@@ -26,6 +26,7 @@ namespace GlovoAPI.Controllers
         }
 
         [PartnerAuthorize(PartnerRolesEnum.CompanyOwner)]
+        [Consumes("multipart/form-data")]
         [HttpPost("create/{companyId:Guid}")]
         public async Task<IActionResult> CreateProduct(Guid companyId, [FromForm] CreateProductDto dto)
         {
@@ -37,8 +38,9 @@ namespace GlovoAPI.Controllers
         }
         
         [PartnerAuthorize(PartnerRolesEnum.CompanyOwner)]
-        [HttpPut("update/{productId:int}")]
-        public async Task<IActionResult> UpdateProduct(int productId, [FromForm] UpdateProductDto dto)
+        [Consumes("multipart/form-data")]
+        [HttpPut("update/{companyId:Guid}/{productId:int}")]
+        public async Task<IActionResult> UpdateProduct(Guid companyId, int productId, [FromForm] UpdateProductDto dto)
         {
             var result = await _mediator.Send(new UpdateProductCommand(productId, dto));
 
@@ -48,8 +50,8 @@ namespace GlovoAPI.Controllers
         }
 
         [PartnerAuthorize(PartnerRolesEnum.CompanyOwner)]
-        [HttpDelete("delete/{productId:int}")]
-        public async Task<IActionResult> DeleteProduct(int productId)
+        [HttpDelete("delete/{companyId:Guid}/{productId:int}")]
+        public async Task<IActionResult> DeleteProduct(Guid companyId, int productId)
         {
             var result = await _mediator.Send(new DeleteProductCommand(productId));
 
