@@ -14,7 +14,8 @@ namespace Core.Services;
 public class CompanyService(
         IRepository<RequestCompany, long> _requestCompanyRepo,
         ISoftDeleteRepository<Company, Guid> _companyRepo,
-        IMapper _mapper
+        IMapper _mapper,
+        IImageService _imageService
     ) : ICompanyService
 {
     public async Task<PagedRequestCompanyDto> GetAllRequests(RequestsPagedDto dto)
@@ -70,5 +71,42 @@ public class CompanyService(
     {
         var company = await _companyRepo.Query().FirstOrDefaultAsync(x => x.Id == companyId);
         return company == null ? null : _mapper.Map<CompanyDto>(company);
+    }
+
+    public async Task UpdateCompanyAsync(UpdateCompanyDto dto)
+    {
+        var company = _companyRepo.Query().FirstOrDefault(x => x.Id == dto.Id);
+        if (company == null) throw new CompanyNotFoundException();
+
+        if (!string.IsNullOrWhiteSpace(dto.Name) && dto.Name != company.Name)
+        {
+            company.Name = dto.Name;
+        }
+        if (!string.IsNullOrWhiteSpace(dto.Description) && dto.Description != company.Description)
+        {
+            company.Description = dto.Description;
+        }
+
+        // icon
+        if (dto.Icon != null)
+        {
+            if (company.IconPath != null)
+            {
+                await _imageService.DeleteImageAsync(company.IconPath);
+            }
+            company.IconPath = await _imageService.SaveImageAsync(dto.Icon);
+        }
+
+        // banner
+        if (dto.Banner != null)
+        {
+            if (company.BannerPath != null)
+            {
+                await _imageService.DeleteImageAsync(company.BannerPath);
+            }
+            company.BannerPath = await _imageService.SaveImageAsync(dto.Banner);
+        }
+
+        await _companyRepo.UpdateAsync(company);
     }
 }
