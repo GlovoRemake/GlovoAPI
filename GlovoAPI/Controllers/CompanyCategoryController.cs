@@ -5,6 +5,8 @@ using Core.Dtos.Company;
 using Core.Dtos.Company.Category;
 using Core.Queries.Company;
 using Core.Queries.Company.Category;
+using GlovoAPI.Policy.Attributes;
+using GlovoAPI.Policy.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -26,6 +28,7 @@ namespace GlovoAPI.Controllers
             return Ok(new { result.IsSuccess, result.Value });
         }
 
+        [PartnerAuthorize(PartnerRolesEnum.CompanyOwner)]
         [HttpPost("add")]
         public async Task<IActionResult> AddCompanyCategory([FromBody] AddCategoryDto dto)
         {
@@ -35,7 +38,7 @@ namespace GlovoAPI.Controllers
 
             return Ok(new { result.IsSuccess });
         }
-
+        [PartnerAuthorize(PartnerRolesEnum.CompanyOwner)]
         [HttpPut("edit")]
         public async Task<IActionResult> EditCompanyCategory([FromBody] UpdateCategoryDto dto)
         {
@@ -46,6 +49,7 @@ namespace GlovoAPI.Controllers
             return Ok(new { result.IsSuccess });
         }
 
+        [PartnerAuthorize(PartnerRolesEnum.CompanyOwner)]
         [HttpDelete("remove")]
         public async Task<IActionResult> RemoveCompanyCategory([FromBody] DeleteCategoryDto dto)
         {
@@ -56,6 +60,7 @@ namespace GlovoAPI.Controllers
             return Ok(new { result.IsSuccess });
         }
 
+        [PartnerAuthorize(PartnerRolesEnum.CompanyOwner)]
         [HttpPut("reorder")]
         public async Task<IActionResult> ReorderCompanyCategories([FromBody] ReorderCategoryDto dto)
         {
