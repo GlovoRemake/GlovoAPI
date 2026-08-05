@@ -65,4 +65,10 @@ public class CompanyService(
             return null;
         }
     }
+
+    public async Task<CompanyDto?> GetCompanyAsync(Guid companyId)
+    {
+        var company = await _companyRepo.Query().FirstOrDefaultAsync(x => x.Id == companyId);
+        return company == null ? null : _mapper.Map<CompanyDto>(company);
+    }
 }

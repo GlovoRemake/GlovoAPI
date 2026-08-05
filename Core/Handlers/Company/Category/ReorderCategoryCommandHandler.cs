@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Core.Handlers.Company.Category;
 
-public class ReorderCategoryCommandHandler : IRequestHandler<ReorderCategoryCommand, Result>
+public sealed class ReorderCategoryCommandHandler : IRequestHandler<ReorderCategoryCommand, Result>
 {
     private readonly ICompanyCategoryService _companyCategoryService;
 
