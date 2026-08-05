@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Core.Dtos.Company.Product;
 
-internal class ProductDto
+public class ProductDto
 {
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
