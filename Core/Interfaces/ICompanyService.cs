@@ -9,4 +9,5 @@ public interface ICompanyService
 {
     Task<PagedRequestCompanyDto> GetAllRequests(RequestsPagedDto dto);
     Task<CompanyDto?> ApprovalRequest(ApprovalCompanyDto dto);
+    Task<CompanyDto?> GetCompanyAsync(Guid companyId);
 }
