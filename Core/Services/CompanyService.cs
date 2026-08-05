@@ -109,4 +109,30 @@ public class CompanyService(
 
         await _companyRepo.UpdateAsync(company);
     }
+
+    public async Task DeleteCompanyIconAsync(Guid companyId)
+    {
+        var company = _companyRepo.Query().FirstOrDefault(x => x.Id == companyId);
+        if (company == null) throw new CompanyNotFoundException();
+
+        if (company.IconPath != null)
+        {
+            await _imageService.DeleteImageAsync(company.IconPath);
+            company.IconPath = null;
+            await _companyRepo.UpdateAsync(company);
+        }
+    }
+
+    public async Task DeleteCompanyBannerAsync(Guid companyId)
+    {
+        var company = _companyRepo.Query().FirstOrDefault(x => x.Id == companyId);
+        if (company == null) throw new CompanyNotFoundException();
+        
+        if (company.BannerPath != null)
+        {
+            await _imageService.DeleteImageAsync(company.BannerPath);
+            company.BannerPath = null;
+            await _companyRepo.UpdateAsync(company);
+        }
+    }
 }
