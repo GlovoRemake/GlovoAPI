@@ -35,6 +35,39 @@ namespace GlovoAPI.Controllers
             return Ok(new { result.IsSuccess, result.Value });
         }
 
+        [HttpGet("get/{companyId:Guid}")]
+        public async Task<IActionResult> GetCompany(Guid companyId)
+        {
+            var result = await _mediator.Send(new GetCompanyQuery(companyId));
+            if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
+            return Ok(new { result.IsSuccess, result.Value });
+        }
+
+        [HttpPut("update")]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> UpdateCompany([FromForm] UpdateCompanyDto dto)
+        {
+            var result = await _mediator.Send(new UpdateCompanyCommand(dto));
+            if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
+            return Ok(new { result.IsSuccess });
+        }
+
+        [HttpDelete("deleteIcon/{companyId:Guid}")]
+        public async Task<IActionResult> DeleteCompanyIcon(Guid companyId)
+        {
+            var result = await _mediator.Send(new DeleteCompanyIconCommand(companyId));
+            if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
+            return Ok(new { result.IsSuccess });
+        }
+
+        [HttpDelete("deleteBanner/{companyId:Guid}")]
+        public async Task<IActionResult> DeleteCompanyBanner(Guid companyId)
+        {
+            var result = await _mediator.Send(new DeleteCompanyBannerCommand(companyId));
+            if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
+            return Ok(new { result.IsSuccess });
+        }
+
         [PartnerAuthorize(PartnerRolesEnum.CompanyOwner, PartnerRolesEnum.AffiliateManager)]
         [HttpPost("test/{companyId:Guid}")]
         public async Task<IActionResult> test(Guid companyId, [FromBody] string data)
