@@ -12,4 +12,5 @@ public interface ICompanyCategoryService
     Task AddCompanyCategoriesAsync(AddCategoryDto dto);
     Task UpdateCompanyCategoriesAsync(UpdateCategoryDto dto);
     Task DeleteCompanyCategoriesAsync(DeleteCategoryDto dto);
+    Task ReorderCompanyCategoriesAsync(ReorderCategoryDto dto);
 }

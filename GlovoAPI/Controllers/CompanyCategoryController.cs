@@ -55,5 +55,15 @@ namespace GlovoAPI.Controllers
 
             return Ok(new { result.IsSuccess });
         }
+
+        [HttpPut("reorder")]
+        public async Task<IActionResult> ReorderCompanyCategories([FromBody] ReorderCategoryDto dto)
+        {
+            var result = await _mediator.Send(new ReorderCategoryCommand(dto));
+
+            if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
+
+            return Ok(new { result.IsSuccess });
+        }
     }
 }

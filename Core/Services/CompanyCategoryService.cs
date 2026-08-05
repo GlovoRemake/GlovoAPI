@@ -68,4 +68,28 @@ public class CompanyCategoryService(
         _mapper.Map(dto, category);
         await _companyCategoryRepo.UpdateAsync(category);
     }
+
+    public async Task ReorderCompanyCategoriesAsync(ReorderCategoryDto dto)
+    {
+        var categories = await _companyCategoryRepo.Query()
+            .Where(x => x.CompanyId == dto.CompanyId && dto.CategoryIds.Contains(x.Id) && !x.IsDeleted)
+            .ToListAsync();
+
+        if (categories.Count() != dto.CategoryIds.Count())
+        {
+            throw new InvalidDataException("Неправильний перелік категорій, ви мабуть хотіли зманіпулювати системою :(");
+        }
+
+        short order = 1;
+        foreach (var categoryId in dto.CategoryIds)
+        {
+            categories.FirstOrDefault(x => x.Id == categoryId).Order = order;
+            order++;
+        }
+        foreach (var category in categories)
+        {
+            await _companyCategoryRepo.UpdateAsync(category);
+        }
+        await _companyCategoryRepo.SaveChangesAsync();
+    }
 }
