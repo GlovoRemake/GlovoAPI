@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Domain.Enums;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,6 +13,7 @@ public class CreateProductDto
     public IFormFile Image { get; set; } = default!;
     public double Price { get; set; }
     public int CategoryId { get; set; }
-    public double Weight { get; set; }
-    public double Kcal { get; set; }
+    public double? Weight { get; set; }
+    public WeightType? WeightType { get; set; }
+    public double? Kcal { get; set; }
 }

@@ -1,4 +1,5 @@
 ﻿using Core.Dtos.Company.Category;
+using Domain.Enums;
 using Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure;
 using Microsoft.JSInterop;
 using System;
@@ -16,6 +17,7 @@ public class ProductDto
     public int Order { get; set; }
     public double Price { get; set; }
     public CategoryDto Category { get; set; } = default!;
-    public double Weight { get; set; }
-    public double Kcal { get; set; }
+    public double? Weight { get; set; }
+    public WeightType? WeightType { get; set; }
+    public double? Kcal { get; set; }
 }

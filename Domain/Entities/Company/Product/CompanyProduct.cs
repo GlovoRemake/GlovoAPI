@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 using Domain.Entities.Base;
 using Domain.Entities.Company.Product.Sale;
+using Domain.Enums;
 
 namespace Domain.Entities.Company.Product;
 
@@ -19,8 +20,9 @@ public class CompanyProduct : BaseEntityWithIsDeleted<int>
     public double Price { get; set; }
     public Guid CompanyId { get; set; }
     public int CategoryId { get; set; }
-    public double Weight { get; set; }
-    public double Kcal { get; set; }
+    public double? Weight { get; set; }
+    public WeightType? WeightType { get; set; }
+    public double? Kcal { get; set; }
 
     // conn
     public Company Company { get; set; }
