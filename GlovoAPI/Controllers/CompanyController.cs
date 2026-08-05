@@ -52,6 +52,22 @@ namespace GlovoAPI.Controllers
             return Ok(new { result.IsSuccess });
         }
 
+        [HttpDelete("deleteIcon/{companyId:Guid}")]
+        public async Task<IActionResult> DeleteCompanyIcon(Guid companyId)
+        {
+            var result = await _mediator.Send(new DeleteCompanyIconCommand(companyId));
+            if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
+            return Ok(new { result.IsSuccess });
+        }
+
+        [HttpDelete("deleteBanner/{companyId:Guid}")]
+        public async Task<IActionResult> DeleteCompanyBanner(Guid companyId)
+        {
+            var result = await _mediator.Send(new DeleteCompanyBannerCommand(companyId));
+            if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
+            return Ok(new { result.IsSuccess });
+        }
+
         [PartnerAuthorize(PartnerRolesEnum.CompanyOwner, PartnerRolesEnum.AffiliateManager)]
         [HttpPost("test/{companyId:Guid}")]
         public async Task<IActionResult> test(Guid companyId, [FromBody] string data)

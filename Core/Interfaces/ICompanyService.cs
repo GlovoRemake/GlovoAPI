@@ -11,4 +11,6 @@ public interface ICompanyService
     Task<CompanyDto?> ApprovalRequest(ApprovalCompanyDto dto);
     Task<CompanyDto?> GetCompanyAsync(Guid companyId);
     Task UpdateCompanyAsync(UpdateCompanyDto dto);
+    Task DeleteCompanyIconAsync(Guid companyId);
+    Task DeleteCompanyBannerAsync(Guid companyId);
 }
