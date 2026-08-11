@@ -13,7 +13,9 @@ public class Promocode : BaseEntityWithIsDeleted<int>
     public decimal Amount { get; set; }
     public DateTime? DateExpiration { get; set; }
     public bool IsActive { get; set; } = true;
+    public Guid? CompanyId { get; set; }
 
     // conn
     public ICollection<UserOrder> UserOrders { get; set; }
+    public Company.Company? Company { get; set; }
 }
