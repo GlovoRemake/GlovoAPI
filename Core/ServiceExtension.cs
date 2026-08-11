@@ -27,6 +27,7 @@ public static class ServiceExtension
         service.AddScoped<IAffiliateService, AffiliateService>();
         service.AddScoped<ICompanyCategoryService, CompanyCategoryService>();
         service.AddScoped<ICompanyProductService, CompanyProductService>();
+        service.AddScoped<IPromocodeService, PromocodeService>();
     }
 
     public static void AddCache(this IServiceCollection service)
