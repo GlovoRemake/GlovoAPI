@@ -11,6 +11,8 @@ public class Promocode : BaseEntityWithIsDeleted<int>
     public PromocodeRequirement Requirement { get; set; }
     public double MinValue { get; set; }
     public decimal Amount { get; set; }
+    public DateTime? DateExpiration { get; set; }
+    public bool IsActive { get; set; } = true;
 
     // conn
     public ICollection<UserOrder> UserOrders { get; set; }
