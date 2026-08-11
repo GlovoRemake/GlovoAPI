@@ -57,7 +57,8 @@ public class PromocodeController(IMediator _mediator) : ControllerBase
         return Ok(new { result.IsSuccess });
     }
 
-    [HttpDelete("delete/{id:int}")]
+    [PartnerAuthorize(PartnerRolesEnum.CompanyOwner)]
+    [HttpDelete("delete/{companyId:Guid}/{id:int}")]
     public async Task<IActionResult> DeletePromocode(int id)
     {
         var result = await _mediator.Send(new DeletePromocodeCommand(id));
