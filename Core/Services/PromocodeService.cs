@@ -13,13 +13,13 @@ public class PromocodeService(
     ISoftDeleteRepository<Company, Guid> _companyRepository,
     IMapper _mapper) : IPromocodeService
 {
-    public async Task CreatePromocodeAsync(CreatePromocodeDto dto)
+    public async Task CreatePromocodeAsync(Guid? companyId, CreatePromocodeDto dto)
     {
         if (dto == null)
         {
             throw new InvalidDataException("Відсутня інформація про промокод!");
         }
-        if (dto.CompanyId != null && !await _companyRepository.Query().AnyAsync(c => c.Id == dto.CompanyId))
+        if (companyId != null && !await _companyRepository.Query().AnyAsync(c => c.Id == companyId))
         {
             throw new CompanyNotFoundException("Компанія не знайдена!");
         }
@@ -60,10 +60,10 @@ public class PromocodeService(
         return promocodeDtos;
     }
 
-    public async Task UpdatePromocodeAsync(UpdatePromocodeDto dto)
+    public async Task UpdatePromocodeAsync(Guid? companyId, UpdatePromocodeDto dto)
     {
         var entity = _mapper.Map<Promocode>(dto);
-        if (dto.CompanyId != null && !await _companyRepository.Query().AnyAsync(c => c.Id == dto.CompanyId))
+        if (companyId != null && !await _companyRepository.Query().AnyAsync(c => c.Id == companyId))
         {
             throw new CompanyNotFoundException("Компанія не знайдена!");
         }
