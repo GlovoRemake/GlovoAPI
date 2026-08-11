@@ -100,6 +100,8 @@ public class AffiliateService(
         return true;
     }
 
+
+
     public async Task AddManager(Guid affiliateId, OperationAffiliateUserDto partnerDto)
     {
         var affiliate = await _affiliateRepo.Query().AnyAsync(x => x.Id == affiliateId);
@@ -121,8 +123,49 @@ public class AffiliateService(
             RoleId = await _partnerRoleRepo.Query().Where(x => x.Name == "Manager").Select(x => x.Id).FirstOrDefaultAsync()
         });
     }
-
     public async Task RemoveManager(Guid affiliateId, OperationAffiliateUserDto partnerDto)
+    {
+        var affiliate = await _affiliateRepo.Query().AnyAsync(x => x.Id == affiliateId);
+        if (!affiliate)
+            throw new AffiliateNotFoundException();
+
+        var partner = await _partnerRepo.Query().FirstOrDefaultAsync(x => x.Email == partnerDto.PartnerEmail && !x.IsDeleted);
+        if (partner == null)
+            throw new PartnerNotFound();
+
+        var employee = await _employeeRepo.Query()
+            .Where(x => x.CompanyAffiliateId == affiliateId && x.PartnerUserId == partner.Id && !x.IsDeleted)
+            .Select(x => (int?)x.Id)
+            .FirstOrDefaultAsync();
+        if (employee == null)
+            throw new PartnerNotFound();
+
+        await _employeeRepo.DeleteAsync(employee ?? -1);
+    }
+
+
+    public async Task AddEmployee(Guid affiliateId, OperationAffiliateUserDto partnerDto)
+    {
+        var affiliate = await _affiliateRepo.Query().AnyAsync(x => x.Id == affiliateId);
+        if (!affiliate)
+            throw new AffiliateNotFoundException();
+
+        var partner = await _partnerRepo.Query().FirstOrDefaultAsync(x => x.Email == partnerDto.PartnerEmail && !x.IsDeleted);
+        if (partner == null)
+            throw new PartnerNotFound();
+
+        var isAlready = await _employeeRepo.Query().AnyAsync(x => x.CompanyAffiliateId == affiliateId && x.PartnerUserId == partner.Id && !x.IsDeleted);
+        if (isAlready)
+            throw new PartnerEmailAlreadyRegistered();
+
+        await _employeeRepo.AddAsync(new Employee
+        {
+            PartnerUserId = partner.Id,
+            CompanyAffiliateId = affiliateId,
+            RoleId = await _partnerRoleRepo.Query().Where(x => x.Name == "Employee").Select(x => x.Id).FirstOrDefaultAsync()
+        });
+    }
+    public async Task RemoveEmployee(Guid affiliateId, OperationAffiliateUserDto partnerDto)
     {
         var affiliate = await _affiliateRepo.Query().AnyAsync(x => x.Id == affiliateId);
         if (!affiliate)
