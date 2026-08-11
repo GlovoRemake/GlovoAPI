@@ -4,5 +4,5 @@ using MediatR;
 
 namespace Core.Commands.Promocodes;
 
-public record CreatePromocodeCommand(CreatePromocodeDto dto)
+public record CreatePromocodeCommand(Guid companyId, CreatePromocodeDto dto)
     : IRequest<Result>;

@@ -18,7 +18,7 @@ public sealed class CreatePromocodeCommandHandler : IRequestHandler<CreatePromoc
     {
         try
         {
-            await _promocodeService.CreatePromocodeAsync(request.dto);
+            await _promocodeService.CreatePromocodeAsync(request.companyId, request.dto);
             return Result.Success();
         }
         catch (InvalidDataException ex)

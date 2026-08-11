@@ -4,9 +4,9 @@ namespace Core.Interfaces;
 
 public interface IPromocodeService
 {
-    Task CreatePromocodeAsync(CreatePromocodeDto dto);
+    Task CreatePromocodeAsync(Guid? companyId, CreatePromocodeDto dto);
     Task<PromocodeDto> GetPromocodeAsync(int id);
     Task<List<PromocodeDto>> GetAllPromocodesAsync(Guid companyId);
-    Task UpdatePromocodeAsync(UpdatePromocodeDto dto);
+    Task UpdatePromocodeAsync(Guid? companyId, UpdatePromocodeDto dto);
     Task DeletePromocodeAsync(int id);
 }

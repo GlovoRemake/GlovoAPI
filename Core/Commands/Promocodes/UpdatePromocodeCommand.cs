@@ -4,5 +4,5 @@ using MediatR;
 
 namespace Core.Commands.Promocodes;
 
-public record UpdatePromocodeCommand(UpdatePromocodeDto dto)
+public record UpdatePromocodeCommand(Guid companyId, UpdatePromocodeDto dto)
     : IRequest<Result>;

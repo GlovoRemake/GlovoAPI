@@ -18,7 +18,7 @@ public sealed class UpdatePromocodeCommandHandler : IRequestHandler<UpdatePromoc
     {
         try
         {
-            await _promocodeService.UpdatePromocodeAsync(request.dto);
+            await _promocodeService.UpdatePromocodeAsync(request.companyId, request.dto);
             return Result.Success();
         }
         catch (CompanyNotFoundException ex)
