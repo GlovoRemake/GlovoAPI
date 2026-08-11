@@ -12,4 +12,11 @@ public interface IAffiliateService
     Task<AffiliateDto> CreateAffiliateAsync(Guid companyId, CreateAffiliateDto affiliateDto);
     Task<AffiliateDto> UpdateAffiliateAsync(Guid affiliateId, UpdateAffiliateDto affiliateDto);
     Task<bool> DeleteAffiliateAsync(Guid affiliateId);
+
+
+    Task AddManager(Guid affiliateId, OperationAffiliateUserDto partnerDto);
+    Task RemoveManager(Guid affiliateId, OperationAffiliateUserDto partnerDto);
+    
+    Task AddEmployee(Guid affiliateId, OperationAffiliateUserDto partnerDto);
+    Task RemoveEmployee(Guid affiliateId, OperationAffiliateUserDto partnerDto);
 }

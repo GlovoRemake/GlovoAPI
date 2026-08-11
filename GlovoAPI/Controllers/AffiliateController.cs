@@ -69,5 +69,53 @@ namespace GlovoAPI.Controllers
 
             return Ok(new { result.IsSuccess, result.Value });
         }
+
+
+
+
+        [PartnerAuthorize(PartnerRolesEnum.CompanyOwner)]
+        [HttpPost("manager/{affiliateId:Guid}")]
+        public async Task<IActionResult> AddManager(Guid affiliateId, OperationAffiliateUserDto partnerDto)
+        {
+            var result = await _mediator.Send(new AddManagerCommand(affiliateId, partnerDto));
+
+            if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
+
+            return Ok(new { result.IsSuccess, value = true });
+        }
+
+        [PartnerAuthorize(PartnerRolesEnum.CompanyOwner)]
+        [HttpDelete("manager/{affiliateId:Guid}")]
+        public async Task<IActionResult> RemoveManager(Guid affiliateId, OperationAffiliateUserDto partnerDto)
+        {
+            var result = await _mediator.Send(new RemoveManagerCommand(affiliateId, partnerDto));
+
+            if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
+
+            return Ok(new { result.IsSuccess, value = true });
+        }
+
+
+        [PartnerAuthorize(PartnerRolesEnum.CompanyOwner, PartnerRolesEnum.AffiliateManager)]
+        [HttpPost("employee/{affiliateId:Guid}")]
+        public async Task<IActionResult> AddEmployee(Guid affiliateId, OperationAffiliateUserDto partnerDto)
+        {
+            var result = await _mediator.Send(new AddEmployeeCommand(affiliateId, partnerDto));
+
+            if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
+
+            return Ok(new { result.IsSuccess, value = true });
+        }
+
+        [PartnerAuthorize(PartnerRolesEnum.CompanyOwner, PartnerRolesEnum.AffiliateManager)]
+        [HttpDelete("employee/{affiliateId:Guid}")]
+        public async Task<IActionResult> RemoveEmployee(Guid affiliateId, OperationAffiliateUserDto partnerDto)
+        {
+            var result = await _mediator.Send(new RemoveEmployeeCommand(affiliateId, partnerDto));
+
+            if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
+
+            return Ok(new { result.IsSuccess, value = true });
+        }
     }
 }
