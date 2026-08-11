@@ -134,7 +134,7 @@ public class AffiliateService(
             throw new PartnerNotFound();
 
         var employee = await _employeeRepo.Query()
-            .Where(x => x.CompanyAffiliateId == affiliateId && x.PartnerUserId == partner.Id && !x.IsDeleted)
+            .Where(x => x.CompanyAffiliateId == affiliateId && x.PartnerUserId == partner.Id && x.Role.Name != "CompanyOwner" && !x.IsDeleted)
             .Select(x => (int?)x.Id)
             .FirstOrDefaultAsync();
         if (employee == null)
@@ -176,7 +176,7 @@ public class AffiliateService(
             throw new PartnerNotFound();
 
         var employee = await _employeeRepo.Query()
-            .Where(x => x.CompanyAffiliateId == affiliateId && x.PartnerUserId == partner.Id && !x.IsDeleted)
+            .Where(x => x.CompanyAffiliateId == affiliateId && x.PartnerUserId == partner.Id && x.Role.Name != "Manager" && x.Role.Name != "CompanyOwner" && !x.IsDeleted)
             .Select(x => (int?)x.Id)
             .FirstOrDefaultAsync();
         if (employee == null)
