@@ -3,6 +3,7 @@ using System;
 using Domain.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Domain.Migrations
 {
     [DbContext(typeof(GlovoDbContext))]
-    partial class GlovoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260811125625_AddDateExpirationANDBooleanIsActive")]
+    partial class AddDateExpirationANDBooleanIsActive
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1144,9 +1147,6 @@ namespace Domain.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("CompanyId")
-                        .HasColumnType("uuid");
-
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("timestamp with time zone");
 
@@ -1172,8 +1172,6 @@ namespace Domain.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
 
                     b.ToTable("Promocodes");
                 });
@@ -1949,15 +1947,6 @@ namespace Domain.Migrations
                     b.Navigation("Order");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Promocode", b =>
-                {
-                    b.HasOne("Domain.Entities.Company.Company", "Company")
-                        .WithMany("Promocodes")
-                        .HasForeignKey("CompanyId");
-
-                    b.Navigation("Company");
-                });
-
             modelBuilder.Entity("Domain.Entities.Support.Message", b =>
                 {
                     b.HasOne("Domain.Entities.Support.SupportChat", "Chat")
@@ -2225,8 +2214,6 @@ namespace Domain.Migrations
                     b.Navigation("ProductCategories");
 
                     b.Navigation("Products");
-
-                    b.Navigation("Promocodes");
 
                     b.Navigation("Rates");
 

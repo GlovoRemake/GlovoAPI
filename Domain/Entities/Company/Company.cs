@@ -24,4 +24,5 @@ public class Company : BaseEntityWithIsDeleted<Guid>
     public ICollection<CompanyProduct>? Products { get; set; }
     public ICollection<CompanyProductCategory>? ProductCategories { get; set; }
     public ICollection<RequestCompany>? RequestCompanies { get; set; }
+    public ICollection<Promocode>? Promocodes { get; set; }
 }
