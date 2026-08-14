@@ -12,6 +12,12 @@ public class AdditionalGroupMapper : Profile
     public AdditionalGroupMapper()
     {
         CreateMap<CreateAdditionalGroupDto, AdditionalGroup>();
-        CreateMap<AdditionalGroup, AdditionalGroupDto>();
+        CreateMap<UpdateAdditionalGroupDto, AdditionalGroup>()
+            .ForMember(x => x.Additionals, opt => opt.Ignore());
+        CreateMap<AdditionalGroup, AdditionalGroupDto>()
+            .ForMember(
+                x => x.Additionals,
+                opt => opt.MapFrom(x => x.Additionals.Where(a => !a.IsDeleted))
+            );
     }
 }

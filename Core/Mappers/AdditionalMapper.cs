@@ -12,6 +12,7 @@ public class AdditionalMapper : Profile
     public AdditionalMapper()
     {
         CreateMap<CreateAdditionalDto, Additional>();
+        CreateMap<UpdateAdditionalDto, Additional>();
         CreateMap<Additional, AdditionalDto>();
     }
 }
