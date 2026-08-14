@@ -1,4 +1,6 @@
-﻿using Core.Commands.Company.Product.Additional;
+﻿using Core.Commands.Company.Category;
+using Core.Commands.Company.Product.Additional;
+using Core.Dtos.Company.Category;
 using Core.Dtos.Company.Product.AdditionalGroup;
 using Core.Queries.Company.Affiliate;
 using Core.Queries.Company.Product.Additional;
@@ -34,6 +36,17 @@ namespace GlovoAPI.Controllers
             if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
 
             return Ok(new { result.IsSuccess, result.Value });
+        }
+
+        [PartnerAuthorize(PartnerRolesEnum.CompanyOwner)]
+        [HttpPut("reorder/{companyId:Guid}/{productId:int}")]
+        public async Task<IActionResult> ReorderCompanyCategories(Guid companyId, int productId, ReorderAdditionalGroupDto dto)
+        {
+            var result = await _mediator.Send(new ReorderAdditionalCommand(productId, dto));
+
+            if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
+
+            return Ok(new { result.IsSuccess });
         }
     }
 }

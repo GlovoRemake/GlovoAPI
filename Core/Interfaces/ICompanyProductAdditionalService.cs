@@ -14,5 +14,5 @@ public interface ICompanyProductAdditionalService
     Task<AdditionalGroupDto> CreateAdditionalGroup(int productId, CreateAdditionalGroupDto dto);
     Task<AdditionalGroupDto> UpdateAdditionalGroup(int additionalGroupId, UpdateAdditionalGroupDto dto);
     Task<bool> DeleteAdditionalGroup(int additionalGroupId);
-    Task<AdditionalGroupDto> ReorderAdditionalGroup(int additionalGroupId, ReorderAdditionalGroupDto dto);
+    Task ReorderAdditionalGroup(int productId, ReorderAdditionalGroupDto dto);
 }
