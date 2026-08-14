@@ -54,9 +54,64 @@ public class CompanyProductAdditionalService(
         return _mapper.Map<AdditionalGroupDto>(entity);
     }
 
-    public Task<AdditionalGroupDto> UpdateAdditionalGroup(int additionalGroupId, UpdateAdditionalGroupDto dto)
+    public async Task<AdditionalGroupDto> UpdateAdditionalGroup(int additionalGroupId, UpdateAdditionalGroupDto dto)
     {
-        throw new NotImplementedException();
+        var additional = await _additionalRepo.Query()
+            .Include(x => x.Additionals)
+            .Where(x => !x.IsDeleted && x.Id == additionalGroupId)
+            .FirstOrDefaultAsync();
+
+        if (additional == null)
+            throw new ProductNotFoundException();
+
+        _mapper.Map(dto, additional);
+
+        var existingAdditionals = additional.Additionals.ToList();
+
+        var incomingIds = dto.Additionals
+            .Where(x => x.Id.HasValue)
+            .Select(x => x.Id!.Value)
+            .ToHashSet();
+
+        foreach (var existing in existingAdditionals)
+        {
+            if (!incomingIds.Contains(existing.Id))
+            {
+                existing.IsDeleted = true;
+            }
+        }
+
+        for (int i = 0; i < dto.Additionals.Count; i++)
+        {
+            var additionDto = dto.Additionals[i];
+
+            if (additionDto.Id.HasValue)
+            {
+                var existing = existingAdditionals
+                    .FirstOrDefault(x => x.Id == additionDto.Id.Value);
+
+                if (existing == null)
+                    throw new KeyNotFoundException(
+                        $"Additional with id {additionDto.Id.Value} not found.");
+
+                _mapper.Map(additionDto, existing);
+
+                existing.Order = i + 1;
+            }
+            else
+            {
+                var newAdditional = _mapper.Map<Additional>(additionDto);
+
+                newAdditional.Order = i + 1;
+                newAdditional.AdditionalGroupId = additional.Id;
+
+                additional.Additionals.Add(newAdditional);
+            }
+        }
+
+        await _additionalRepo.SaveChangesAsync();
+
+        return _mapper.Map<AdditionalGroupDto>(additional);
     }
 
     public async Task<bool> DeleteAdditionalGroup(int additionalGroupId)
