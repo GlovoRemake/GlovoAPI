@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Core.Dtos.Company.Category;
 using Core.Dtos.Company.Product.AdditionalGroup;
 using Core.Dtos.Exceptions.Company.Product;
 using Core.Interfaces;
@@ -63,8 +64,27 @@ public class CompanyProductAdditionalService(
         throw new NotImplementedException();
     }
 
-    public Task<AdditionalGroupDto> ReorderAdditionalGroup(int additionalGroupId, ReorderAdditionalGroupDto dto)
+    public async Task ReorderAdditionalGroup(int productId, ReorderAdditionalGroupDto dto)
     {
-        throw new NotImplementedException();
+        var additionals = await _additionalRepo.Query()
+            .Where(x => x.ProductId == productId && dto.Ids.Contains(x.Id) && !x.IsDeleted)
+            .ToListAsync();
+
+        if (additionals.Count() != dto.Ids.Count())
+        {
+            throw new InvalidDataException("Неправильний перелік додатків, ви мабуть хотіли зманіпулювати системою :(");
+        }
+
+        short order = 1;
+        foreach (var categoryId in dto.Ids)
+        {
+            additionals.FirstOrDefault(x => x.Id == categoryId).Order = order;
+            order++;
+        }
+        foreach (var additional in additionals)
+        {
+            await _additionalRepo.UpdateAsync(additional);
+        }
+        await _additionalRepo.SaveChangesAsync();
     }
 }
