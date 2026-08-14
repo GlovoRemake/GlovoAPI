@@ -59,9 +59,22 @@ public class CompanyProductAdditionalService(
         throw new NotImplementedException();
     }
 
-    public Task<bool> DeleteAdditionalGroup(int additionalGroupId)
+    public async Task<bool> DeleteAdditionalGroup(int additionalGroupId)
     {
-        throw new NotImplementedException();
+        var additional = await _additionalRepo.Query()
+            .Include(x => x.Additionals)
+            .Where(x => !x.IsDeleted && x.Id == additionalGroupId)
+            .FirstOrDefaultAsync();
+
+        foreach (var item in additional.Additionals)
+        {
+            item.IsDeleted = true;
+        }
+
+        additional.IsDeleted = true;
+        await _additionalRepo.SaveChangesAsync();
+
+        return true;
     }
 
     public async Task ReorderAdditionalGroup(int productId, ReorderAdditionalGroupDto dto)

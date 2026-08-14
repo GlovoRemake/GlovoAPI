@@ -39,6 +39,17 @@ namespace GlovoAPI.Controllers
         }
 
         [PartnerAuthorize(PartnerRolesEnum.CompanyOwner)]
+        [HttpDelete("delete/{companyId:Guid}/{additionalId:int}")]
+        public async Task<IActionResult> Create(Guid companyId, int additionalId)
+        {
+            var result = await _mediator.Send(new DeleteAdditionalCommand(additionalId));
+
+            if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
+
+            return Ok(new { result.IsSuccess, result.Value });
+        }
+
+        [PartnerAuthorize(PartnerRolesEnum.CompanyOwner)]
         [HttpPut("reorder/{companyId:Guid}/{productId:int}")]
         public async Task<IActionResult> ReorderCompanyCategories(Guid companyId, int productId, ReorderAdditionalGroupDto dto)
         {
