@@ -10,7 +10,7 @@ namespace Core.Interfaces;
 
 public interface ICompanyProductAdditionalService
 {
-    Task<List<AdditionalGroupDto>> GetAdditionalsGroup(int additionalGroupId);
+    Task<List<AdditionalGroupDto>> GetAdditionalsGroup(int productId);
     Task<AdditionalGroupDto> CreateAdditionalGroup(int productId, CreateAdditionalGroupDto dto);
     Task<AdditionalGroupDto> UpdateAdditionalGroup(int additionalGroupId, UpdateAdditionalGroupDto dto);
     Task<bool> DeleteAdditionalGroup(int additionalGroupId);

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Core.Dtos.Company.Product.AdditionalGroup;
 using Core.Dtos.Exceptions.Company.Product;
 using Core.Interfaces;
@@ -17,9 +18,12 @@ public class CompanyProductAdditionalService(
         IMapper _mapper
     ) : ICompanyProductAdditionalService
 {
-    public Task<List<AdditionalGroupDto>> GetAdditionalsGroup(int additionalGroupId)
+    public async Task<List<AdditionalGroupDto>> GetAdditionalsGroup(int productId)
     {
-        throw new NotImplementedException();
+        return await _additionalRepo.Query()
+            .Where(x => !x.IsDeleted && x.ProductId == productId)
+            .ProjectTo<AdditionalGroupDto>(_mapper.ConfigurationProvider)
+            .ToListAsync();
     }
 
     public async Task<AdditionalGroupDto> CreateAdditionalGroup(int productId, CreateAdditionalGroupDto dto)
