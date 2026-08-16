@@ -24,10 +24,10 @@ public interface IAffiliateService
 
     Task<List<CategoryDto>> GetAffiliateCategories(Guid affiliateId);
     Task AddCategory(Guid affiliateId, int categoryId);
-    Task RemoveCategory(int categoryId);
+    Task RemoveCategory(Guid affiliateId, int categoryId);
 
     Task<List<ProductDto>> GetAffiliateProducts(Guid affiliateId);
     Task AddProduct(Guid affiliateId, int productId);
-    Task RemoveProduct(int productId);
+    Task RemoveProduct(Guid affiliateId, int productId);
     Task ChangeProductAvailability(int productId, bool isAvailable);
 }

@@ -239,10 +239,10 @@ public class AffiliateService(
         });
     }
     
-    public async Task RemoveCategory(int categoryId)
+    public async Task RemoveCategory(Guid affiliateId, int categoryId)
     {
         var affiliateCategory = await _affiliatesProductsCategoryRepo.Query()
-            .FirstOrDefaultAsync(x => x.Id == categoryId && !x.IsDeleted);
+            .FirstOrDefaultAsync(x => x.CategoryId == categoryId && x.CompanyAffiliateId == affiliateId && !x.IsDeleted);
         if (affiliateCategory == null)
             throw new ProductNotFoundException();
 
@@ -281,10 +281,10 @@ public class AffiliateService(
         });
     }
     
-    public async Task RemoveProduct(int productId)
+    public async Task RemoveProduct(Guid affiliateId, int productId)
     {
         var affiliateProduct = await _affiliateProductRepo.Query()
-            .FirstOrDefaultAsync(x => x.Id == productId && !x.IsDeleted);
+            .FirstOrDefaultAsync(x => x.Id == productId && x.CompanyAffiliateId == affiliateId && !x.IsDeleted);
         if (affiliateProduct == null)
             throw new ProductNotFoundException();
         
