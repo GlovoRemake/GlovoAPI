@@ -8,6 +8,7 @@ public class AccountMapper : Profile
 {
     public AccountMapper()
     {
-        CreateMap<UserEntity, GetProfileDto>();
+        CreateMap<UserEntity, GetProfileDto>()
+            .ForMember(x => x.Phone, y => y.MapFrom(c => c.PhoneNumber));
     }
 }
