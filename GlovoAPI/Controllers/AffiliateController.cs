@@ -1,5 +1,6 @@
 ﻿using Core.Commands.Company;
 using Core.Commands.Company.Affiliate;
+using Core.Commands.Company.Affiliate.Category;
 using Core.Dtos.Company.Affiliate;
 using Core.Queries.Company.Affiliate;
 using Core.Queries.Company.Affiliate.Category;
@@ -128,6 +129,28 @@ namespace GlovoAPI.Controllers
         public async Task<IActionResult> GetAffiliateCategories(Guid affiliateId)
         {
             var result = await _mediator.Send(new GetAffiliateCategoriesQuery(affiliateId));
+
+            if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
+
+            return Ok(new { result.IsSuccess, value = true });
+        }
+        
+        [PartnerAuthorize(PartnerRolesEnum.CompanyOwner, PartnerRolesEnum.AffiliateManager)]
+        [HttpPost("categories/{affiliateId:Guid}/{productId:int}")]
+        public async Task<IActionResult> AddCategory(Guid affiliateId, int productId)
+        {
+            var result = await _mediator.Send(new AddAffiliateCategoryCommand(affiliateId, productId));
+
+            if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
+
+            return Ok(new { result.IsSuccess, value = true });
+        }
+        
+        [PartnerAuthorize(PartnerRolesEnum.CompanyOwner, PartnerRolesEnum.AffiliateManager)]
+        [HttpDelete("categories/{affiliateId:Guid}/{productId:int}")]
+        public async Task<IActionResult> RemoveCategory(Guid affiliateId, int productId)
+        {
+            var result = await _mediator.Send(new RemoveAffiliateCategoryCommand(affiliateId, productId));
 
             if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
 
