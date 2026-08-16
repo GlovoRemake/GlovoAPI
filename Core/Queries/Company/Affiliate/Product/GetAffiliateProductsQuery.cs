@@ -2,7 +2,7 @@
 using Core.Dtos.Company.Product;
 using MediatR;
 
-namespace Core.Queries.Company.Affiliate.Category;
+namespace Core.Queries.Company.Affiliate.Product;
 
 
 public record GetAffiliateProductsQuery(Guid affiliateId)

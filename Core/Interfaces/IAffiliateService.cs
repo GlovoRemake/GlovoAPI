@@ -29,5 +29,5 @@ public interface IAffiliateService
     Task<List<ProductDto>> GetAffiliateProducts(Guid affiliateId);
     Task AddProduct(Guid affiliateId, int productId);
     Task RemoveProduct(Guid affiliateId, int productId);
-    Task ChangeProductAvailability(int productId, bool isAvailable);
+    Task ChangeProductAvailability(Guid affiliateId, int productId, bool isAvailable);
 }

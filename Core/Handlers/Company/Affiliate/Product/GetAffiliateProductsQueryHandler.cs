@@ -2,9 +2,10 @@
 using Core.Dtos.Company.Product;
 using Core.Interfaces;
 using Core.Queries.Company.Affiliate.Category;
+using Core.Queries.Company.Affiliate.Product;
 using MediatR;
 
-namespace Core.Handlers.Company.Affiliate.Category;
+namespace Core.Handlers.Company.Affiliate.Product;
 
 
 public sealed class GetAffiliateProductsQueryHandler
