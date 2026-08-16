@@ -2,6 +2,7 @@
 using Core.Commands.Company.Affiliate;
 using Core.Dtos.Company.Affiliate;
 using Core.Queries.Company.Affiliate;
+using Core.Queries.Company.Affiliate.Category;
 using GlovoAPI.Policy.Attributes;
 using GlovoAPI.Policy.Enums;
 using MediatR;
@@ -96,6 +97,7 @@ namespace GlovoAPI.Controllers
         }
 
 
+        
         [PartnerAuthorize(PartnerRolesEnum.CompanyOwner, PartnerRolesEnum.AffiliateManager)]
         [HttpPost("employee/{affiliateId:Guid}")]
         public async Task<IActionResult> AddEmployee(Guid affiliateId, OperationAffiliateUserDto partnerDto)
@@ -112,6 +114,34 @@ namespace GlovoAPI.Controllers
         public async Task<IActionResult> RemoveEmployee(Guid affiliateId, OperationAffiliateUserDto partnerDto)
         {
             var result = await _mediator.Send(new RemoveEmployeeCommand(affiliateId, partnerDto));
+
+            if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
+
+            return Ok(new { result.IsSuccess, value = true });
+        }
+        
+        
+        
+        
+        [PartnerAuthorize(PartnerRolesEnum.CompanyOwner, PartnerRolesEnum.AffiliateManager)]
+        [HttpGet("categories/{affiliateId:Guid}")]
+        public async Task<IActionResult> GetAffiliateCategories(Guid affiliateId)
+        {
+            var result = await _mediator.Send(new GetAffiliateCategoriesQuery(affiliateId));
+
+            if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
+
+            return Ok(new { result.IsSuccess, value = true });
+        }
+        
+        
+        
+        
+        [PartnerAuthorize(PartnerRolesEnum.CompanyOwner, PartnerRolesEnum.AffiliateManager)]
+        [HttpGet("products/{affiliateId:Guid}")]
+        public async Task<IActionResult> GetAffiliateProducts(Guid affiliateId)
+        {
+            var result = await _mediator.Send(new GetAffiliateProductsQuery(affiliateId));
 
             if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
 
