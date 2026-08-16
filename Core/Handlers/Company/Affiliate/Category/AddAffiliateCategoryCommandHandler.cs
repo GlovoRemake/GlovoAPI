@@ -24,7 +24,7 @@ public sealed class AddAffiliateCategoryCommandHandler
     {
         try
         {
-            await _affiliateService.AddCategory(request.affiliateId, request.productId);
+            await _affiliateService.AddCategory(request.affiliateId, request.categoryId);
             return Result.Success();
         }
         catch (ProductNotFoundException)

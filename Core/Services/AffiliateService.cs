@@ -213,7 +213,7 @@ public class AffiliateService(
     public async Task<List<CategoryDto>> GetAffiliateCategories(Guid affiliateId)
     {
         var categories = await _productCategoryRepo.Query()
-            .Where(x => x.Affiliates.Any(a => a.CompanyAffiliateId == affiliateId))
+            .Where(x => x.Affiliates.Any(a => a.CompanyAffiliateId == affiliateId && !a.IsDeleted) && !x.IsDeleted)
             .ProjectTo<CategoryDto>(_mapper.ConfigurationProvider)
             .ToListAsync();
 
@@ -254,7 +254,7 @@ public class AffiliateService(
     public async Task<List<ProductDto>> GetAffiliateProducts(Guid affiliateId)
     {
         var products = await _productRepo.Query()
-            .Where(x => x.Affiliates.Any(a => a.CompanyAffiliateId == affiliateId))
+            .Where(x => x.Affiliates.Any(a => a.CompanyAffiliateId == affiliateId && !a.IsDeleted) && !x.IsDeleted)
             .ProjectTo<ProductDto>(_mapper.ConfigurationProvider)
             .ToListAsync();
 
@@ -284,7 +284,7 @@ public class AffiliateService(
     public async Task RemoveProduct(Guid affiliateId, int productId)
     {
         var affiliateProduct = await _affiliateProductRepo.Query()
-            .FirstOrDefaultAsync(x => x.Id == productId && x.CompanyAffiliateId == affiliateId && !x.IsDeleted);
+            .FirstOrDefaultAsync(x => x.ProdcutId == productId && x.CompanyAffiliateId == affiliateId && !x.IsDeleted);
         if (affiliateProduct == null)
             throw new ProductNotFoundException();
         
@@ -293,10 +293,10 @@ public class AffiliateService(
         await _affiliateProductRepo.UpdateAsync(affiliateProduct);
     }
 
-    public async Task ChangeProductAvailability(int productId, bool isAvailable)
+    public async Task ChangeProductAvailability(Guid affiliateId, int productId, bool isAvailable)
     {
         var affiliateProduct = await _affiliateProductRepo.Query()
-            .FirstOrDefaultAsync(x => x.Id == productId && !x.IsDeleted);
+            .FirstOrDefaultAsync(x => x.ProdcutId == productId && x.CompanyAffiliateId == affiliateId && !x.IsDeleted);
         if (affiliateProduct == null)
             throw new ProductNotFoundException();
         

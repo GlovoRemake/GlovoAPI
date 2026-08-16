@@ -3,5 +3,5 @@ using MediatR;
 
 namespace Core.Commands.Company.Affiliate.Category;
 
-public record RemoveAffiliateCategoryCommand(Guid affiliateId, int categoryId)
+public record ChangeProductAvailabilityCommand(Guid affiliateId, int productId, bool isAvailable)
     : IRequest<Result>;

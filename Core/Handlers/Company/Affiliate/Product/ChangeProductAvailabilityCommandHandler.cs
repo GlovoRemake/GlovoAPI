@@ -5,26 +5,25 @@ using Core.Dtos.Exceptions.Company.Product;
 using Core.Interfaces;
 using MediatR;
 
-namespace Core.Handlers.Company.Affiliate.Category;
+namespace Core.Handlers.Company.Affiliate.Product;
 
-
-public sealed class RemoveAffiliateCategoryCommandHandler
-    : IRequestHandler<RemoveAffiliateCategoryCommand, Result>
+public sealed class ChangeProductAvailabilityCommandHandler
+    : IRequestHandler<ChangeProductAvailabilityCommand, Result>
 {
     private readonly IAffiliateService _affiliateService;
 
-    public RemoveAffiliateCategoryCommandHandler(IAffiliateService affiliateService)
+    public ChangeProductAvailabilityCommandHandler(IAffiliateService affiliateService)
     {
         _affiliateService = affiliateService;
     }
 
     public async Task<Result> Handle(
-        RemoveAffiliateCategoryCommand request,
+        ChangeProductAvailabilityCommand request,
         CancellationToken cancellationToken)
     {
         try
         {
-            await _affiliateService.RemoveCategory(request.affiliateId, request.categoryId);
+            await _affiliateService.ChangeProductAvailability(request.affiliateId, request.productId, request.isAvailable);
             return Result.Success();
         }
         catch (ProductNotFoundException)
@@ -32,6 +31,13 @@ public sealed class RemoveAffiliateCategoryCommandHandler
             return Result.Failure(ErrorMessage.Create(
                 "ProductNotFound",
                 $"Product not found"
+            ));
+        }
+        catch (AffiliateNotFoundException)
+        {
+            return Result.Failure(ErrorMessage.Create(
+                "AffiliateNotFound",
+                $"Affiliate not found"
             ));
         }
         catch (Exception ex)

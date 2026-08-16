@@ -8,23 +8,23 @@ using MediatR;
 namespace Core.Handlers.Company.Affiliate.Category;
 
 
-public sealed class RemoveAffiliateCategoryCommandHandler
-    : IRequestHandler<RemoveAffiliateCategoryCommand, Result>
+public sealed class RemoveAffiliateProductCommandHandler
+    : IRequestHandler<RemoveAffiliateProductCommand, Result>
 {
     private readonly IAffiliateService _affiliateService;
 
-    public RemoveAffiliateCategoryCommandHandler(IAffiliateService affiliateService)
+    public RemoveAffiliateProductCommandHandler(IAffiliateService affiliateService)
     {
         _affiliateService = affiliateService;
     }
 
     public async Task<Result> Handle(
-        RemoveAffiliateCategoryCommand request,
+        RemoveAffiliateProductCommand request,
         CancellationToken cancellationToken)
     {
         try
         {
-            await _affiliateService.RemoveCategory(request.affiliateId, request.categoryId);
+            await _affiliateService.RemoveProduct(request.affiliateId, request.productId);
             return Result.Success();
         }
         catch (ProductNotFoundException)
@@ -32,6 +32,13 @@ public sealed class RemoveAffiliateCategoryCommandHandler
             return Result.Failure(ErrorMessage.Create(
                 "ProductNotFound",
                 $"Product not found"
+            ));
+        }
+        catch (AffiliateNotFoundException)
+        {
+            return Result.Failure(ErrorMessage.Create(
+                "AffiliateNotFound",
+                $"Affiliate not found"
             ));
         }
         catch (Exception ex)
