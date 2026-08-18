@@ -26,6 +26,36 @@ if (builder.Environment.IsDevelopment())
 
 builder.Services.AddAuthenticationWithOptions(builder.Configuration);
 
+
+
+
+// cors
+var corsOrigins = builder.Configuration
+    .GetSection("Cors:AllowedOrigins")
+    .Get<string[]>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("DynamicCors", policy =>
+    {
+        if (corsOrigins != null && corsOrigins.Length > 0)
+        {
+            policy.WithOrigins(corsOrigins)
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials();
+        }
+        else
+        {
+            policy.SetIsOriginAllowed(_ => true)
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        }
+    });
+});
+
+
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -36,16 +66,13 @@ if (app.Environment.IsDevelopment())
         opt.OAuthUsePkce();
     });
     app.MapOpenApi();
-
-    // CORS
-    app.UseCors(app =>
-    app.AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader());
 }
 
 app.UseHttpsRedirection();
 
+app.UseCors("DynamicCors");
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
