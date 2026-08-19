@@ -64,6 +64,21 @@ public static class ServiceExtension
                     configuration["Tokens:Jwt:Issuer"]!,
                     configuration["Tokens:Jwt:Audience"]!,
                     configuration["Tokens:Jwt:Key"]!);
+
+                o.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        if (context.Request.Cookies.TryGetValue(
+                                "accessToken",
+                                out var accessToken))
+                        {
+                            context.Token = accessToken;
+                        }
+
+                        return Task.CompletedTask;
+                    }
+                };
             })
             .AddJwtBearer("RegistrationScheme", o =>
             {
@@ -71,6 +86,21 @@ public static class ServiceExtension
                     configuration["Tokens:Registration:Issuer"]!,
                     configuration["Tokens:Registration:Audience"]!,
                     configuration["Tokens:Registration:Key"]!);
+
+                o.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        if (context.Request.Cookies.TryGetValue(
+                                "accessToken",
+                                out var accessToken))
+                        {
+                            context.Token = accessToken;
+                        }
+
+                        return Task.CompletedTask;
+                    }
+                };
             })
             .AddJwtBearer("PartnerAccessScheme", o =>
             {
@@ -78,6 +108,21 @@ public static class ServiceExtension
                     configuration["Tokens:Partner:Issuer"]!,
                     configuration["Tokens:Partner:Audience"]!,
                     configuration["Tokens:Partner:Key"]!);
+
+                o.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        if (context.Request.Cookies.TryGetValue(
+                                "accessToken",
+                                out var accessToken))
+                        {
+                            context.Token = accessToken;
+                        }
+
+                        return Task.CompletedTask;
+                    }
+                };
             })
             .AddJwtBearer("ResetPasswordScheme", o =>
             {
@@ -85,6 +130,21 @@ public static class ServiceExtension
                     configuration["Tokens:ResetPassword:Issuer"]!,
                     configuration["Tokens:ResetPassword:Audience"]!,
                     configuration["Tokens:ResetPassword:Key"]!);
+
+                o.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        if (context.Request.Cookies.TryGetValue(
+                                "accessToken",
+                                out var accessToken))
+                        {
+                            context.Token = accessToken;
+                        }
+
+                        return Task.CompletedTask;
+                    }
+                };
             });
 
         service.AddAuthorization();

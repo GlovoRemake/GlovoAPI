@@ -12,7 +12,7 @@ namespace GlovoAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PartnerController(IMediator _mediator) : ControllerBase
+    public class PartnerController(IMediator _mediator, IConfiguration _config) : ControllerBase
     {
         [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] PartnerRegisterDto model)
@@ -31,6 +31,31 @@ namespace GlovoAPI.Controllers
 
             if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
 
+            var lifeTime = _config["Tokens:Jwt:LifeTime"];
+            var lifeTimeRefresh = _config["Tokens:Refresh:LifeTime"];
+
+            Response.Cookies.Append(
+                "accessToken",
+                result.Value.AccessToken,
+                new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.None,
+                    Expires = DateTime.UtcNow.AddMinutes(int.TryParse(lifeTime, out var minutes) ? minutes : 15),
+                });
+
+            Response.Cookies.Append(
+               "refreshToken",
+               result.Value.RefreshToken,
+               new CookieOptions
+               {
+                   HttpOnly = true,
+                   Secure = true,
+                   SameSite = SameSiteMode.None,
+                   Expires = DateTime.UtcNow.AddDays(int.TryParse(lifeTimeRefresh, out var days) ? days : 7),
+               });
+
             return Ok(new { result.IsSuccess, result.Value });
         }
         
@@ -41,17 +66,108 @@ namespace GlovoAPI.Controllers
 
             if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
 
+            var lifeTime = _config["Tokens:Jwt:LifeTime"];
+            var lifeTimeRefresh = _config["Tokens:Refresh:LifeTime"];
+
+            Response.Cookies.Append(
+                "accessToken",
+                result.Value.AccessToken,
+                new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.None,
+                    Expires = DateTime.UtcNow.AddMinutes(int.TryParse(lifeTime, out var minutes) ? minutes : 15),
+                });
+
+            Response.Cookies.Append(
+               "refreshToken",
+               result.Value.RefreshToken,
+               new CookieOptions
+               {
+                   HttpOnly = true,
+                   Secure = true,
+                   SameSite = SameSiteMode.None,
+                   Expires = DateTime.UtcNow.AddDays(int.TryParse(lifeTimeRefresh, out var days) ? days : 7),
+               });
+
             return Ok(new { result.IsSuccess, result.Value });
         }
-        
-        [HttpPost("Refresh")]
-        public async Task<IActionResult> Refresh([FromBody] RefreshRequest refreshRequest)
-        {
-            var result = await _mediator.Send(new PartnerRefreshTokenCommand(refreshRequest.RefreshToken));
 
-            if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
+        [HttpPost("Refresh")]
+        public async Task<IActionResult> Refresh()
+        {
+            if (!Request.Cookies.TryGetValue(
+                    "refreshToken",
+                    out var refreshToken))
+            {
+                return Unauthorized();
+            }
+
+            var result = await _mediator.Send(new PartnerRefreshTokenCommand(refreshToken));
+
+            if (!result.IsSuccess)
+            {
+                Response.Cookies.Delete("accessToken");
+                Response.Cookies.Delete("refreshToken");
+
+                return Unauthorized(new
+                {
+                    result.IsSuccess,
+                    result.Errors
+                });
+            }
+
+            var lifeTime = _config["Tokens:Jwt:LifeTime"];
+            var lifeTimeRefresh = _config["Tokens:Refresh:LifeTime"];
+
+            Response.Cookies.Append(
+                "accessToken",
+                result.Value.AccessToken,
+                new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.None,
+                    Expires = DateTime.UtcNow.AddMinutes(int.TryParse(lifeTime, out var minutes) ? minutes : 15),
+                });
+
+            Response.Cookies.Append(
+               "refreshToken",
+               result.Value.RefreshToken,
+               new CookieOptions
+               {
+                   HttpOnly = true,
+                   Secure = true,
+                   SameSite = SameSiteMode.None,
+                   Expires = DateTime.UtcNow.AddDays(int.TryParse(lifeTimeRefresh, out var days) ? days : 7),
+               });
 
             return Ok(new { result.IsSuccess, result.Value });
+        }
+
+        [HttpPost("Logout")]
+        public IActionResult Logout()
+        {
+            Response.Cookies.Delete("accessToken", new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+            });
+
+            Response.Cookies.Delete("refreshToken", new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+            });
+
+            return Ok(new
+            {
+                IsSuccess = true,
+                Value = true
+            });
         }
 
         [Authorize(AuthenticationSchemes = "PartnerAccessScheme")]
