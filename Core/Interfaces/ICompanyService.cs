@@ -13,4 +13,5 @@ public interface ICompanyService
     Task UpdateCompanyAsync(UpdateCompanyDto dto);
     Task DeleteCompanyIconAsync(Guid companyId);
     Task DeleteCompanyBannerAsync(Guid companyId);
+    Task<List<CompanyDto>> GetListCompanyAsync(Guid partnerId);
 }
