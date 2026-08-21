@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.Internal.Mappers;
+using AutoMapper.QueryableExtensions;
 using Core.Dtos.Company;
 using Core.Dtos.Exceptions.Company;
 using Core.Interfaces;
@@ -134,5 +135,11 @@ public class CompanyService(
             company.BannerPath = null;
             await _companyRepo.UpdateAsync(company);
         }
+    }
+
+    public async Task<List<CompanyDto>> GetListCompanyAsync(Guid partnerId)
+    {
+        var companies = await _companyRepo.Query().Where(x => x.OwnerId == partnerId).ProjectTo<CompanyDto>(_mapper.ConfigurationProvider).ToListAsync();
+        return companies;
     }
 }

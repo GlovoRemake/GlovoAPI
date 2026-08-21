@@ -43,6 +43,17 @@ namespace GlovoAPI.Controllers
             return Ok(new { result.IsSuccess, result.Value });
         }
 
+        [PartnerAuthorize]
+        [HttpGet("get-my-companies")]
+        public async Task<IActionResult> GetListCompanies()
+        {
+            var partnerId = Guid.Parse(User.FindFirst("id")?.Value ?? "");
+            var result = await _mediator.Send(new GetListCompaniesQuery(partnerId));
+            if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
+            return Ok(new { result.IsSuccess, result.Value });
+        }
+
+        [PartnerAuthorize(PartnerRolesEnum.CompanyOwner)]
         [HttpPut("update")]
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> UpdateCompany([FromForm] UpdateCompanyDto dto)
@@ -52,6 +63,7 @@ namespace GlovoAPI.Controllers
             return Ok(new { result.IsSuccess });
         }
 
+        [PartnerAuthorize(PartnerRolesEnum.CompanyOwner)]
         [HttpDelete("deleteIcon/{companyId:Guid}")]
         public async Task<IActionResult> DeleteCompanyIcon(Guid companyId)
         {
@@ -60,6 +72,7 @@ namespace GlovoAPI.Controllers
             return Ok(new { result.IsSuccess });
         }
 
+        [PartnerAuthorize(PartnerRolesEnum.CompanyOwner)]
         [HttpDelete("deleteBanner/{companyId:Guid}")]
         public async Task<IActionResult> DeleteCompanyBanner(Guid companyId)
         {
