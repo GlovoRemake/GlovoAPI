@@ -7,12 +7,11 @@ using GlovoAPI.Policy.Providers;
 using GlovoAPI.Policy.Requirements;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
 
 public sealed class PartnerAccessHandler(
-        ISoftDeleteRepository<Company, Guid> _companyRepo,
-        ISoftDeleteRepository<Employee, int> _employeeRepo
-    )
+    ISoftDeleteRepository<Company, Guid> _companyRepo,
+    ISoftDeleteRepository<Employee, int> _employeeRepo
+)
     : AuthorizationHandler<PartnerAccessRequirement>
 {
     protected override async Task HandleRequirementAsync(
@@ -21,10 +20,6 @@ public sealed class PartnerAccessHandler(
     {
         if (context.Resource is not HttpContext httpContext)
             return;
-
-        var policy = context.PendingRequirements
-            .OfType<PartnerAccessRequirement>()
-            .FirstOrDefault();
 
         var endpoint = httpContext.GetEndpoint();
 
@@ -35,22 +30,30 @@ public sealed class PartnerAccessHandler(
         if (authorizeData?.Policy == null)
             return;
 
-        if (!authorizeData.Policy.StartsWith(PartnerAuthorizationPolicyProvider.PolicyPrefix))
+        if (!authorizeData.Policy.StartsWith(
+                PartnerAuthorizationPolicyProvider.PolicyPrefix))
             return;
 
-        var rolesString = authorizeData.Policy[PartnerAuthorizationPolicyProvider.PolicyPrefix.Length..];
-
-        var roles = rolesString
-            .Split(',', StringSplitOptions.RemoveEmptyEntries)
-            .Select(Enum.Parse<PartnerRolesEnum>)
-            .ToList();
+        var rolesString = authorizeData.Policy[
+            PartnerAuthorizationPolicyProvider.PolicyPrefix.Length..];
 
         var userIdClaim = context.User.FindFirst("id");
 
-        if (userIdClaim == null)
+        if (userIdClaim == null ||
+            !Guid.TryParse(userIdClaim.Value, out var userId))
             return;
 
-        var userId = Guid.Parse(userIdClaim.Value);
+        // Якщо role не передана — просто пропускаємо користувача
+        if (string.IsNullOrWhiteSpace(rolesString))
+        {
+            context.Succeed(requirement);
+            return;
+        }
+
+        var roles = rolesString
+            .Split(',', StringSplitOptions.RemoveEmptyEntries)
+            .Select(x => Enum.Parse<PartnerRolesEnum>(x.Trim()))
+            .ToList();
 
         foreach (var role in roles)
         {
@@ -60,13 +63,22 @@ public sealed class PartnerAccessHandler(
                     await IsCompanyOwnerAsync(httpContext, userId),
 
                 PartnerRolesEnum.AffiliateManager =>
-                    await IsAffiliateRoleAsync(httpContext, userId, "Manager"),
+                    await IsAffiliateRoleAsync(
+                        httpContext,
+                        userId,
+                        "Manager"),
 
                 PartnerRolesEnum.AffiliateEmployee =>
-                    await IsAffiliateRoleAsync(httpContext, userId, "Employee"),
+                    await IsAffiliateRoleAsync(
+                        httpContext,
+                        userId,
+                        "Employee"),
 
                 PartnerRolesEnum.User =>
-                    await IsAffiliateRoleAsync(httpContext, userId, "User"),
+                    await IsAffiliateRoleAsync(
+                        httpContext,
+                        userId,
+                        "User"),
 
                 _ => false
             };
@@ -79,23 +91,24 @@ public sealed class PartnerAccessHandler(
         }
     }
 
-
     private async Task<bool> IsCompanyOwnerAsync(
-    HttpContext httpContext,
-    Guid userId)
+        HttpContext httpContext,
+        Guid userId)
     {
         if (TryGetCompanyId(httpContext, out var companyId))
         {
-            return await _companyRepo.Query().AnyAsync(x =>
-                x.Id == companyId &&
-                x.OwnerId == userId);
+            return await _companyRepo.Query()
+                .AnyAsync(x =>
+                    x.Id == companyId &&
+                    x.OwnerId == userId);
         }
 
         if (TryGetAffiliateId(httpContext, out var affiliateId))
         {
-            return await _companyRepo.Query().AnyAsync(x =>
-                x.OwnerId == userId &&
-                x.Affiliates.Any(a => a.Id == affiliateId));
+            return await _companyRepo.Query()
+                .AnyAsync(x =>
+                    x.OwnerId == userId &&
+                    x.Affiliates.Any(a => a.Id == affiliateId));
         }
 
         return false;
@@ -109,10 +122,11 @@ public sealed class PartnerAccessHandler(
         if (!TryGetAffiliateId(httpContext, out var affiliateId))
             return false;
 
-        return await _employeeRepo.Query().AnyAsync(x =>
-            x.PartnerUserId == userId &&
-            x.CompanyAffiliateId == affiliateId &&
-            x.Role.Name == roleName);
+        return await _employeeRepo.Query()
+            .AnyAsync(x =>
+                x.PartnerUserId == userId &&
+                x.CompanyAffiliateId == affiliateId &&
+                x.Role.Name == roleName);
     }
 
     private static bool TryGetCompanyId(
@@ -121,8 +135,12 @@ public sealed class PartnerAccessHandler(
     {
         companyId = Guid.Empty;
 
-        return httpContext.Request.RouteValues.TryGetValue("companyId", out var value)
-            && Guid.TryParse(value?.ToString(), out companyId);
+        return httpContext.Request.RouteValues.TryGetValue(
+                   "companyId",
+                   out var value)
+               && Guid.TryParse(
+                   value?.ToString(),
+                   out companyId);
     }
 
     private static bool TryGetAffiliateId(
@@ -131,7 +149,11 @@ public sealed class PartnerAccessHandler(
     {
         affiliateId = Guid.Empty;
 
-        return httpContext.Request.RouteValues.TryGetValue("affiliateId", out var value)
-            && Guid.TryParse(value?.ToString(), out affiliateId);
+        return httpContext.Request.RouteValues.TryGetValue(
+                   "affiliateId",
+                   out var value)
+               && Guid.TryParse(
+                   value?.ToString(),
+                   out affiliateId);
     }
 }
