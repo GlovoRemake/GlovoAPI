@@ -2,6 +2,7 @@
 using Core.Dtos.Account;
 using Core.Dtos.Company;
 using Core.Dtos.Partner;
+using Core.Queries.Partner;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.Data;
@@ -180,6 +181,18 @@ namespace GlovoAPI.Controllers
             if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
 
             return Ok(new { result.IsSuccess, result = true });
+        }
+
+        [Authorize(AuthenticationSchemes = "PartnerAccessScheme")]
+        [HttpGet("GetProfile")]
+        public async Task<IActionResult> GetPartnerProfile()
+        {
+            var idRaw = User.FindFirst("id")?.Value;
+            var result = await _mediator.Send(new GetPartnerProfileQuery(idRaw));
+
+            if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
+
+            return Ok(new { result.IsSuccess, result.Value });
         }
     }
 }

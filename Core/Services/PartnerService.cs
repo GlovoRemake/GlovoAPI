@@ -21,6 +21,7 @@ namespace Core.Services;
 public class PartnerService(
         ISoftDeleteRepository<PartnerUser, Guid> _partnerUserRepo,
         IRepository<RequestCompany, long> _requestCompanyRepo,
+        ISoftDeleteRepository<PartnerRole, int>  _partnerRoleRepo,
         IMapper _mapper,
         IEmailService _emailService,
         IMemoryCache _memoryCache,
@@ -211,5 +212,27 @@ public class PartnerService(
         await _requestCompanyRepo.AddAsync(request);
     }
 
-    
+    public async Task<GetPartnerProfileDto> GetPartnerProfile(string partnerGuidId)
+    {
+        if (partnerGuidId == null)
+        {
+            throw new InvalidJwtTokenException("JWT токен є пошкодженним!");
+        }
+        Guid userIdGuid = Guid.Parse(partnerGuidId);
+        var user = await _partnerUserRepo.GetByIdAsync(userIdGuid);
+        // var roles = await _partnerRoleRepo.Query()
+        //     .Where(x => x.Employees.Any(x => x.PartnerUserId == userIdGuid))
+        //     .Select(x => x.Name)
+        //     .ToListAsync();
+        if (user == null)
+        {
+            throw new UserNotFoundException("Користувач не знайдений!");
+        }
+        else
+        {
+            var dto = _mapper.Map<GetPartnerProfileDto>(user);
+            //dto.Roles = roles.ToArray();
+            return dto;
+        }
+    }
 }

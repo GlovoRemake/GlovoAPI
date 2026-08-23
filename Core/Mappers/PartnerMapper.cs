@@ -12,5 +12,6 @@ public class PartnerMapper : Profile
     {
         CreateMap<PartnerRegisterDto, PartnerUser>()
             .ForMember(x => x.PasswordHash, opt => opt.Ignore());
+        CreateMap<PartnerUser, GetPartnerProfileDto>();
     }
 }
