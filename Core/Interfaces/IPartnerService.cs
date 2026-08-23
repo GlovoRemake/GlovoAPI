@@ -11,4 +11,5 @@ public interface IPartnerService
     Task<TokenResponseDto> RefreshToken(string refreshToken);
     Task<TokenResponseDto> PartnerLogin(string email, string password);
     Task SendRequestCompany(Guid id, AddRequestCompanyDto dto);
+    Task<GetPartnerProfileDto> GetPartnerProfile(string partnerGuidId);
 }
