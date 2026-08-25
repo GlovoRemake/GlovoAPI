@@ -137,9 +137,9 @@ public class CompanyService(
         }
     }
 
-    public async Task<List<CompanyDto>> GetListCompanyAsync(Guid partnerId)
+    public async Task<List<RequestCompanyDto>> GetListCompanyAsync(Guid partnerId)
     {
-        var companies = await _companyRepo.Query().Where(x => x.OwnerId == partnerId).ProjectTo<CompanyDto>(_mapper.ConfigurationProvider).ToListAsync();
+        var companies = await _requestCompanyRepo.Query().Where(x => x.PartnerId == partnerId).ProjectTo<RequestCompanyDto>(_mapper.ConfigurationProvider).ToListAsync();
         return companies;
     }
 }

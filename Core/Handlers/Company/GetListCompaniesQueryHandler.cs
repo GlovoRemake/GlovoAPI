@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Core.Handlers.Company;
 
-public sealed class GetListCompaniesQueryHandler : IRequestHandler<GetListCompaniesQuery, Result<List<CompanyDto>>>
+public sealed class GetListCompaniesQueryHandler : IRequestHandler<GetListCompaniesQuery, Result<List<RequestCompanyDto>>>
 {
     private readonly ICompanyService _companyService;
 
@@ -15,15 +15,15 @@ public sealed class GetListCompaniesQueryHandler : IRequestHandler<GetListCompan
     {
         _companyService = companyService;
     }
-    public async Task<Result<List<CompanyDto>>> Handle(GetListCompaniesQuery request, CancellationToken cancellationToken)
+    public async Task<Result<List<RequestCompanyDto>>> Handle(GetListCompaniesQuery request, CancellationToken cancellationToken)
     {
         try
         {
-            return Result<List<CompanyDto>>.Success(await _companyService.GetListCompanyAsync(request.partnerId));
+            return Result<List<RequestCompanyDto>>.Success(await _companyService.GetListCompanyAsync(request.partnerId));
         }
         catch (Exception ex)
         {
-            return Result<List<CompanyDto>>.Failure(new ErrorMessage("InternalError", ex.Message));
+            return Result<List<RequestCompanyDto>>.Failure(new ErrorMessage("InternalError", ex.Message));
         }
     }
 }
