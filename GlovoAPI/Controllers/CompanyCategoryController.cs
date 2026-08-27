@@ -51,7 +51,7 @@ namespace GlovoAPI.Controllers
 
         [PartnerAuthorize(PartnerRolesEnum.CompanyOwner)]
         [HttpDelete("remove/{companyId:Guid}")]
-        public async Task<IActionResult> RemoveCompanyCategory([FromBody] DeleteCategoryDto dto)
+        public async Task<IActionResult> RemoveCompanyCategory([FromQuery] DeleteCategoryDto dto)
         {
             var result = await _mediator.Send(new DeleteCategoryCommand(dto));
 
