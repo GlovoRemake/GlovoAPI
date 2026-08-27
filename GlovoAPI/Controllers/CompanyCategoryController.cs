@@ -29,7 +29,7 @@ namespace GlovoAPI.Controllers
         }
 
         [PartnerAuthorize(PartnerRolesEnum.CompanyOwner)]
-        [HttpPost("add")]
+        [HttpPost("add/{companyId:Guid}")]
         public async Task<IActionResult> AddCompanyCategory([FromBody] AddCategoryDto dto)
         {
             var result = await _mediator.Send(new AddCategoryCommand(dto));
@@ -39,7 +39,7 @@ namespace GlovoAPI.Controllers
             return Ok(new { result.IsSuccess });
         }
         [PartnerAuthorize(PartnerRolesEnum.CompanyOwner)]
-        [HttpPut("edit")]
+        [HttpPut("edit/{companyId:Guid}")]
         public async Task<IActionResult> EditCompanyCategory([FromBody] UpdateCategoryDto dto)
         {
             var result = await _mediator.Send(new UpdateCategoryCommand(dto));
@@ -50,7 +50,7 @@ namespace GlovoAPI.Controllers
         }
 
         [PartnerAuthorize(PartnerRolesEnum.CompanyOwner)]
-        [HttpDelete("remove")]
+        [HttpDelete("remove/{companyId:Guid}")]
         public async Task<IActionResult> RemoveCompanyCategory([FromBody] DeleteCategoryDto dto)
         {
             var result = await _mediator.Send(new DeleteCategoryCommand(dto));
@@ -61,7 +61,7 @@ namespace GlovoAPI.Controllers
         }
 
         [PartnerAuthorize(PartnerRolesEnum.CompanyOwner)]
-        [HttpPut("reorder")]
+        [HttpPut("reorder/{companyId:Guid}")]
         public async Task<IActionResult> ReorderCompanyCategories([FromBody] ReorderCategoryDto dto)
         {
             var result = await _mediator.Send(new ReorderCategoryCommand(dto));
