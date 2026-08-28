@@ -1,6 +1,7 @@
 using Core;
 using Domain;
 using GlovoAPI;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -118,6 +119,12 @@ if (!Directory.Exists(pathE))
     Directory.CreateDirectory(pathE);
 }
 
+// open static files for images
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(path),
+    RequestPath = $"/{imageDirName}"
+});
 
 
 app.Run();
