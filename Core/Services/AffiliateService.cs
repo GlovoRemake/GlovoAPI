@@ -45,7 +45,7 @@ public class AffiliateService(
         var (requests, totalCount) = await _affiliateRepo.ListPagedAsync<AffiliateDto>(
             pageNumber,
             pageSize,
-            predicate: x => true
+            predicate: x => x.CompanyId == companyId
         );
 
         return new PagedAffiliatesDto
