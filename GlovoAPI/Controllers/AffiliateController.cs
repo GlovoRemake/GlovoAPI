@@ -18,6 +18,18 @@ namespace GlovoAPI.Controllers
     [ApiController]
     public class AffiliateController(IMediator _mediator) : ControllerBase
     {
+
+        [PartnerAuthorize(PartnerRolesEnum.CompanyOwner)]
+        [HttpGet("{affiliateId:Guid}")]
+        public async Task<IActionResult> GetAffiliateById(Guid affiliateId)
+        {
+            var result = await _mediator.Send(new GetAffiliateByIdQuery(affiliateId));
+
+            if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
+
+            return Ok(new { result.IsSuccess, result.Value });
+        }
+
         [PartnerAuthorize(PartnerRolesEnum.CompanyOwner)]
         [HttpGet("all/{companyId:Guid}")]
         public async Task<IActionResult> GetAllAffiliates(Guid companyId, int pageNumber, int pageSize)
