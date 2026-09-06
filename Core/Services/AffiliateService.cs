@@ -39,6 +39,13 @@ public class AffiliateService(
     IMapper _mapper
 ) : IAffiliateService
 {
+    public async Task<AffiliateDto> GetAffilaiteById(Guid affilaiteId)
+    {
+        return await _affiliateRepo.Query()
+            .Where(x => x.Id == affilaiteId)
+            .ProjectTo<AffiliateDto>(_mapper.ConfigurationProvider)
+            .FirstOrDefaultAsync() ?? new AffiliateDto();
+    }
 
     public async Task<PagedAffiliatesDto> GetAllAffiliatesAsync(Guid companyId, int pageNumber, int pageSize)
     {
@@ -219,7 +226,6 @@ public class AffiliateService(
 
         return categories;
     }
-    
     public async Task AddCategory(Guid affiliateId, int categoryId)
     {
         var categoryCompany = await _productCategoryRepo.Query()
@@ -238,7 +244,6 @@ public class AffiliateService(
             CompanyAffiliateId = affiliateId,
         });
     }
-    
     public async Task RemoveCategory(Guid affiliateId, int categoryId)
     {
         var affiliateCategory = await _affiliatesProductsCategoryRepo.Query()
