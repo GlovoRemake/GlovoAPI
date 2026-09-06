@@ -194,5 +194,18 @@ namespace GlovoAPI.Controllers
 
             return Ok(new { result.IsSuccess, result.Value });
         }
+
+        [Authorize(AuthenticationSchemes = "PartnerAccessScheme")]
+        [HttpPut("UpdateProfile")]
+        public async Task<IActionResult> UpdatePartnerProfile(PartnerUpdateDto dto)
+        {
+            var idRaw = User.FindFirst("id")?.Value;
+            var GuidId = Guid.Parse(idRaw);
+            var result = await _mediator.Send(new PartnerUpdateProfileCommand(GuidId, dto));
+
+            if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
+
+            return Ok(new { result.IsSuccess });
+        }
     }
 }
