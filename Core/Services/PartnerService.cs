@@ -235,4 +235,14 @@ public class PartnerService(
             return dto;
         }
     }
+
+    public async Task UpdatePartnerProfile(Guid partnerId, PartnerUpdateDto dto)
+    {
+        var user = await _partnerUserRepo.GetByIdAsync(partnerId);
+        if (user == null) throw new UserNotFoundException("Користувача не знайдено!");
+        user.Phone = dto.Phone;
+        user.FirstName = dto.FirstName;
+        user.LastName = dto.LastName;
+        await _partnerUserRepo.UpdateAsync(user);
+    }
 }
