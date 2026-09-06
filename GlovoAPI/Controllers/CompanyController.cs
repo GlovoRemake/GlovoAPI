@@ -55,7 +55,7 @@ namespace GlovoAPI.Controllers
         }
 
         [PartnerAuthorize(PartnerRolesEnum.CompanyOwner)]
-        [HttpPut("update")]
+        [HttpPut("update/{companyId:Guid}")]
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> UpdateCompany([FromForm] UpdateCompanyDto dto)
         {
