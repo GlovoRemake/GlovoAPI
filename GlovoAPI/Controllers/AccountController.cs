@@ -144,16 +144,19 @@ namespace GlovoAPI.Controllers
                     Expires = DateTime.UtcNow.AddMinutes(int.TryParse(lifeTime, out var minutes) ? minutes : 15),
                 });
 
-            Response.Cookies.Append(
-               "refreshToken",
-               result.Value.RefreshToken,
-               new CookieOptions
-               {
-                   HttpOnly = true,
-                   Secure = true,
-                   SameSite = SameSiteMode.None,
-                   Expires = DateTime.UtcNow.AddDays(int.TryParse(lifeTimeRefresh, out var days) ? days : 7),
-               });
+            if (result.Value.RefreshToken != null)
+            {
+                Response.Cookies.Append(
+                    "refreshToken",
+                    result.Value.RefreshToken,
+                    new CookieOptions
+                    {
+                        HttpOnly = true,
+                        Secure = true,
+                        SameSite = SameSiteMode.None,
+                        Expires = DateTime.UtcNow.AddDays(int.TryParse(lifeTimeRefresh, out var days) ? days : 7),
+                    });
+            }
 
             return Ok(new { result.IsSuccess, result.Value });
         }
