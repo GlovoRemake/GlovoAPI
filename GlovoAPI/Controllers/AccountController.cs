@@ -162,7 +162,7 @@ namespace GlovoAPI.Controllers
         }
 
         [HttpPost("Refresh")]
-        public async Task<IActionResult> Refresh()
+        public async Task<IActionResult> Refresh(string? token)
         {
             if (!Request.Cookies.TryGetValue(
                     "refreshToken",
@@ -171,7 +171,7 @@ namespace GlovoAPI.Controllers
                 return Unauthorized();
             }
 
-            var result = await _mediator.Send(new PartnerRefreshTokenCommand(refreshToken));
+            var result = await _mediator.Send(new RefreshTokenCommand(refreshToken ?? token ?? ""));
 
             if (!result.IsSuccess)
             {
