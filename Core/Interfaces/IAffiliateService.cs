@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using Core.Dtos.Company.Category;
 using Core.Dtos.Company.Product;
+using Core.Dtos.Partner;
 
 namespace Core.Interfaces;
 
@@ -17,6 +18,7 @@ public interface IAffiliateService
     Task<bool> DeleteAffiliateAsync(Guid affiliateId);
 
 
+    Task<List<GetPartnerProfileDto>> GetManagers(Guid affiliateId);
     Task AddManager(Guid affiliateId, OperationAffiliateUserDto partnerDto);
     Task RemoveManager(Guid affiliateId, OperationAffiliateUserDto partnerDto);
     
