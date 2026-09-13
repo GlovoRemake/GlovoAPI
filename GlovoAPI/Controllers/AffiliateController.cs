@@ -87,6 +87,17 @@ namespace GlovoAPI.Controllers
 
 
 
+        
+        [PartnerAuthorize(PartnerRolesEnum.CompanyOwner, PartnerRolesEnum.AffiliateManager)]
+        [HttpGet("manager/{affiliateId:Guid}")]
+        public async Task<IActionResult> GetManagers(Guid affiliateId)
+        {
+            var result = await _mediator.Send(new GetAffiliateManagersQuery(affiliateId));
+
+            if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
+
+            return Ok(new { result.IsSuccess, result.Value });
+        }
 
         [PartnerAuthorize(PartnerRolesEnum.CompanyOwner)]
         [HttpPost("manager/{affiliateId:Guid}")]
@@ -111,6 +122,16 @@ namespace GlovoAPI.Controllers
         }
 
 
+        [PartnerAuthorize(PartnerRolesEnum.CompanyOwner, PartnerRolesEnum.AffiliateManager)]
+        [HttpGet("employee/{affiliateId:Guid}")]
+        public async Task<IActionResult> GetEmployees(Guid affiliateId)
+        {
+            var result = await _mediator.Send(new GetAffiliateEmployeesQuery(affiliateId));
+
+            if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
+
+            return Ok(new { result.IsSuccess, result.Value });
+        }
         
         [PartnerAuthorize(PartnerRolesEnum.CompanyOwner, PartnerRolesEnum.AffiliateManager)]
         [HttpPost("employee/{affiliateId:Guid}")]
