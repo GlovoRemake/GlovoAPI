@@ -125,7 +125,7 @@ public class AffiliateService(
     public async Task<List<GetPartnerProfileDto>> GetManagers(Guid affiliateId)
     {
         return await _employeeRepo.Query()
-            .Where(x => x.CompanyAffiliateId == affiliateId && x.Role.Name == "Manager")
+            .Where(x => x.CompanyAffiliateId == affiliateId && x.Role.Name == "Manager" && !x.IsDeleted)
             .Select(x => x.User)
             .ProjectTo<GetPartnerProfileDto>(_mapper.ConfigurationProvider)
             .ToListAsync();
@@ -182,7 +182,7 @@ public class AffiliateService(
     public async Task<List<GetPartnerProfileDto>> GetEmployees(Guid affiliateId)
     {
         return await _employeeRepo.Query()
-            .Where(x => x.CompanyAffiliateId == affiliateId && x.Role.Name == "Employee" || x.Role.Name == "User")
+            .Where(x => x.CompanyAffiliateId == affiliateId && (x.Role.Name == "Employee" || x.Role.Name == "User") && !x.IsDeleted)
             .Select(x => x.User)
             .ProjectTo<GetPartnerProfileDto>(_mapper.ConfigurationProvider)
             .ToListAsync();
