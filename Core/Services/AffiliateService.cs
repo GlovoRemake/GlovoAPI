@@ -179,6 +179,15 @@ public class AffiliateService(
     }
 
 
+    public async Task<List<GetPartnerProfileDto>> GetEmployees(Guid affiliateId)
+    {
+        return await _employeeRepo.Query()
+            .Where(x => x.CompanyAffiliateId == affiliateId && x.Role.Name == "Employee" || x.Role.Name == "User")
+            .Select(x => x.User)
+            .ProjectTo<GetPartnerProfileDto>(_mapper.ConfigurationProvider)
+            .ToListAsync();
+    }
+    
     public async Task AddEmployee(Guid affiliateId, OperationAffiliateUserDto partnerDto)
     {
         var affiliate = await _affiliateRepo.Query().AnyAsync(x => x.Id == affiliateId);

@@ -21,7 +21,8 @@ public interface IAffiliateService
     Task<List<GetPartnerProfileDto>> GetManagers(Guid affiliateId);
     Task AddManager(Guid affiliateId, OperationAffiliateUserDto partnerDto);
     Task RemoveManager(Guid affiliateId, OperationAffiliateUserDto partnerDto);
-    
+
+    Task<List<GetPartnerProfileDto>> GetEmployees(Guid affiliateId);
     Task AddEmployee(Guid affiliateId, OperationAffiliateUserDto partnerDto);
     Task RemoveEmployee(Guid affiliateId, OperationAffiliateUserDto partnerDto);
 
