@@ -2,6 +2,7 @@
 using Core.Commands.Partner;
 using Core.Dtos.Account;
 using Core.Queries.Account;
+using Google.Apis.Auth.OAuth2.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.Data;
@@ -162,16 +163,16 @@ namespace GlovoAPI.Controllers
         }
 
         [HttpPost("Refresh")]
-        public async Task<IActionResult> Refresh([FromBody] string? token)
+        public async Task<IActionResult> Refresh([FromBody] RefreshTokenDto request)
         {
             if (!Request.Cookies.TryGetValue(
                     "refreshToken",
-                    out var refreshToken))
+                    out var refreshToken) && request.Token == null)
             {
                 return Unauthorized();
             }
 
-            var result = await _mediator.Send(new PartnerRefreshTokenCommand(refreshToken));
+            var result = await _mediator.Send(new RefreshTokenCommand(refreshToken ?? request.Token ?? ""));
 
             if (!result.IsSuccess)
             {
