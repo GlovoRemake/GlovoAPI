@@ -162,7 +162,7 @@ namespace GlovoAPI.Controllers
         }
 
         [HttpPost("Refresh")]
-        public async Task<IActionResult> Refresh()
+        public async Task<IActionResult> Refresh([FromBody] string? token)
         {
             if (!Request.Cookies.TryGetValue(
                     "refreshToken",
