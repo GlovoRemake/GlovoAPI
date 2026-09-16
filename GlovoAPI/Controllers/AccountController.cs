@@ -284,7 +284,7 @@ namespace GlovoAPI.Controllers
 
             if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
 
-            return Ok(new { result.IsSuccess });
+            return Ok(new { result.IsSuccess, Value = true });
         }
     }
 }
