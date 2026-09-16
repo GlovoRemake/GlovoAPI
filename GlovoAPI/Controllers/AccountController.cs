@@ -171,7 +171,7 @@ namespace GlovoAPI.Controllers
                 return Unauthorized();
             }
 
-            var result = await _mediator.Send(new PartnerRefreshTokenCommand(refreshToken));
+            var result = await _mediator.Send(new RefreshTokenCommand(refreshToken ?? token ?? ""));
 
             if (!result.IsSuccess)
             {

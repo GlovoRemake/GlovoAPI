@@ -12,4 +12,6 @@ public class CompanyDto
     public string? IconPath { get; set; }
     public string? BannerPath { get; set; }
     public Guid OwnerId { get; set; }
+    public int? CompanyTypeParentId { get; set; }
+    public List<int>? CompanyTypeIds { get; set; }
 }
