@@ -1,6 +1,7 @@
 ﻿using Core.Commands.Company;
 using Core.Dtos.Company;
 using Core.Queries.Company;
+using Core.Queries.Partner;
 using GlovoAPI.Policy.Attributes;
 using GlovoAPI.Policy.Enums;
 using MediatR;
@@ -35,6 +36,7 @@ namespace GlovoAPI.Controllers
             return Ok(new { result.IsSuccess, result.Value });
         }
 
+        [PartnerAuthorize(PartnerRolesEnum.CompanyOwner)]
         [HttpGet("get/{companyId:Guid}")]
         public async Task<IActionResult> GetCompany(Guid companyId)
         {
@@ -54,7 +56,7 @@ namespace GlovoAPI.Controllers
         }
 
         [PartnerAuthorize(PartnerRolesEnum.CompanyOwner)]
-        [HttpPut("update")]
+        [HttpPut("update/{companyId:Guid}")]
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> UpdateCompany([FromForm] UpdateCompanyDto dto)
         {
@@ -86,6 +88,16 @@ namespace GlovoAPI.Controllers
         public async Task<IActionResult> test(Guid companyId, [FromBody] string data)
         {
             return Ok(new { CompanyId = companyId, Data = data });
+        }
+
+        [HttpGet("GetCompanyTypes")]
+        public async Task<IActionResult> GetCompanyTypes()
+        {
+            var result = await _mediator.Send(new GetCompanyTypesQuery());
+
+            if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
+
+            return Ok(new { result.IsSuccess, result.Value });
         }
     }
 }
