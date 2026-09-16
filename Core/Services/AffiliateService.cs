@@ -19,6 +19,7 @@ using System.Text;
 using Core.Dtos.Company.Category;
 using Core.Dtos.Company.Product;
 using Core.Dtos.Exceptions.Company.Product;
+using Core.Dtos.Partner;
 using Domain.Entities.Company.Product;
 using Domain.Entities.Company.ProductCategory;
 
@@ -121,6 +122,15 @@ public class AffiliateService(
 
 
 
+    public async Task<List<GetPartnerProfileDto>> GetManagers(Guid affiliateId)
+    {
+        return await _employeeRepo.Query()
+            .Where(x => x.CompanyAffiliateId == affiliateId && x.Role.Name == "Manager" && !x.IsDeleted)
+            .Select(x => x.User)
+            .ProjectTo<GetPartnerProfileDto>(_mapper.ConfigurationProvider)
+            .ToListAsync();
+    }
+    
     public async Task AddManager(Guid affiliateId, OperationAffiliateUserDto partnerDto)
     {
         var affiliate = await _affiliateRepo.Query().AnyAsync(x => x.Id == affiliateId);
@@ -169,6 +179,15 @@ public class AffiliateService(
     }
 
 
+    public async Task<List<GetPartnerProfileDto>> GetEmployees(Guid affiliateId)
+    {
+        return await _employeeRepo.Query()
+            .Where(x => x.CompanyAffiliateId == affiliateId && (x.Role.Name == "Employee" || x.Role.Name == "User") && !x.IsDeleted)
+            .Select(x => x.User)
+            .ProjectTo<GetPartnerProfileDto>(_mapper.ConfigurationProvider)
+            .ToListAsync();
+    }
+    
     public async Task AddEmployee(Guid affiliateId, OperationAffiliateUserDto partnerDto)
     {
         var affiliate = await _affiliateRepo.Query().AnyAsync(x => x.Id == affiliateId);
