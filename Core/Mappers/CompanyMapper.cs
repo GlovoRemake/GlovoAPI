@@ -19,6 +19,8 @@ public class CompanyMapper : Profile
             .ForMember(x => x.Id, opt => opt.Ignore());
 
         CreateMap<Company, CompanyDto>();
+
+        CreateMap<Domain.Entities.Company.Type.Type, CompanyTypeDto>();
     }   
 }
 

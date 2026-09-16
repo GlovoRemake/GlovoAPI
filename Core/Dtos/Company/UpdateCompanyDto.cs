@@ -9,4 +9,6 @@ public class UpdateCompanyDto
     public string Description { get; set; }
     public IFormFile? Icon { get; set; }
     public IFormFile? Banner { get; set; }
+    public int CompanyTypeParentId { get; set; }
+    public List<int> CompanyTypeIds { get; set; }
 }

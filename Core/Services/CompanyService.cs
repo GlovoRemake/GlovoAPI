@@ -5,6 +5,7 @@ using Core.Dtos.Company;
 using Core.Dtos.Exceptions.Company;
 using Core.Interfaces;
 using Domain.Entities.Company;
+using Domain.Entities.Company.Type;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,8 @@ namespace Core.Services;
 public class CompanyService(
         IRepository<RequestCompany, long> _requestCompanyRepo,
         ISoftDeleteRepository<Company, Guid> _companyRepo,
+        ISoftDeleteRepository<Domain.Entities.Company.Type.Type, int> _typeRepo,
+        IRepository<CompanyType, int> _companyTypeRepo,
         IMapper _mapper,
         IImageService _imageService
     ) : ICompanyService
@@ -71,12 +74,28 @@ public class CompanyService(
     public async Task<CompanyDto?> GetCompanyAsync(Guid companyId)
     {
         var company = await _companyRepo.Query().FirstOrDefaultAsync(x => x.Id == companyId);
-        return company == null ? null : _mapper.Map<CompanyDto>(company);
+
+        if (company != null)
+        {
+            var companyDto = _mapper.Map<CompanyDto>(company);
+            companyDto.CompanyTypeIds = await _companyTypeRepo.Query()
+                .Where(x => x.CompanyId == companyId)
+                .Select(x => x.TypeId)
+                .ToListAsync();
+
+            if (companyDto.CompanyTypeIds.Count > 0)
+            {
+                var type = await _typeRepo.GetByIdAsync(companyDto.CompanyTypeIds[0]);
+                companyDto.CompanyTypeParentId = type?.ParentTypeId;
+            }
+            return companyDto;
+        }
+        return null;
     }
 
     public async Task UpdateCompanyAsync(UpdateCompanyDto dto)
     {
-        var company = _companyRepo.Query().FirstOrDefault(x => x.Id == dto.Id);
+        var company = await _companyRepo.Query().FirstOrDefaultAsync(x => x.Id == dto.Id);
         if (company == null) throw new CompanyNotFoundException();
 
         if (!string.IsNullOrWhiteSpace(dto.Name) && dto.Name != company.Name)
@@ -109,6 +128,24 @@ public class CompanyService(
         }
 
         await _companyRepo.UpdateAsync(company);
+
+        var existingCompanyTypes = await _companyTypeRepo.Query()
+            .Where(x => x.CompanyId == dto.Id)
+            .ToListAsync();
+
+        foreach (var companyType in existingCompanyTypes)
+        {
+            await _companyTypeRepo.DeleteAsync(companyType.Id);
+        }
+
+        foreach (var typeId in (dto.CompanyTypeIds ?? []).Distinct())
+        {
+            await _companyTypeRepo.AddAsync(new CompanyType
+            {
+                CompanyId = dto.Id,
+                TypeId = typeId
+            });
+        }
     }
 
     public async Task DeleteCompanyIconAsync(Guid companyId)
@@ -141,5 +178,11 @@ public class CompanyService(
     {
         var companies = await _requestCompanyRepo.Query().Where(x => x.PartnerId == partnerId).ProjectTo<RequestCompanyDto>(_mapper.ConfigurationProvider).ToListAsync();
         return companies;
+    }
+
+    public async Task<List<CompanyTypeDto>> GetAllCompanyTypes()
+    {
+        var companyTypes = await _typeRepo.Query().ProjectTo<CompanyTypeDto>(_mapper.ConfigurationProvider).ToListAsync();
+        return companyTypes;
     }
 }
