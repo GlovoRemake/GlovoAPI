@@ -29,6 +29,7 @@ public static class ServiceExtension
         service.AddScoped<ICompanyProductService, CompanyProductService>();
         service.AddScoped<IPromocodeService, PromocodeService>();
         service.AddScoped<ICompanyProductAdditionalService, CompanyProductAdditionalService>();
+        service.AddScoped<IAddressService, AddressService>();
     }
 
     public static void AddCache(this IServiceCollection service)
