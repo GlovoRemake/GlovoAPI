@@ -5,6 +5,7 @@ using Core.Dtos.Company;
 using Core.Dtos.Exceptions.Company;
 using Core.Interfaces;
 using Domain.Entities.Company;
+using Domain.Entities.Company.Affiliate;
 using Domain.Entities.Company.Type;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -184,5 +185,26 @@ public class CompanyService(
     {
         var companyTypes = await _typeRepo.Query().ProjectTo<CompanyTypeDto>(_mapper.ConfigurationProvider).ToListAsync();
         return companyTypes;
+    }
+
+    public async Task<List<CompanyDto?>> GetCompaniesByRegion_CompanyType(int regionId, int[]? companyTypeIds)
+    {
+        var query = _companyRepo.Query()
+            .Where(company => company.Affiliates != null &&
+                company.Affiliates.Any(affiliate =>
+                    affiliate.Location != null &&
+                    affiliate.Location.RegionId == regionId));
+
+        if (companyTypeIds is { Length: > 0 })
+        {
+            query = query.Where(company =>
+                _companyTypeRepo.Query().Any(companyType =>
+                    companyType.CompanyId == company.Id &&
+                    companyTypeIds.Contains(companyType.TypeId)));
+        }
+
+        return await query
+            .ProjectTo<CompanyDto?>(_mapper.ConfigurationProvider)
+            .ToListAsync();
     }
 }

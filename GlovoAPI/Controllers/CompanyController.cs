@@ -1,5 +1,6 @@
 ﻿using Core.Commands.Company;
 using Core.Dtos.Company;
+using Core.Handlers.Company;
 using Core.Queries.Company;
 using Core.Queries.Partner;
 using GlovoAPI.Policy.Attributes;
@@ -94,6 +95,16 @@ namespace GlovoAPI.Controllers
         public async Task<IActionResult> GetCompanyTypes()
         {
             var result = await _mediator.Send(new GetCompanyTypesQuery());
+
+            if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
+
+            return Ok(new { result.IsSuccess, result.Value });
+        }
+
+        [HttpGet("GetCompanyByRegion/{regionId:int}")]
+        public async Task<IActionResult> GetCompanyByRegion(int regionId, [FromQuery] int[] companyTypeIds)
+        {
+            var result = await _mediator.Send(new GetCompaniesByRegion_CompanyTypeQuery(regionId, companyTypeIds));
 
             if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
 
