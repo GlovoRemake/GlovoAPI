@@ -15,4 +15,5 @@ public interface ICompanyService
     Task DeleteCompanyBannerAsync(Guid companyId);
     Task<List<RequestCompanyDto>> GetListCompanyAsync(Guid partnerId);
     Task<List<CompanyTypeDto>> GetAllCompanyTypes();
+    Task<List<CompanyDto?>> GetCompaniesByRegion_CompanyType(int regionId, int[]? companyTypeIds);
 }
