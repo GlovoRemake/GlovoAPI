@@ -7,6 +7,7 @@ using Core.Queries.Company.Product.Additional;
 using GlovoAPI.Policy.Attributes;
 using GlovoAPI.Policy.Enums;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,9 +17,9 @@ namespace GlovoAPI.Controllers
     [ApiController]
     public class AdditionalController(IMediator _mediator) : ControllerBase
     {
-        [PartnerAuthorize(PartnerRolesEnum.CompanyOwner)]
-        [HttpGet("all/{companyId:Guid}/{productId:int}")]
-        public async Task<IActionResult> GetAdditionals(Guid companyId, int productId)
+        [Authorize]
+        [HttpGet("all/{productId:int}")]
+        public async Task<IActionResult> GetAdditionals(int productId)
         {
             var result = await _mediator.Send(new GetAdditionalsQuery(productId));
 

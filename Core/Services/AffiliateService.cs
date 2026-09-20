@@ -67,7 +67,7 @@ public class AffiliateService(
     public async Task<AffiliateDto[]> GetAllAffiliatesByRegionAsync(Guid companyId, int cityId)
     {
         return await _affiliateRepo.Query()
-            .Where(x => x.CompanyId == companyId && x.Location.RegionId == cityId)
+            .Where(x => x.CompanyId == companyId && x.Location.Region.Cities.FirstOrDefault(x => x.Id == cityId) != null)
             .ProjectTo<AffiliateDto>(_mapper.ConfigurationProvider)
             .ToArrayAsync();
     }
