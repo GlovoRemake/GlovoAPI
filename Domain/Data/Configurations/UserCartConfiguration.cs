@@ -22,8 +22,8 @@ public class UserCartConfiguration
             .WithMany(u => u.Carts)
             .HasForeignKey(c => c.UserId);
         builder
-            .HasOne(c => c.Affiliate)
+            .HasOne(c => c.Company)
             .WithMany(u => u.Carts)
-            .HasForeignKey(c => c.AffiliateId);
+            .HasForeignKey(c => c.CompanyId);
     }
 }

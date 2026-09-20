@@ -13,11 +13,11 @@ public class UserCart : BaseEntity<int>
     public Guid UserId { get; set; }
     public int ProductId { get; set; }
     public int Count { get; set; }
-    public Guid AffiliateId { get; set; }
+    public Guid CompanyId { get; set; }
 
     // conn
     public UserEntity User { get; set; }
     public CompanyProduct Product { get; set; }
-    public CompanyAffiliate Affiliate { get; set; }
+    public Company.Company Company { get; set; }
     public ICollection<UserCartAdditional>? Additionals { get; set; }
 }

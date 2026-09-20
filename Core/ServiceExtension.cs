@@ -30,6 +30,7 @@ public static class ServiceExtension
         service.AddScoped<IPromocodeService, PromocodeService>();
         service.AddScoped<ICompanyProductAdditionalService, CompanyProductAdditionalService>();
         service.AddScoped<IAddressService, AddressService>();
+        service.AddScoped<ICartService, CartService>();
     }
 
     public static void AddCache(this IServiceCollection service)
