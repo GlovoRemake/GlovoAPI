@@ -158,7 +158,7 @@ namespace GlovoAPI.Controllers
         
         
         
-        [PartnerAuthorize(PartnerRolesEnum.CompanyOwner, PartnerRolesEnum.AffiliateManager)]
+        [Authorize]
         [HttpGet("categories/{affiliateId:Guid}")]
         public async Task<IActionResult> GetAffiliateCategories(Guid affiliateId)
         {
@@ -190,11 +190,11 @@ namespace GlovoAPI.Controllers
 
             return Ok(new { result.IsSuccess, value = true });
         }
-        
-        
-        
-        
-        [PartnerAuthorize(PartnerRolesEnum.CompanyOwner, PartnerRolesEnum.AffiliateManager)]
+
+
+
+
+        [Authorize]
         [HttpGet("products/{affiliateId:Guid}")]
         public async Task<IActionResult> GetAffiliateProducts(Guid affiliateId)
         {
