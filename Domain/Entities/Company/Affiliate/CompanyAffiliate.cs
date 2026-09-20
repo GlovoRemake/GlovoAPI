@@ -25,5 +25,4 @@ public class CompanyAffiliate : BaseEntity<Guid>
     public CompanyAffiliatesWorkingHour? WorkingHours { get; set; }
     public ICollection<CompanyAffiliateProduct>? Products { get; set; }
     public ICollection<CompanyAffiliatesProductsCategory>? Categories { get; set; }
-    public ICollection<UserCart>? Carts { get; set; }
 }
