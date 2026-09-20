@@ -3,8 +3,10 @@ using AutoMapper.QueryableExtensions;
 using Core.Dtos.Account.Cart;
 using Core.Dtos.Company;
 using Core.Dtos.Exceptions.Account.Cart;
+using Core.Dtos.Exceptions.Company.Product;
 using Core.Entities.Identity;
 using Core.Interfaces;
+using Domain.Entities.Company.Product;
 using Domain.Entities.Company.Product.Additional;
 using Domain.Entities.User;
 using Microsoft.AspNetCore.Identity;
@@ -19,6 +21,7 @@ public class CartService(
         IRepository<UserCart, int> _cartRepo,
         ISoftDeleteRepository<AdditionalGroup, int> _additionalGroupRepo,
         ISoftDeleteRepository<Additional, int> _additionalRepo,
+        ISoftDeleteRepository<CompanyProduct, int> _productRepo,
         IMapper _mapper
     ) : ICartService
 {
@@ -73,33 +76,58 @@ public class CartService(
 
     public async Task AddToCart(Guid userId, AddToCartDto dto)
     {
-        var productInCart = await _cartRepo
-            .Query()
-            .FirstOrDefaultAsync(x =>
-                x.UserId == userId &&
-                x.ProductId == dto.ProductId);
-
-        if (productInCart != null)
-            throw new ProductAlreadyAddedException();
-
-
         var additionalIds = dto.AdditionalIds?
             .Distinct()
+            .OrderBy(x => x)
             .ToList() ?? [];
 
+        var product = await _productRepo
+            .Query()
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x =>
+                x.Id == dto.ProductId);
+
+        if (product == null)
+            throw new ProductNotFoundException();
 
         await ValidateAdditionals(
             dto.ProductId,
             additionalIds
         );
 
+        var cartItems = await _cartRepo
+            .Query()
+            .Include(x => x.Additionals)
+            .Where(x =>
+                x.UserId == userId &&
+                x.ProductId == dto.ProductId)
+            .ToListAsync();
+
+        var existingCartItem = cartItems
+            .FirstOrDefault(x =>
+                HasSameAdditionals(
+                    x,
+                    additionalIds
+                ));
+
+        if (existingCartItem != null)
+        {
+            existingCartItem.Count += dto.Count;
+
+            await _cartRepo.SaveChangesAsync();
+
+            return;
+        }
 
         await _cartRepo.AddAsync(new UserCart
         {
             UserId = userId,
+
             ProductId = dto.ProductId,
+
             Count = dto.Count,
-            CompanyId = productInCart.CompanyId,
+
+            CompanyId = product.CompanyId,
 
             Additionals = additionalIds
                 .Select(id => new UserCartAdditional
@@ -111,6 +139,25 @@ public class CartService(
         });
 
         await _cartRepo.SaveChangesAsync();
+    }
+
+
+    private static bool HasSameAdditionals(UserCart cartItem, IReadOnlyCollection<int> additionalIds)
+    {
+        var cartAdditionalIds = cartItem.Additionals
+            .Select(x => x.AdditionalId)
+            .Distinct()
+            .OrderBy(x => x)
+            .ToList();
+
+        var requestedAdditionalIds = additionalIds
+            .Distinct()
+            .OrderBy(x => x)
+            .ToList();
+
+        return cartAdditionalIds.SequenceEqual(
+            requestedAdditionalIds
+        );
     }
 
     public async Task UpdateCart(Guid userId, int cartId, UpdateCartDto dto)
