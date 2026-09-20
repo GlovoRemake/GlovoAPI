@@ -8,6 +8,8 @@ namespace Core.Dtos.Account.Cart;
 
 public class CartDto
 {
+    public int Id { get; set; }
+    public int Count { get; set; }
     public ProductDto Product { get; set; } = default!;
     public List<CartAdditionalGroupDto> AdditionalGroups { get; set; } = default!;
 }

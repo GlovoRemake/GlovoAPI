@@ -32,6 +32,14 @@ internal class CartMapper : Profile
             .ForMember(
                 dest => dest.AdditionalGroups,
                 opt => opt.MapFrom(src => src.Product.AdditionalGroups)
+            )
+            .ForMember(
+                dest => dest.Count,
+                opt => opt.MapFrom(src => src.Count)
+            )
+            .ForMember(
+                dest => dest.Id,
+                opt => opt.MapFrom(src => src.Id)
             );
 
         CreateMap<UserCart, CartItemDto>()

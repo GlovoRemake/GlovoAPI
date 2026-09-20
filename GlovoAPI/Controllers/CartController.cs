@@ -42,7 +42,7 @@ namespace GlovoAPI.Controllers
 
         [Authorize]
         [HttpPut("{cartId:int}")]
-        public async Task<IActionResult> UpdateCart([FromQuery] int cartId, [FromBody] UpdateCartDto dto)
+        public async Task<IActionResult> UpdateCart(int cartId, [FromBody] UpdateCartDto dto)
         {
             var res = Guid.TryParse(User.FindFirst("id")?.Value, out var id);
             var result = await _mediator.Send(new UpdateCartCommand(res ? id : Guid.Empty, cartId, dto));
@@ -54,7 +54,7 @@ namespace GlovoAPI.Controllers
 
         [Authorize]
         [HttpDelete("{cartId:int}")]
-        public async Task<IActionResult> DeleteCart ([FromQuery] int cartId)
+        public async Task<IActionResult> DeleteCart (int cartId)
         {
             var res = Guid.TryParse(User.FindFirst("id")?.Value, out var id);
             var result = await _mediator.Send(new DeleteFromCartCommand(res ? id : Guid.Empty, cartId));
