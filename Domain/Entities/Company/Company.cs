@@ -4,6 +4,7 @@ using Domain.Entities.Company.Partner;
 using Domain.Entities.Company.Product;
 using Domain.Entities.Company.ProductCategory;
 using Domain.Entities.Company.Type;
+using Domain.Entities.Order;
 using Domain.Entities.User;
 
 namespace Domain.Entities.Company;
@@ -26,4 +27,5 @@ public class Company : BaseEntityWithIsDeleted<Guid>
     public ICollection<RequestCompany>? RequestCompanies { get; set; }
     public ICollection<Promocode>? Promocodes { get; set; }
     public ICollection<UserCart>? Carts { get; set; }
+    public ICollection<UserOrder>? Orders { get; set; }
 }

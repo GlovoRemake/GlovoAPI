@@ -1,10 +1,11 @@
-﻿using Domain.Entities.Company.Product;
+﻿using Domain.Entities.Base;
+using Domain.Entities.Company.Product;
 using Domain.Entities.Company.ProductCategory;
+using Domain.Entities.Order;
 using Domain.Entities.User;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Domain.Entities.Base;
 
 namespace Domain.Entities.Company.Affiliate;
 
@@ -25,4 +26,5 @@ public class CompanyAffiliate : BaseEntity<Guid>
     public CompanyAffiliatesWorkingHour? WorkingHours { get; set; }
     public ICollection<CompanyAffiliateProduct>? Products { get; set; }
     public ICollection<CompanyAffiliatesProductsCategory>? Categories { get; set; }
+    public ICollection<UserOrder>? Orders { get; set; }
 }
