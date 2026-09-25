@@ -105,9 +105,9 @@ public class OrderService(
     {
         return weight switch
         {
-            <= 2d => 50d,
-            <= 5d => 80d,
-            <= 10d => 120d,
+            <= 2000d => 50d,
+            <= 3500d => 80d,
+            <= 6000d => 120d,
             _ => 150d
         };
     }
