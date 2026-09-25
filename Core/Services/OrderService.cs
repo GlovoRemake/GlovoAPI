@@ -1,6 +1,7 @@
 ﻿using Core.Dtos.Account.Order;
 using Core.Dtos.Exceptions.Account.Address;
 using Core.Dtos.Exceptions.Company;
+using Core.Dtos.Exceptions.Company.Affiliate;
 using Core.Interfaces;
 using Core.Repositories;
 using Domain.Entities.Company;
@@ -28,19 +29,34 @@ public class OrderService(
         if (company == null)
             throw new CompanyNotFoundException();
 
-        var location = await _userLocationRepo.Query().FirstOrDefaultAsync(x => x.Id == dto.LocationId);
+        var cart = await _userCartRepo.Query()
+            .Where(x =>
+                x.UserId == userId &&
+                x.CompanyId == dto.CompanyId)
+            .Include(x => x.Product)
+            .Include(x => x.Additionals)
+                .ThenInclude(x => x.Additional)
+            .ToListAsync();
+
+        var location = await _userLocationRepo.Query()
+            .Include(x => x.City)
+            .FirstOrDefaultAsync(x => x.Id == dto.LocationId);
+
         if (location == null)
             throw new AddressNotFoundException();
 
-        var cart = await _userCartRepo.Query()
-            .Where(x => x.UserId == userId && x.CompanyId == dto.CompanyId)
-            .ToListAsync();
+        if (location.City == null)
+            throw new AddressNotFoundException();
+
+        var regionId = location.City.RegionId;
 
         var affiliate = await _affiliateRepo.Query()
             .FirstOrDefaultAsync(x =>
                 x.CompanyId == dto.CompanyId &&
-                x.Location.RegionId == location.City.RegionId);
+                x.Location.RegionId == regionId);
 
+        if (affiliate == null)
+            throw new AffiliateNotFoundException();
 
 
         var productsPrice = cart.Sum(x =>
@@ -78,6 +94,8 @@ public class OrderService(
 
             Status = Domain.Enums.OrderStatus.InProgress,
             PaymentMethod = dto.PaymentMethod,
+
+
 
             Products = cart
                 .Select(x => new OrderProduct

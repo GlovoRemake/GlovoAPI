@@ -27,7 +27,7 @@ public class UserOrder : BaseEntityWithIsDeleted<int>
     public PaymentMethod PaymentMethod { get; set; }
     public string? AnotherReceiverName { get; set; }
     public string? AnotherReceiverPhone { get; set; }
-    public DateTime DeliveryStart { get; set; } = DateTime.Now;
+    public DateTime DeliveryStart { get; set; } = DateTime.UtcNow;
     public DateTime? DeliveryEnd { get; set; }
     public Guid? CourierId { get; set; }
 
