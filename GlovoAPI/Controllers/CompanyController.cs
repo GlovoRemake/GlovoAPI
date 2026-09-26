@@ -28,7 +28,7 @@ namespace GlovoAPI.Controllers
 
         [Authorize(Roles = "Owner, Admin, Support")]
         [HttpPost("approval")]
-        public async Task<IActionResult> ApprovalRequest([FromQuery] ApprovalCompanyDto dto)
+        public async Task<IActionResult> ApprovalRequest([FromBody] ApprovalCompanyDto dto)
         {
             var result = await _mediator.Send(new ApprovalRequestCommand(dto));
 
