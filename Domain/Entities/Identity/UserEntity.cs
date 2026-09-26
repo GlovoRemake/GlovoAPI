@@ -21,6 +21,7 @@ public class UserEntity : IdentityUser<Guid>
     public ICollection<CourierTimeSlot>? CourierTimeSlots { get; set; }
     public ICollection<UserLocation>? UserLocations { get; set; }
     public ICollection<UserOrder>? UserOrders { get; set; }
+    public ICollection<UserOrder>? UserOrdersLikeCourier { get; set; }
     public ICollection<SupportChat>? UserSupportChats { get; set; }
     public ICollection<SupportChat>? AssignedSupportChats { get; set; } // support
     public ICollection<Message>? Messages { get; set; }

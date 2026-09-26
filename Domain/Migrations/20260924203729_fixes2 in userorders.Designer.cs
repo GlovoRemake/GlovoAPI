@@ -3,6 +3,7 @@ using System;
 using Domain.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Domain.Migrations
 {
     [DbContext(typeof(GlovoDbContext))]
-    partial class GlovoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260924203729_fixes2 in userorders")]
+    partial class fixes2inuserorders
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1059,7 +1062,7 @@ namespace Domain.Migrations
                     b.Property<double>("ProductsPrice")
                         .HasColumnType("double precision");
 
-                    b.Property<int?>("PromocodeId")
+                    b.Property<int>("PromocodeId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("Scheduled")
@@ -1943,7 +1946,9 @@ namespace Domain.Migrations
 
                     b.HasOne("Domain.Entities.Promocode", "Promocode")
                         .WithMany("UserOrders")
-                        .HasForeignKey("PromocodeId");
+                        .HasForeignKey("PromocodeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Core.Entities.Identity.UserEntity", "User")
                         .WithMany("UserOrders")

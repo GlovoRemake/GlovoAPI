@@ -23,5 +23,9 @@ public class CompanyAffiliateConfiguration : IEntityTypeConfiguration<CompanyAff
             .HasOne(c => c.WorkingHours)
             .WithMany(c => c.Affiliates)
             .HasForeignKey(c => c.WorkingHoursId);
+        builder
+            .HasMany(c => c.Orders)
+            .WithOne(c => c.Affiliate)
+            .HasForeignKey(c => c.AffiliateId);
     }
 }
