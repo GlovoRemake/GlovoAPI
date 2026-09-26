@@ -287,5 +287,29 @@ namespace GlovoAPI.Controllers
 
             return Ok(new { result.IsSuccess, Value = true });
         }
+
+        [HttpPost("Logout")]
+        public IActionResult Logout()
+        {
+            Response.Cookies.Delete("accessToken", new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+            });
+
+            Response.Cookies.Delete("refreshToken", new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+            });
+
+            return Ok(new
+            {
+                IsSuccess = true,
+                Value = true
+            });
+        }
     }
 }
