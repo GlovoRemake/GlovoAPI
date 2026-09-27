@@ -180,7 +180,7 @@ public class CompanyService(
         var companies = await _requestCompanyRepo
             .Query()
             .Where(x =>
-                x.PartnerId == partnerId &&
+                x.PartnerId == partnerId ||
                 x.Company.Affiliates
                     .Any(a => a.Employees.Any(e => e.PartnerUserId == partnerId))
             )
