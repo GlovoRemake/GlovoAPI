@@ -55,7 +55,7 @@ public class AffiliateService(
             pageSize,
             predicate: x => 
                 (x.CompanyId == companyId && !x.Company.IsDeleted) &&
-                x.Employees.Any(e => e.PartnerUserId == partnerId && !e.IsDeleted) || x.Company.OwnerId == partnerId
+                (x.Employees.Any(e => e.PartnerUserId == partnerId && !e.IsDeleted) || x.Company.OwnerId == partnerId)
         );
 
         return new PagedAffiliatesDto
