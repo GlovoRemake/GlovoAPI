@@ -272,7 +272,7 @@ public class AffiliateService(
         if (affiliateCategory == null)
             throw new ProductNotFoundException();
 
-        affiliateCategory.IsDeleted = true;
+        await _affiliatesProductsCategoryRepo.ForceDeleteAsync(affiliateCategory.Id);
         await _affiliatesProductsCategoryRepo.UpdateAsync(affiliateCategory);
     }
     
@@ -314,8 +314,7 @@ public class AffiliateService(
         if (affiliateProduct == null)
             throw new ProductNotFoundException();
         
-        affiliateProduct.IsAvailable = false;
-        affiliateProduct.IsDeleted = true;
+        await _affiliateProductRepo.ForceDeleteAsync(affiliateProduct.Id);
         await _affiliateProductRepo.UpdateAsync(affiliateProduct);
     }
 
