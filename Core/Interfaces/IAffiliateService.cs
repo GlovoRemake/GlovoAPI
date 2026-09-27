@@ -11,7 +11,7 @@ namespace Core.Interfaces;
 public interface IAffiliateService
 {
     Task<AffiliateDto> GetAffilaiteById(Guid affilaiteId);
-    Task<PagedAffiliatesDto> GetAllAffiliatesAsync(Guid companyId, int pageNumber, int pageSize);
+    Task<PagedAffiliatesDto> GetAllAffiliatesAsync(Guid companyId, int pageNumber, int pageSize, Guid partnerId);
     Task<AffiliateDto[]> GetAllAffiliatesByRegionAsync(Guid companyId, int cityId);
     Task<AffiliateDto> CreateAffiliateAsync(Guid companyId, CreateAffiliateDto affiliateDto);
     Task<AffiliateDto> UpdateAffiliateAsync(Guid affiliateId, UpdateAffiliateDto affiliateDto);

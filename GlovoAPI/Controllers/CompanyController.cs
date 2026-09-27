@@ -37,7 +37,7 @@ namespace GlovoAPI.Controllers
             return Ok(new { result.IsSuccess, result.Value });
         }
 
-        [PartnerAuthorize(PartnerRolesEnum.CompanyOwner)]
+        [PartnerAuthorize(PartnerRolesEnum.CompanyOwner, PartnerRolesEnum.AffiliateManager, PartnerRolesEnum.AffiliateEmployee)]
         [HttpGet("get/{companyId:Guid}")]
         public async Task<IActionResult> GetCompany(Guid companyId)
         {

@@ -177,7 +177,16 @@ public class CompanyService(
 
     public async Task<List<RequestCompanyDto>> GetListCompanyAsync(Guid partnerId)
     {
-        var companies = await _requestCompanyRepo.Query().Where(x => x.PartnerId == partnerId).ProjectTo<RequestCompanyDto>(_mapper.ConfigurationProvider).ToListAsync();
+        var companies = await _requestCompanyRepo
+            .Query()
+            .Where(x =>
+                x.PartnerId == partnerId ||
+                x.Company.Affiliates
+                    .Any(a => a.Employees.Any(e => e.PartnerUserId == partnerId && !e.IsDeleted))
+            )
+            .ProjectTo<RequestCompanyDto>(_mapper.ConfigurationProvider)
+            .ToListAsync();
+
         return companies;
     }
 

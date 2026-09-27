@@ -119,14 +119,26 @@ public sealed class PartnerAccessHandler(
         Guid userId,
         string roleName)
     {
-        if (!TryGetAffiliateId(httpContext, out var affiliateId))
-            return false;
+        if (TryGetCompanyId(httpContext, out var companyId))
+        {
+            return await _companyRepo.Query()
+                .AnyAsync(x =>
+                    (x.Id == companyId &&
+                    x.OwnerId == userId) || 
+                    x.Affiliates
+                        .Any(a => a.Employees.Any(e => e.PartnerUserId == userId && !e.IsDeleted)));
+        }
+        
+        if (TryGetAffiliateId(httpContext, out var affiliateId))
+        {
+            return await _employeeRepo.Query()
+                .AnyAsync(x =>
+                    x.PartnerUserId == userId &&
+                    x.CompanyAffiliateId == affiliateId &&
+                    x.Role.Name == roleName && !x.IsDeleted);
+        }
 
-        return await _employeeRepo.Query()
-            .AnyAsync(x =>
-                x.PartnerUserId == userId &&
-                x.CompanyAffiliateId == affiliateId &&
-                x.Role.Name == roleName);
+        return false;
     }
 
     private static bool TryGetCompanyId(

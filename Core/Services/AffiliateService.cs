@@ -48,12 +48,14 @@ public class AffiliateService(
             .FirstOrDefaultAsync() ?? new AffiliateDto();
     }
 
-    public async Task<PagedAffiliatesDto> GetAllAffiliatesAsync(Guid companyId, int pageNumber, int pageSize)
+    public async Task<PagedAffiliatesDto> GetAllAffiliatesAsync(Guid companyId, int pageNumber, int pageSize, Guid partnerId)
     {
         var (requests, totalCount) = await _affiliateRepo.ListPagedAsync<AffiliateDto>(
             pageNumber,
             pageSize,
-            predicate: x => x.CompanyId == companyId && !x.Company.IsDeleted
+            predicate: x => 
+                (x.CompanyId == companyId && !x.Company.IsDeleted) &&
+                (x.Employees.Any(e => e.PartnerUserId == partnerId && !e.IsDeleted) || x.Company.OwnerId == partnerId)
         );
 
         return new PagedAffiliatesDto
@@ -270,7 +272,7 @@ public class AffiliateService(
         if (affiliateCategory == null)
             throw new ProductNotFoundException();
 
-        affiliateCategory.IsDeleted = true;
+        await _affiliatesProductsCategoryRepo.ForceDeleteAsync(affiliateCategory.Id);
         await _affiliatesProductsCategoryRepo.UpdateAsync(affiliateCategory);
     }
     
@@ -312,8 +314,7 @@ public class AffiliateService(
         if (affiliateProduct == null)
             throw new ProductNotFoundException();
         
-        affiliateProduct.IsAvailable = false;
-        affiliateProduct.IsDeleted = true;
+        await _affiliateProductRepo.ForceDeleteAsync(affiliateProduct.Id);
         await _affiliateProductRepo.UpdateAsync(affiliateProduct);
     }
 

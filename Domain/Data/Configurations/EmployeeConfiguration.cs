@@ -19,5 +19,9 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
             .HasOne(e => e.Role)
             .WithMany(u => u.Employees)
             .HasForeignKey(e => e.RoleId);
+        builder
+            .HasOne(e => e.Affiliate)
+            .WithMany(u => u.Employees)
+            .HasForeignKey(e => e.CompanyAffiliateId);
     }
 }

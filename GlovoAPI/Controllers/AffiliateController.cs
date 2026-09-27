@@ -19,7 +19,7 @@ namespace GlovoAPI.Controllers
     public class AffiliateController(IMediator _mediator) : ControllerBase
     {
 
-        [PartnerAuthorize(PartnerRolesEnum.CompanyOwner)]
+        [PartnerAuthorize(PartnerRolesEnum.CompanyOwner, PartnerRolesEnum.AffiliateEmployee, PartnerRolesEnum.AffiliateManager)]
         [HttpGet("{affiliateId:Guid}")]
         public async Task<IActionResult> GetAffiliateById(Guid affiliateId)
         {
@@ -30,11 +30,12 @@ namespace GlovoAPI.Controllers
             return Ok(new { result.IsSuccess, result.Value });
         }
 
-        [PartnerAuthorize(PartnerRolesEnum.CompanyOwner)]
+        [PartnerAuthorize(PartnerRolesEnum.CompanyOwner, PartnerRolesEnum.AffiliateEmployee, PartnerRolesEnum.AffiliateManager)]
         [HttpGet("all/{companyId:Guid}")]
         public async Task<IActionResult> GetAllAffiliates(Guid companyId, int pageNumber, int pageSize)
         {
-            var result = await _mediator.Send(new GetAllAffiliatesQuery(companyId, pageNumber, pageSize));
+            var partnerId = Guid.Parse(User.FindFirst("id")?.Value ?? "");
+            var result = await _mediator.Send(new GetAllAffiliatesQuery(companyId, pageNumber, pageSize, partnerId));
 
             if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
 

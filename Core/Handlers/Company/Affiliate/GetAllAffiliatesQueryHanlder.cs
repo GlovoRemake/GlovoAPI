@@ -27,6 +27,6 @@ public sealed class GetAllAffiliatesQueryHandler
     {
 
 
-        return Result< PagedAffiliatesDto>.Success(await _affiliateService.GetAllAffiliatesAsync(request.companyId, request.pageNumber, request.pageSize));
+        return Result< PagedAffiliatesDto>.Success(await _affiliateService.GetAllAffiliatesAsync(request.companyId, request.pageNumber, request.pageSize, request.partnerId));
     }
 }
