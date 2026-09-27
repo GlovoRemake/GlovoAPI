@@ -84,7 +84,8 @@ public class AccountService(
             RegisterType = RegisterType.Email,
             UserName = email,
             Email = email,
-            EmailConfirmed = true
+            EmailConfirmed = true,
+            PhoneNumber = dto.Phone
         };
 
         var createResult = await _userManager.CreateAsync(user, dto.Password);
