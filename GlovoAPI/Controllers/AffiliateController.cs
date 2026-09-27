@@ -158,8 +158,6 @@ namespace GlovoAPI.Controllers
         
         
         
-        
-        [Authorize]
         [HttpGet("categories/{affiliateId:Guid}")]
         public async Task<IActionResult> GetAffiliateCategories(Guid affiliateId)
         {
@@ -195,7 +193,6 @@ namespace GlovoAPI.Controllers
 
 
 
-        [Authorize]
         [HttpGet("products/{affiliateId:Guid}")]
         public async Task<IActionResult> GetAffiliateProducts(Guid affiliateId)
         {
