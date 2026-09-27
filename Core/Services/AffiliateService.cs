@@ -48,12 +48,14 @@ public class AffiliateService(
             .FirstOrDefaultAsync() ?? new AffiliateDto();
     }
 
-    public async Task<PagedAffiliatesDto> GetAllAffiliatesAsync(Guid companyId, int pageNumber, int pageSize)
+    public async Task<PagedAffiliatesDto> GetAllAffiliatesAsync(Guid companyId, int pageNumber, int pageSize, Guid partnerId)
     {
         var (requests, totalCount) = await _affiliateRepo.ListPagedAsync<AffiliateDto>(
             pageNumber,
             pageSize,
-            predicate: x => x.CompanyId == companyId && !x.Company.IsDeleted
+            predicate: x => 
+                (x.CompanyId == companyId && !x.Company.IsDeleted) &&
+                x.Employees.Any(e => e.PartnerUserId == partnerId && !e.IsDeleted) || x.Company.OwnerId == partnerId
         );
 
         return new PagedAffiliatesDto

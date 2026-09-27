@@ -34,7 +34,8 @@ namespace GlovoAPI.Controllers
         [HttpGet("all/{companyId:Guid}")]
         public async Task<IActionResult> GetAllAffiliates(Guid companyId, int pageNumber, int pageSize)
         {
-            var result = await _mediator.Send(new GetAllAffiliatesQuery(companyId, pageNumber, pageSize));
+            var partnerId = Guid.Parse(User.FindFirst("id")?.Value ?? "");
+            var result = await _mediator.Send(new GetAllAffiliatesQuery(companyId, pageNumber, pageSize, partnerId));
 
             if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
 
