@@ -6,6 +6,7 @@ using Domain.Entities.User;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Domain.Entities.Company.Partner;
 
 namespace Domain.Entities.Company.Affiliate;
 
@@ -26,5 +27,6 @@ public class CompanyAffiliate : BaseEntity<Guid>
     public CompanyAffiliatesWorkingHour? WorkingHours { get; set; }
     public ICollection<CompanyAffiliateProduct>? Products { get; set; }
     public ICollection<CompanyAffiliatesProductsCategory>? Categories { get; set; }
+    public ICollection<Employee>? Employees { get; set; }
     public ICollection<UserOrder>? Orders { get; set; }
 }
