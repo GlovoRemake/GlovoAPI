@@ -1,4 +1,4 @@
-﻿namespace GlovoAPI.Policy.Enums;
+﻿namespace Core.Enums;
 
 public enum PartnerRolesEnum
 {

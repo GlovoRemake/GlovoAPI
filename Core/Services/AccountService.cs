@@ -1,11 +1,13 @@
 using AutoMapper;
 using Core.Dtos;
 using Core.Dtos.Account;
+using Core.Dtos.Account.Payment;
 using Core.Dtos.Exceptions;
 using Core.Dtos.Exceptions.Account;
 using Core.Entities.Identity;
 using Core.Interfaces;
 using Domain.Data;
+using Domain.Entities;
 using Domain.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +27,8 @@ public class AccountService(
         ITokenService _tokenService,
         IImageService _imageService,
         GlovoDbContext _dbContext,
-        IMapper _mapper
+        IMapper _mapper,
+        ISoftDeleteRepository<Payment, int> _paymentRepo
     ) : IAccountService
 {
     public async Task<TokenResponseDto> LoginAsync(string email, string password)
@@ -494,5 +497,27 @@ public class AccountService(
         {
             throw new Exception($"Помилка під час оновлення користувача: {string.Join("\n", res.Errors)}");
         }
+    }
+
+
+    public async Task<UserPaymentsDto> GetUserPaymentsAsync(Guid userId)
+    {
+        var userPayments = new UserPaymentsDto
+        {
+            Balance = await _paymentRepo.Query()
+                .Where(x => x.CourierId == userId)
+                .SumAsync(x => x.Amount),
+            Payments = await _paymentRepo.Query()
+                .Where(x => x.CourierId == userId)
+                .OrderByDescending(x => x.DateCreated)
+                .Select(x => new PaymentDto
+                {
+                    CompanyName = x.Order.Company.Name ?? "",
+                    Amount = x.Amount,
+                    CreatedAt = x.DateCreated
+                }).ToListAsync()
+        };
+
+        return userPayments;
     }
 }

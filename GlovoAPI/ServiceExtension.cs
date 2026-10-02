@@ -1,4 +1,7 @@
-﻿using GlovoAPI.Policy.Providers;
+﻿using Core.Interfaces;
+using GlovoAPI.Hubs;
+using GlovoAPI.Hubs.Services;
+using GlovoAPI.Policy.Providers;
 using GlovoAPI.Policy.Requirements;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -74,6 +77,16 @@ public static class ServiceExtension
                                 out var accessToken))
                         {
                             context.Token = accessToken;
+                        }
+
+                        var accessTokenFromQuery =
+                            context.Request.Query["access_token"];
+
+                        if (!string.IsNullOrEmpty(accessTokenFromQuery) &&
+                            context.HttpContext.Request.Path.StartsWithSegments(
+                                "/hubs/courier"))
+                        {
+                            context.Token = accessTokenFromQuery;
                         }
 
                         return Task.CompletedTask;
@@ -152,6 +165,24 @@ public static class ServiceExtension
         service.AddSingleton<IAuthorizationPolicyProvider, PartnerAuthorizationPolicyProvider>();
         service.AddScoped<IAuthorizationHandler, PartnerAccessHandler>();
     }
+
+
+
+    public static void AddCustomSignalR(this IServiceCollection services)
+    {
+        services.AddSignalR();
+
+        services.AddScoped<ICourierNotificationService, CourierNotificationService>();
+        services.AddScoped<IPartnerNotificationService, PartnerNotificationService>();
+    }
+
+    public static void AddHubs(this WebApplication app)
+    {
+
+        app.MapHub<CourierHub>("/hubs/courier");
+        app.MapHub<PartnerHub>("/hubs/partner");
+    }
+
 
     private static TokenValidationParameters GetTokenValidationParameters(string issuer, string audience, string key)
     {

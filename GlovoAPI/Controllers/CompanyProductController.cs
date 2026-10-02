@@ -3,7 +3,7 @@ using Core.Dtos.Company.Product;
 using Core.Queries.Company.Affiliate;
 using Core.Queries.Company.Product;
 using GlovoAPI.Policy.Attributes;
-using GlovoAPI.Policy.Enums;
+using Core.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

@@ -1,6 +1,6 @@
 ﻿namespace GlovoAPI.Policy.Attributes;
 
-using GlovoAPI.Policy.Enums;
+using Core.Enums;
 using Microsoft.AspNetCore.Authorization;
 
 public sealed class PartnerAuthorizeAttribute : AuthorizeAttribute

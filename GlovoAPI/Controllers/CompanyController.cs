@@ -4,7 +4,7 @@ using Core.Handlers.Company;
 using Core.Queries.Company;
 using Core.Queries.Partner;
 using GlovoAPI.Policy.Attributes;
-using GlovoAPI.Policy.Enums;
+using Core.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

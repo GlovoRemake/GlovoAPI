@@ -4,7 +4,7 @@ using Core.Queries.Account.Address;
 using Core.Queries.Account.Cart;
 using Core.Queries.Company.Product.Additional;
 using GlovoAPI.Policy.Attributes;
-using GlovoAPI.Policy.Enums;
+using Core.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
