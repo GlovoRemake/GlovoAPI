@@ -59,17 +59,16 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwaggerUI(opt =>
     {
         opt.SwaggerEndpoint("/openapi/v1.json", "v1");
         opt.OAuthUsePkce();
     });
     app.MapOpenApi();
-}
-
-app.UseHttpsRedirection();
+    //app.UseHttpsRedirection();
+//}
 
 app.UseCors("DynamicCors");
 

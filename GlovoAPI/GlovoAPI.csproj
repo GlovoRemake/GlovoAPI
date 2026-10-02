@@ -22,16 +22,37 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Helpers\JsonData\PartnerRoles.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="Helpers\JsonData\Regions.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="Helpers\JsonData\Cities.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="Helpers\JsonData\Roles.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Helpers\JsonData\Types.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="images\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="email-templates\code-verification.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="email-templates\forgot-code-verification.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="email-templates\partner-code-verification.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

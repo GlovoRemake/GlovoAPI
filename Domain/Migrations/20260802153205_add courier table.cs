@@ -13,28 +13,28 @@ namespace Domain.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Payments_AspNetUsers_CourierId",
-                table: "Payments");
+        name: "FK_Payment_AspNetUsers_CourierId",
+        table: "Payment");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Payments_UserOrders_OrderId",
-                table: "Payments");
+                name: "FK_Payment_UserOrders_OrderId",
+                table: "Payment");
 
             migrationBuilder.DropPrimaryKey(
-                name: "PK_Payments",
-                table: "Payments");
+                name: "PK_Payment",
+                table: "Payment");
 
             migrationBuilder.RenameTable(
-                name: "Payments",
+                name: "Payment",
                 newName: "Payments");
 
             migrationBuilder.RenameIndex(
-                name: "IX_Payments_OrderId",
+                name: "IX_Payment_OrderId",
                 table: "Payments",
                 newName: "IX_Payments_OrderId");
 
             migrationBuilder.RenameIndex(
-                name: "IX_Payments_CourierId",
+                name: "IX_Payment_CourierId",
                 table: "Payments",
                 newName: "IX_Payments_CourierId");
 
