@@ -17,7 +17,6 @@ namespace GlovoAPI.Controllers
     [ApiController]
     public class AdditionalController(IMediator _mediator) : ControllerBase
     {
-        [Authorize]
         [HttpGet("all/{productId:int}")]
         public async Task<IActionResult> GetAdditionals(int productId)
         {
