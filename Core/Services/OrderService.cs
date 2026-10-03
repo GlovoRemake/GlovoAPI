@@ -277,6 +277,7 @@ public class OrderService(
             .Where(x => x.UserId == userId && 
                 (x.Status == Domain.Enums.OrderStatus.Completed ||
                 x.Status == Domain.Enums.OrderStatus.Cancelled))
+            .OrderByDescending(x => x.DateCreated)
             .ProjectTo<UserOrderDto>(_mapper.ConfigurationProvider)
             .ToListAsync();
     }
