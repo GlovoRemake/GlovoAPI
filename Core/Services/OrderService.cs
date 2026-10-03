@@ -270,6 +270,19 @@ public class OrderService(
     }
 
 
+    
+    public async Task<List<UserOrderDto>> UserOrderHistory(Guid userId)
+    {
+        return await _userOrderRepo.Query()
+            .Where(x => x.UserId == userId && 
+                (x.Status == Domain.Enums.OrderStatus.Completed ||
+                x.Status == Domain.Enums.OrderStatus.Cancelled))
+            .ProjectTo<UserOrderDto>(_mapper.ConfigurationProvider)
+            .ToListAsync();
+    }
+    
+    
+    
     private double CalculateDeliveryFee(double weight)
     {
         return weight switch
