@@ -17,4 +17,5 @@ public interface IOrderService
     Task MarkOrderHandedToCourier(int orderId);
     Task ConfirmDelivery(int orderId);
     Task<List<UserOrderDto>> GetActiveOrders(Guid userId);
+    Task<List<UserOrderDto>> UserOrderHistory(Guid userId);
 }
