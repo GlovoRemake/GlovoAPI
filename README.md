@@ -48,7 +48,6 @@ GlovoAPI/
 
 - **.NET 10** / ASP.NET Core
 - **Docker** (multi-stage збірка: `dotnet/sdk:10.0` → `dotnet/aspnet:10.0`)
-- <!-- TODO: база даних (PostgreSQL / SQL Server?), ORM (EF Core / Dapper?), автентифікація (JWT?) тощо -->
 
 ## 🚀 Швидкий старт
 
@@ -56,7 +55,6 @@ GlovoAPI/
 
 - [.NET 10 SDK](https://dotnet.microsoft.com/download)
 - [Docker](https://www.docker.com/) (за бажанням)
-- <!-- TODO: сервер бази даних, якщо потрібен -->
 
 ### Локальний запуск
 
