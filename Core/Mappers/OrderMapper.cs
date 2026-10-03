@@ -19,6 +19,10 @@ public class OrderMapper : Profile
                 opt => opt.MapFrom(src => src.AdditionalProducts)
             );
 
-        CreateMap<OrderProductAdditional, UserOrderAdditionalDto>();
+        CreateMap<OrderProductAdditional, UserOrderAdditionalDto>()
+            .ForMember(
+                dest => dest.Name,
+                opt => opt.MapFrom(src => src.Additional.Name)
+            );
     }
 }
