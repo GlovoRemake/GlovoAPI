@@ -212,6 +212,22 @@ public class CartService(
 
         await _cartRepo.SaveChangesAsync();
     }
+
+    public async Task RemoveAllCartByCompany(Guid userId, Guid companyId)
+    {
+        var cartItem = await _cartRepo
+            .Query()
+            .Where(x => x.UserId == userId && x.CompanyId == companyId)
+            .ToListAsync();
+
+        foreach (var item in cartItem)
+        {
+            await _cartRepo.DeleteAsync(item.Id);
+        }
+
+        await _cartRepo.SaveChangesAsync();
+    }
+
     public async Task RemoveAllCart(Guid userId)
     {
         var cartItem = await _cartRepo
@@ -229,14 +245,18 @@ public class CartService(
 
     private async Task ValidateAdditionals(int productId, List<int> additionalIds)
     {
+        var selectedIds = additionalIds
+            .Distinct()
+            .ToList();
+
         var additionalGroups = await _additionalGroupRepo
             .Query()
             .Where(x => x.ProductId == productId)
             .ToListAsync();
 
-        var selectedIds = additionalIds
-            .Distinct()
-            .ToList();
+        var validGroupIds = additionalGroups
+            .Select(x => x.Id)
+            .ToHashSet();
 
         var selectedAdditionals = await _additionalRepo
             .Query()
@@ -244,11 +264,9 @@ public class CartService(
             .ToListAsync();
 
         if (selectedAdditionals.Count != selectedIds.Count)
+        {
             throw new InvalidAdditionalException();
-
-        var validGroupIds = additionalGroups
-            .Select(x => x.Id)
-            .ToHashSet();
+        }
 
         if (selectedAdditionals.Any(x =>
             !validGroupIds.Contains(x.AdditionalGroupId)))
@@ -256,10 +274,16 @@ public class CartService(
             throw new InvalidAdditionalException();
         }
 
-        foreach (var group in additionalGroups)
+        var selectedGroups = selectedAdditionals
+            .GroupBy(x => x.AdditionalGroupId)
+            .ToList();
+
+        foreach (var selectedGroup in selectedGroups)
         {
-            var count = selectedAdditionals.Count(x =>
-                x.AdditionalGroupId == group.Id);
+            var group = additionalGroups
+                .First(x => x.Id == selectedGroup.Key);
+
+            var count = selectedGroup.Count();
 
             if (count < group.MinChoice)
             {
@@ -272,5 +296,6 @@ public class CartService(
             }
         }
     }
+
 
 }

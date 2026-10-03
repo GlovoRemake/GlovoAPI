@@ -18,6 +18,7 @@ builder.Services.AddMediatR(builder.Configuration);
 builder.Services.AddAutoMapper(builder.Configuration);
 
 builder.Services.AddControllers();
+builder.Services.AddCustomSignalR();
 builder.Services.AddOpenApi();
 
 if (builder.Environment.IsDevelopment())
@@ -76,6 +77,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.AddHubs();
 
 await app.SeedData(); // seeder
 

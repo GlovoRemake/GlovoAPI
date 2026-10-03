@@ -1,4 +1,5 @@
 ﻿using Core.Dtos.Account;
+using Core.Dtos.Account.Payment;
 
 namespace Core.Interfaces;
 
@@ -16,4 +17,6 @@ public interface IAccountService
     Task ForgotPasswordAsync(string email);
     Task SetNewPasswordAsync(string email, SetNewPasswordDto dto);
     Task UpdateProfileAsync(string email, UpdateProfileDto dto);
+
+    Task<UserPaymentsDto> GetUserPaymentsAsync(Guid userId);
 }

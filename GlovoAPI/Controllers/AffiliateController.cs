@@ -6,7 +6,7 @@ using Core.Queries.Company.Affiliate;
 using Core.Queries.Company.Affiliate.Category;
 using Core.Queries.Company.Affiliate.Product;
 using GlovoAPI.Policy.Attributes;
-using GlovoAPI.Policy.Enums;
+using Core.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -234,6 +234,18 @@ namespace GlovoAPI.Controllers
             if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
 
             return Ok(new { result.IsSuccess, value = true });
+        }
+
+
+        [PartnerAuthorize(PartnerRolesEnum.CompanyOwner, PartnerRolesEnum.AffiliateManager, PartnerRolesEnum.AffiliateEmployee)]
+        [HttpGet("{affiliateId:Guid}/orders")]
+        public async Task<IActionResult> GetAffiliateOrders(Guid affiliateId)
+        {
+            var result = await _mediator.Send(new GetAffiliateOrdersQuery(affiliateId));
+
+            if (!result.IsSuccess) return BadRequest(new { result.IsSuccess, result.Errors });
+
+            return Ok(new { result.IsSuccess, result.Value });
         }
     }
 }

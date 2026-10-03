@@ -12,4 +12,5 @@ public interface ICartService
     Task UpdateCart(Guid userId, int cartId, UpdateCartDto dto);
     Task RemoveFromCart(Guid userId, int cartId);
     Task RemoveAllCart(Guid userId);
+    Task RemoveAllCartByCompany(Guid userId, Guid companyId);
 }

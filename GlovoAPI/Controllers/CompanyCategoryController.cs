@@ -6,7 +6,7 @@ using Core.Dtos.Company.Category;
 using Core.Queries.Company;
 using Core.Queries.Company.Category;
 using GlovoAPI.Policy.Attributes;
-using GlovoAPI.Policy.Enums;
+using Core.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

@@ -3,7 +3,7 @@ using Core.Dtos.Company;
 using Core.Dtos.Promocods;
 using Core.Queries.Promocodes;
 using GlovoAPI.Policy.Attributes;
-using GlovoAPI.Policy.Enums;
+using Core.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
