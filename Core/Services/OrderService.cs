@@ -253,6 +253,7 @@ public class OrderService(
         order.Status = Domain.Enums.OrderStatus.WaitingCourier;
         await _userOrderRepo.SaveChangesAsync();
         await _courierNotifier.UpdateOrderStatus(orderId);
+        await _partnerNotifier.UpdateOrderStatus(orderId);
     }
 
     public async Task MarkOrderHandedToCourier(int orderId)
@@ -265,6 +266,7 @@ public class OrderService(
         order.Status = Domain.Enums.OrderStatus.Delivering;
         await _userOrderRepo.SaveChangesAsync();
         await _courierNotifier.UpdateOrderStatus(orderId);
+        await _partnerNotifier.UpdateOrderStatus(orderId);
     }
 
 
